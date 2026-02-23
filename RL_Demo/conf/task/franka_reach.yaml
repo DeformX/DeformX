@@ -1,0 +1,22 @@
+name: franka_reach
+env_cls: RL.envs.franka_reach_env.FrankaReachEnv
+
+num_envs: 64
+env_spacing: 2.0
+phys_dt: 0.0166667
+max_steps: 300
+
+# velocity control recommended for PPO demo
+control_mode: velocity
+
+# PD gains (for velocity control in this demo)
+kp: 0.0
+kd: 40.0
+
+# reward shaping
+success_thresh: 0.08
+reward_clip_min: 0.0
+reward_clip_max: 5.0
+
+# action scaling
+max_joint_vel: 1.5

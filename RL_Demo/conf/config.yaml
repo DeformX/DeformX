@@ -1,0 +1,54 @@
+defaults:
+  - task: wire_swing
+  - algo: ppo
+  - _self_
+
+seed: 0
+device: cuda
+
+# total training steps
+total_steps: 200000
+
+# print stats every N steps
+log_every: 10000
+
+# episode-level logging (based on env done/reset events)
+log_episode_metrics: true
+# print rolling episode summary every N completed episodes (set 1 to print every episode)
+episode_log_every: 1
+# rolling window size used by episode summary
+episode_log_avg_window: 10
+
+# render in Isaac Sim (slower). Usually false for training.
+render: false
+
+# checkpointing
+save_checkpoints: true
+checkpoint_every: 5000
+checkpoint_dir: checkpoints
+save_final_checkpoint: true
+resume_checkpoint: ""
+
+# export successful episodes for replay
+export_success_actions: true
+# save run configs (merged/task/algo) into success_export_dir at training start
+save_configs_to_success_dir: true
+success_export_limit: 20
+success_export_dir: data/success_traj_csv_high_6
+success_export_prefix: success_episode
+
+# offline evaluation/export
+eval:
+  checkpoint: ""
+  deterministic: true
+  episodes: 5
+  max_total_steps: 0
+  export_dir: eval_exports
+  export_prefix: eval
+  export_mode: best_success
+  export_joint_csv: true
+  export_actions_npz: true
+  export_episode_summary: true
+  export_summary_json: true
+  # set > 0 (e.g. 0.002) to resample output CSV for real-arm replay control period
+  resample_dt: 0.0

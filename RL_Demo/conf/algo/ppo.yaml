@@ -1,0 +1,19 @@
+name: ppo
+
+lr: 3e-4
+gamma: 0.99
+eps_clip: 0.2
+k_epochs: 4
+
+# rollout length (how often to update)
+rollout_len: 64
+
+# loss coefficients
+entropy_coef: 0.01
+vf_coef: 0.5
+
+# stability
+grad_clip: 0.5
+
+# exploration: fixed diagonal covariance std
+action_std: 0.5
