@@ -19,6 +19,9 @@ import numpy as np
 REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+PYELASTICA_MESH_ROOT = REPO_ROOT / "PyElastica-Mesh"
+if PYELASTICA_MESH_ROOT.is_dir() and str(PYELASTICA_MESH_ROOT) not in sys.path:
+    sys.path.insert(0, str(PYELASTICA_MESH_ROOT))
 
 from co_sim.engine import CoSimEngine
 from co_sim.models import CoSimConfig, FrameState
@@ -244,11 +247,12 @@ class WireSwingEnv:
             self.enable_wire_visual = False
         self.skeleton_driver_cls = None
         if self.enable_wire_visual:
+            SkeletonRodDriver = None
             try:
-                from mytest.rod_skel_driver_test import SkeletonRodDriver
+                from tools.rod_skel_driver_sim import SkeletonRodDriver
             except Exception:
                 try:
-                    from rod_skel_driver_test import SkeletonRodDriver
+                    from rod_skel_driver_sim import SkeletonRodDriver
                 except Exception as exc:
                     print(f"[WireSwingEnv] Failed to import SkeletonRodDriver, disable visual driver: {exc}")
                     self.enable_wire_visual = False

@@ -1,0 +1,3 @@
+[submodule "PyElastica-Mesh"]
+	path = PyElastica-Mesh
+	url = https://github.com/Lehong-Wang/PyElastica-Mesh.git

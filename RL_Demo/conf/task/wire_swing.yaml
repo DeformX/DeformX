@@ -52,7 +52,7 @@ w_joint3_velocity: 1
 joint3_reward_index: 3
 joint3_velocity_abs: true
 w_time_penalty: 0.05
-success_bonus: 10.0
+success_bonus: 0
 bonus_thresh_1: 0.5
 bonus_thresh_2: 0.2
 bonus_thresh_3: 0.1

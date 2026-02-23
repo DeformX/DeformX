@@ -22,6 +22,9 @@ SCRIPT_PATH = Path(__file__).resolve()
 REPO_ROOT = SCRIPT_PATH.parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+PYELASTICA_MESH_ROOT = REPO_ROOT / "PyElastica-Mesh"
+if PYELASTICA_MESH_ROOT.is_dir() and str(PYELASTICA_MESH_ROOT) not in sys.path:
+    sys.path.insert(0, str(PYELASTICA_MESH_ROOT))
 
 NUM_ROBOT_DOFS = 6
 JOINT_NAMES = ["shoulder_pan", "shoulder_lift", "elbow", "wrist_1", "wrist_2", "wrist_3"]
@@ -163,22 +166,20 @@ def _resolve_ur5e_usd_path() -> str:
 
 def _import_skeleton_driver():
     try:
-        from mytest.wire_end_calibration_bundle.scripts.rod_skel_driver_test import (
-            SkeletonRodDriver,
-        )
+        from tools.rod_skel_driver_sim import SkeletonRodDriver
 
         return SkeletonRodDriver
     except Exception:
         pass
     try:
-        from mytest.rod_skel_driver_test import SkeletonRodDriver
+        from rod_skel_driver_sim import SkeletonRodDriver
 
         return SkeletonRodDriver
-    except Exception:
-        pass
-    from rod_skel_driver_test import SkeletonRodDriver
-
-    return SkeletonRodDriver
+    except Exception as exc:
+        raise ImportError(
+            "Cannot import SkeletonRodDriver from tools.rod_skel_driver_sim "
+            "or rod_skel_driver_sim."
+        ) from exc
 
 
 def replay(path_traj: Path) -> tuple[Path, Path, Path]:
