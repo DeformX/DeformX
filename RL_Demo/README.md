@@ -13,6 +13,8 @@ From the `RL_Demo/` directory:
 ```bash
 # use Isaac Sim's python
 /path/to/isaac-sim/python.sh -m pip install hydra-core omegaconf
+# optional: wandb logging
+/path/to/isaac-sim/python.sh -m pip install wandb
 
 # run training (headless by default)
  /path/to/isaac-sim/python.sh -m RL.train task=franka_reach algo=ppo render=false
@@ -25,6 +27,26 @@ From the `RL_Demo/` directory:
 
 # swing-wire task with ball-joint wire attachment
  /path/to/isaac-sim/python.sh -m RL.train task=wire_swing_bj algo=ppo render=false
+```
+
+## Optional Weights & Biases Logging
+
+Enable W&B with Hydra overrides:
+
+```bash
+/path/to/isaac-sim/python.sh -m RL.train \
+  task=wire_swing algo=ppo render=false \
+  wandb.enabled=true \
+  wandb.project=cosseratx-rl
+```
+
+Offline logging (sync later):
+
+```bash
+/path/to/isaac-sim/python.sh -m RL.train \
+  task=wire_swing algo=ppo render=false \
+  wandb.enabled=true \
+  wandb.mode=offline
 ```
 
 ## Evaluate Checkpoint + Export Arm Motion

@@ -11,7 +11,9 @@ import argparse
 import csv
 import inspect
 import os
+import subprocess
 import sys
+import time
 import traceback
 from pathlib import Path
 
@@ -36,7 +38,11 @@ LONG_STICK_RADIUS = 0.010
 
 ROBOT_OFFSET = np.array([0.0, 0.0, 1.7], dtype=np.float64)
 ROBOT_ORIENT_XYZ_DEG = np.array([-90.0, 0.0, 0.0], dtype=np.float64)
-TARGET_LOCAL = np.array([0.0, 2.0, 2.3], dtype=np.float64)
+TARGET_LOCAL = np.array([0.0, 1.7, 2.5], dtype=np.float64)
+CAMERA_PATH = "/World/ReplayCamera"
+CAMERA_POS = np.array([2.5, 1.2, 1.2], dtype=np.float64)
+CAMERA_ROT_XYZ_DEG = np.array([0, 90.0, 0], dtype=np.float64)  # Look toward -X.
+CAMERA_FOCAL_LENGTH_MM = 10.0  # Larger focal length -> smaller FOV.
 WIRE_USD = (
     "/home/robot/Workspace/Siemens_Cable_Simulator/usd/"
     "wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc"
@@ -44,6 +50,10 @@ WIRE_USD = (
 
 DEFAULT_PHYS_DT = 1.0 / 500.0
 SETTLE_SECONDS = 1.0
+PATH_TRACING_SPP = 5
+VIDEO_TARGET_FPS = 30.0
+VIDEO_CRF = 18
+GROUND_COLOR = np.array([0.0, 0.0, 0.0], dtype=np.float32)
 
 
 def _normalize_field_name(name: str) -> str:
@@ -183,9 +193,15 @@ def _import_skeleton_driver():
         ) from exc
 
 
-def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) -> tuple[Path, Path, Path]:
+def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) -> tuple[Path, Path, Path, Path | None]:
     times, joint_positions = load_joint_csv(path_traj)
     sim_dt = _derive_sim_dt_from_csv(times, DEFAULT_PHYS_DT)
+    out_prefix = path_traj.with_suffix("")
+    out_csv = Path(str(out_prefix) + "_wire_tip_trace.csv")
+    out_png = Path(str(out_prefix) + "_wire_tip_yz.png")
+    out_joint_png = Path(str(out_prefix) + "_arm_joints.png")
+    out_video = Path(str(out_prefix) + "_camera.mp4")
+    out_video_frames_dir = Path(str(out_prefix) + "_camera_frames")
     csv_dts = np.diff(times)
     valid_csv_dts = csv_dts[np.isfinite(csv_dts) & (csv_dts > 1.0e-9)]
     median_csv_dt = float(np.median(valid_csv_dts)) if valid_csv_dts.size > 0 else float(sim_dt)
@@ -204,13 +220,18 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
     except ImportError:
         from omni.isaac.kit import SimulationApp
 
-    simulation_app = SimulationApp({"headless": False, "physics_gpu": 0, "active_gpu": 0})
+    simulation_app = SimulationApp(
+        {"headless": False, "physics_gpu": 0, "active_gpu": 0, "renderer": "PathTracing"}
+    )
     try:
         print("[replay] SimulationApp created", flush=True)
         try:
             import carb
 
-            carb.settings.get_settings().set_bool("/rtx/post/motionblur/enabled", False)
+            settings = carb.settings.get_settings()
+            settings.set_bool("/rtx/post/motionblur/enabled", False)
+            settings.set_string("/rtx/rendermode", "PathTracing")
+            settings.set_int("/rtx/pathtracing/spp", int(PATH_TRACING_SPP))
         except Exception:
             pass
 
@@ -292,10 +313,19 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
                 Gf.Vec3d(float(local_pos[0]), float(local_pos[1]), float(local_pos[2]))
             )
 
+        def create_camera(stage):
+            camera = UsdGeom.Camera.Define(stage, CAMERA_PATH)
+            camera.CreateFocalLengthAttr(float(CAMERA_FOCAL_LENGTH_MM))
+            xf = UsdGeom.Xformable(camera.GetPrim())
+            xf.ClearXformOpOrder()
+            xf.AddTranslateOp().Set(Gf.Vec3d(*CAMERA_POS.tolist()))
+            xf.AddRotateXYZOp().Set(Gf.Vec3f(*CAMERA_ROT_XYZ_DEG.tolist()))
+            return CAMERA_PATH
+
         world = World(physics_dt=sim_dt, rendering_dt=sim_dt, stage_units_in_meters=1.0)
         stage = omni.usd.get_context().get_stage()
         print("[replay] World created", flush=True)
-        world.scene.add_default_ground_plane()
+        world.scene.add_ground_plane(color=GROUND_COLOR)
 
         ps = UsdPhysics.Scene.Define(stage, "/physicsScene")
         ps.CreateGravityDirectionAttr().Set(Gf.Vec3f(0.0, 0.0, -1.0))
@@ -306,12 +336,67 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
 
         dome = UsdLux.DomeLight.Define(stage, "/World/DomeLight")
         dome.CreateIntensityAttr().Set(0.0)
-        dome.CreateColorAttr().Set(Gf.Vec3f(0.0, 0.0, 0.0))
+        dome.CreateColorAttr().Set(Gf.Vec3f(1.0, 1.0, 1.0))
         distant = UsdLux.DistantLight.Define(stage, "/World/DistantLight")
-        distant.CreateIntensityAttr().Set(2500.0)
+        distant.CreateIntensityAttr().Set(3800.0)
         distant.CreateColorAttr().Set(Gf.Vec3f(1.0, 1.0, 1.0))
+        fill = UsdLux.DistantLight.Define(stage, "/World/FillLight")
+        fill.CreateIntensityAttr().Set(1200.0)
+        fill.CreateColorAttr().Set(Gf.Vec3f(0.95, 0.95, 1.0))
+        back = UsdLux.DistantLight.Define(stage, "/World/BackLight")
+        back.CreateIntensityAttr().Set(900.0)
+        back.CreateColorAttr().Set(Gf.Vec3f(1.0, 0.98, 0.95))
         create_target(stage, TARGET_LOCAL)
+        camera_path = create_camera(stage)
+        try:
+            import omni.kit.viewport.utility as viewport_utility
+
+            viewport = viewport_utility.get_active_viewport()
+            if viewport is not None:
+                viewport.set_active_camera(camera_path)
+        except Exception:
+            pass
         print("[replay] Target prim created", flush=True)
+
+        video_step_stride = max(1, int(round((1.0 / sim_dt) / float(VIDEO_TARGET_FPS))))
+        video_step_count = 0
+        video_frame_count = 0
+        video_capture_paths: list[Path] = []
+        renderer_capture = None
+        capture_enabled = False
+        out_video_frames_dir.mkdir(parents=True, exist_ok=True)
+        for p in out_video_frames_dir.glob("frame_*.png"):
+            try:
+                p.unlink()
+            except Exception:
+                pass
+        try:
+            import omni.renderer_capture
+
+            renderer_capture = omni.renderer_capture.acquire_renderer_capture_interface()
+            capture_enabled = renderer_capture is not None
+        except Exception:
+            capture_enabled = False
+
+        if capture_enabled:
+            print(
+                f"[replay] camera capture enabled | target_fps={VIDEO_TARGET_FPS:.1f} | "
+                f"step_stride={video_step_stride} | frame_dir={out_video_frames_dir}",
+                flush=True,
+            )
+        else:
+            print("[replay] camera capture unavailable; skipping video export", flush=True)
+
+        def step_world_with_capture(record_video: bool = True):
+            nonlocal video_step_count, video_frame_count
+            if record_video and capture_enabled and ((video_step_count % video_step_stride) == 0):
+                frame_path = out_video_frames_dir / f"frame_{video_frame_count:06d}.png"
+                renderer_capture.capture_next_frame_swapchain(str(frame_path))
+                video_capture_paths.append(frame_path)
+                video_frame_count += 1
+            world.step(render=True)
+            if record_video:
+                video_step_count += 1
 
         robot_path = "/World/UR5e"
         add_reference_to_stage(usd_path=_resolve_ur5e_usd_path(), prim_path=robot_path)
@@ -340,7 +425,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         robot_view.set_joint_position_targets(cmd)
 
         for _ in range(20):
-            world.step(render=True)
+            step_world_with_capture(record_video=False)
 
         tip_pos0, tip_dir0 = get_prim_world_pose(stage, stick_tip_path)
         if tip_pos0 is None:
@@ -361,7 +446,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         cfg_kwargs: dict[str, object] = dict(
             base_length=1.0,
             n_elem=20,
-            base_radius=0.00635,
+            base_radius=0.006,
             py_dt=2.0e-5,
             isaac_dt=sim_dt,
             final_time=1.0e9,
@@ -370,8 +455,8 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             joint_nu=20.0,
             joint_kt=10.0,
             joint_nut=0.0,
-            density=700.0,
-            youngs_modulus=1e6,
+            density=500.0,
+            youngs_modulus=5e5,
             shear_modulus_ratio=1.5,
             damping_constant=0.1,
             rod_direction=np.asarray(frame_init.director[2], dtype=np.float64),
@@ -390,7 +475,8 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_static_mu=np.array([1.0, 1.0, 1.0], dtype=np.float64),
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
-            settle_time = 1,
+            settle_duration=0.0,
+            wire_settle_time = 1.0,
             wire_initial_theta = (0.5 * np.pi),
         )
         if cosim_overrides:
@@ -444,8 +530,6 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             cmd[0, :NUM_ROBOT_DOFS] = joint_positions[frame_idx]
             robot_view.set_joint_position_targets(cmd)
 
-            world.step(render=True)
-
             tip_pos, tip_dir = get_prim_world_pose(stage, stick_tip_path)
             if tip_pos is not None:
                 frame_cmd, kin_state = make_frame_state_from_pose(
@@ -460,6 +544,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
                 wire_driver.update_skeleton(rod_pos, rod_dir, time_code=None)
             except Exception:
                 pass
+            step_world_with_capture(record_video=True)
 
             tip = np.asarray(rod_pos[:, -1], dtype=np.float64)
             if not np.all(np.isfinite(tip)):
@@ -478,8 +563,6 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         settle_steps = max(1, int(round(SETTLE_SECONDS / sim_dt)))
         print(f"[replay] holding final pose for {SETTLE_SECONDS:.2f}s ({settle_steps} steps)")
         for _ in range(settle_steps):
-            world.step(render=True)
-
             tip_pos, tip_dir = get_prim_world_pose(stage, stick_tip_path)
             if tip_pos is not None:
                 frame_cmd, kin_state = make_frame_state_from_pose(
@@ -494,6 +577,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
                 wire_driver.update_skeleton(rod_pos, rod_dir, time_code=None)
             except Exception:
                 pass
+            step_world_with_capture(record_video=True)
 
             tip = np.asarray(rod_pos[:, -1], dtype=np.float64)
             if not np.all(np.isfinite(tip)):
@@ -506,19 +590,70 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
                 q_now = joint_trace[-1].copy()
             joint_trace.append(q_now.copy())
 
+        wrote_video = False
+        if capture_enabled and video_frame_count > 0:
+            for _ in range(4):
+                world.step(render=True)
+
+            missing_paths = [p for p in video_capture_paths if not p.is_file()]
+            t0 = time.time()
+            while missing_paths and (time.time() - t0) < 20.0:
+                simulation_app.update()
+                time.sleep(0.02)
+                missing_paths = [p for p in video_capture_paths if not p.is_file()]
+            if missing_paths:
+                print(
+                    f"[replay] warning: {len(missing_paths)} captured frame(s) still missing before encode",
+                    flush=True,
+                )
+
+            ffmpeg_cmd = [
+                "ffmpeg",
+                "-y",
+                "-framerate",
+                str(float(VIDEO_TARGET_FPS)),
+                "-i",
+                str(out_video_frames_dir / "frame_%06d.png"),
+                "-c:v",
+                "libx264",
+                "-pix_fmt",
+                "yuv420p",
+                "-crf",
+                str(int(VIDEO_CRF)),
+                str(out_video),
+            ]
+            try:
+                subprocess.run(
+                    ffmpeg_cmd,
+                    check=True,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.PIPE,
+                    text=True,
+                )
+                wrote_video = out_video.is_file()
+            except Exception as exc:
+                print(f"[replay] failed to encode camera video: {exc}", flush=True)
+
         sim_t_arr = np.asarray(sim_t, dtype=np.float64)
         tip_arr = np.asarray(tip_trace, dtype=np.float64)
         joints_arr = np.asarray(joint_trace, dtype=np.float64)
         target_world = TARGET_LOCAL.copy()
+        tip_yz = tip_arr[:, 1:3]
+        target_yz = target_world[1:3]
+        yz_distance = np.linalg.norm(tip_yz - target_yz[None, :], axis=1)
+        min_yz_idx = int(np.argmin(yz_distance))
+        min_yz_distance = float(yz_distance[min_yz_idx])
+        min_yz_time = float(sim_t_arr[min_yz_idx])
+        min_yz_tip = tip_arr[min_yz_idx]
         print(
             "[replay] target world position: "
             f"x={target_world[0]:+.4f}, y={target_world[1]:+.4f}, z={target_world[2]:+.4f}"
         )
-
-        out_prefix = path_traj.with_suffix("")
-        out_csv = Path(str(out_prefix) + "_wire_tip_trace.csv")
-        out_png = Path(str(out_prefix) + "_wire_tip_yz.png")
-        out_joint_png = Path(str(out_prefix) + "_arm_joints.png")
+        print(
+            "[replay] minimum tip-target distance on YZ plane: "
+            f"{min_yz_distance:.6f} m at t={min_yz_time:.4f}s "
+            f"(tip_y={min_yz_tip[1]:+.4f}, tip_z={min_yz_tip[2]:+.4f})"
+        )
 
         out_csv.parent.mkdir(parents=True, exist_ok=True)
         with out_csv.open("w", newline="") as f:
@@ -549,6 +684,21 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         ax.scatter([y[0]], [z[0]], color="green", s=40, label="start")
         ax.scatter([y[-1]], [z[-1]], color="red", s=40, label="end")
         ax.scatter([target_world[1]], [target_world[2]], color="#ff7f0e", marker="*", s=180, label="target")
+        ax.scatter(
+            [min_yz_tip[1]],
+            [min_yz_tip[2]],
+            color="#8c564b",
+            s=50,
+            label=f"min yz dist ({min_yz_distance:.3f} m)",
+        )
+        ax.plot(
+            [min_yz_tip[1], target_world[1]],
+            [min_yz_tip[2], target_world[2]],
+            "--",
+            color="#8c564b",
+            linewidth=1.1,
+            alpha=0.9,
+        )
         ax.set_xlabel("Y [m]")
         ax.set_ylabel("Z [m]")
         ax.set_title("Wire Tip Trajectory on YZ Plane")
@@ -580,7 +730,17 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         print(f"[replay] wrote tip trace CSV: {out_csv}", flush=True)
         print(f"[replay] wrote YZ figure: {out_png}", flush=True)
         print(f"[replay] wrote arm joint figure: {out_joint_png}", flush=True)
-        return out_csv, out_png, out_joint_png
+        if wrote_video:
+            print(f"[replay] wrote camera video: {out_video}", flush=True)
+        elif capture_enabled:
+            print(
+                f"[replay] camera frames saved (video encode failed): {out_video_frames_dir}",
+                flush=True,
+            )
+            out_video = None
+        else:
+            out_video = None
+        return out_csv, out_png, out_joint_png, out_video
     except Exception:
         traceback.print_exc()
         raise
@@ -599,8 +759,8 @@ def main() -> None:
         help="Enable co-sim ground contact/friction.",
     )
     parser.add_argument("--ground-z", type=float, default=0.0, help="Ground plane z height for co-sim.")
-    parser.add_argument("--ground-contact-k", type=float, default=1.0e2, help="Ground contact stiffness.")
-    parser.add_argument("--ground-contact-nu", type=float, default=1.0, help="Ground contact damping.")
+    parser.add_argument("--ground-contact-k", type=float, default=1.0e4, help="Ground contact stiffness.")
+    parser.add_argument("--ground-contact-nu", type=float, default=5.0, help="Ground contact damping.")
     parser.add_argument(
         "--ground-static-mu",
         type=float,
@@ -623,6 +783,12 @@ def main() -> None:
         default=1.0e-6,
         help="Slip velocity tolerance for ground friction.",
     )
+    parser.add_argument(
+        "--settle-duration",
+        type=float,
+        default=0.0,
+        help="Warm-start settle duration (seconds) before replay starts.",
+    )
     args = parser.parse_args()
 
     traj_path = Path(args.path_traj).expanduser().resolve()
@@ -637,11 +803,14 @@ def main() -> None:
         ground_static_mu=np.asarray(args.ground_static_mu, dtype=np.float64),
         ground_kinetic_mu=np.asarray(args.ground_kinetic_mu, dtype=np.float64),
         ground_slip_velocity_tol=float(args.ground_slip_velocity_tol),
+        settle_duration=float(args.settle_duration),
     )
-    out_csv, out_png, out_joint_png = replay(traj_path, cosim_overrides=cosim_overrides)
+    out_csv, out_png, out_joint_png, out_video = replay(traj_path, cosim_overrides=cosim_overrides)
     print(f"[replay] wrote tip trace CSV: {out_csv}")
     print(f"[replay] wrote YZ figure: {out_png}")
     print(f"[replay] wrote arm joint figure: {out_joint_png}")
+    if out_video is not None:
+        print(f"[replay] wrote camera video: {out_video}")
 
 
 if __name__ == "__main__":

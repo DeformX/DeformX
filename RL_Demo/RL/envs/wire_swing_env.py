@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import os
 import sys
+import inspect
 from pathlib import Path
 
 import numpy as np
@@ -168,12 +169,33 @@ class WireSwingEnv:
         self.joint_kt = float(getattr(cfg, "joint_kt", 10.0))
         self.joint_nut = float(getattr(cfg, "joint_nut", 0.0))
         self.joint_model = str(getattr(cfg, "joint_model", "fixed")).strip().lower()
+        self.use_ground_contact = bool(getattr(cfg, "use_ground_contact", False))
+        self.ground_z = float(getattr(cfg, "ground_z", 0.0))
+        self.ground_contact_k = float(getattr(cfg, "ground_contact_k", 1.0e4))
+        self.ground_contact_nu = float(getattr(cfg, "ground_contact_nu", 5.0))
+        self.ground_static_mu = np.asarray(getattr(cfg, "ground_static_mu", [1.0, 1.0, 1.0]), dtype=np.float64)
+        self.ground_kinetic_mu = np.asarray(getattr(cfg, "ground_kinetic_mu", [0.5, 0.5, 0.5]), dtype=np.float64)
+        self.ground_slip_velocity_tol = float(getattr(cfg, "ground_slip_velocity_tol", 1.0e-6))
+        self.settle_time = float(getattr(cfg, "settle_time", 1.0))
+        self._warned_unsupported_joint_model = False
 
         # Action and limits
         self.joint_pos_limits = np.asarray(
             getattr(cfg, "joint_pos_limits", [6.28, 6.28, 6.28, 6.28, 6.28, 6.28]),
             dtype=np.float32,
         )
+        lower_cfg = getattr(cfg, "joint_pos_lower_limits", None)
+        upper_cfg = getattr(cfg, "joint_pos_upper_limits", None)
+        if lower_cfg is None and upper_cfg is None:
+            self.joint_pos_lower_limits = -self.joint_pos_limits.copy()
+            self.joint_pos_upper_limits = self.joint_pos_limits.copy()
+        else:
+            if lower_cfg is None or upper_cfg is None:
+                raise ValueError(
+                    "Set both joint_pos_lower_limits and joint_pos_upper_limits, or neither."
+                )
+            self.joint_pos_lower_limits = np.asarray(lower_cfg, dtype=np.float32)
+            self.joint_pos_upper_limits = np.asarray(upper_cfg, dtype=np.float32)
         self.joint_vel_limits = np.asarray(
             getattr(cfg, "joint_vel_limits", [1.5708, 1.5708, 1.5708, 1.5708, 1.5708, 1.5708]),
             dtype=np.float32,
@@ -183,6 +205,22 @@ class WireSwingEnv:
                 "joint_pos_limits must match num_robot_dofs. "
                 f"Got {self.joint_pos_limits.shape}, expected ({self.num_robot_dofs},)."
             )
+        if self.joint_pos_lower_limits.shape != (self.num_robot_dofs,):
+            raise ValueError(
+                "joint_pos_lower_limits must match num_robot_dofs. "
+                f"Got {self.joint_pos_lower_limits.shape}, expected ({self.num_robot_dofs},)."
+            )
+        if self.joint_pos_upper_limits.shape != (self.num_robot_dofs,):
+            raise ValueError(
+                "joint_pos_upper_limits must match num_robot_dofs. "
+                f"Got {self.joint_pos_upper_limits.shape}, expected ({self.num_robot_dofs},)."
+            )
+        if np.any(self.joint_pos_lower_limits > self.joint_pos_upper_limits):
+            raise ValueError("joint_pos_lower_limits must be <= joint_pos_upper_limits for all joints.")
+        if np.any(self.default_joint_positions < self.joint_pos_lower_limits) or np.any(
+            self.default_joint_positions > self.joint_pos_upper_limits
+        ):
+            raise ValueError("default_joint_positions must lie within [joint_pos_lower_limits, joint_pos_upper_limits].")
         if self.joint_vel_limits.shape != (self.num_robot_dofs,):
             raise ValueError(
                 "joint_vel_limits must match num_robot_dofs. "
@@ -429,7 +467,7 @@ class WireSwingEnv:
         return p, _orthonormalize(R)
 
     def _build_wire_engine(self, frame_initial_state: FrameState) -> CoSimEngine:
-        cfg = CoSimConfig(
+        cfg_kwargs = dict(
             base_length=float(self.wire_base_length),
             n_elem=int(self.wire_n_elem),
             base_radius=float(self.wire_base_radius),
@@ -442,6 +480,14 @@ class WireSwingEnv:
             joint_kt=float(self.joint_kt),
             joint_nut=float(self.joint_nut),
             joint_model=str(self.joint_model),
+            use_ground_contact=bool(self.use_ground_contact),
+            ground_z=float(self.ground_z),
+            ground_contact_k=float(self.ground_contact_k),
+            ground_contact_nu=float(self.ground_contact_nu),
+            ground_static_mu=np.asarray(self.ground_static_mu, dtype=np.float64),
+            ground_kinetic_mu=np.asarray(self.ground_kinetic_mu, dtype=np.float64),
+            ground_slip_velocity_tol=float(self.ground_slip_velocity_tol),
+            settle_time=float(self.settle_time),
             density=float(self.wire_density),
             youngs_modulus=float(self.wire_youngs_modulus),
             shear_modulus_ratio=float(self.wire_shear_modulus_ratio),
@@ -456,6 +502,14 @@ class WireSwingEnv:
             frame_initial_alpha=np.asarray(frame_initial_state.alpha, dtype=np.float64),
             rod_start=np.asarray(frame_initial_state.position, dtype=np.float64),
         )
+        accepted_keys = set(inspect.signature(CoSimConfig).parameters.keys())
+        dropped_keys = [k for k in cfg_kwargs.keys() if k not in accepted_keys]
+        if "joint_model" in dropped_keys and self.joint_model != "fixed" and not self._warned_unsupported_joint_model:
+            print(
+                f"[WireSwingEnv] CoSimConfig has no 'joint_model'; requested '{self.joint_model}' is ignored."
+            )
+            self._warned_unsupported_joint_model = True
+        cfg = CoSimConfig(**{k: v for k, v in cfg_kwargs.items() if k in accepted_keys})
         return CoSimEngine(config=cfg, frame_initial_state=frame_initial_state)
 
     def _safe_wire_snapshot(self, env_idx: int, snap) -> tuple[np.ndarray, np.ndarray]:
@@ -749,8 +803,8 @@ class WireSwingEnv:
         active_delta = actions * self.joint_max_delta[self.active_joints]
         active_next = active_now + active_delta
 
-        lo = -self.joint_pos_limits[self.active_joints]
-        hi = self.joint_pos_limits[self.active_joints]
+        lo = self.joint_pos_lower_limits[self.active_joints]
+        hi = self.joint_pos_upper_limits[self.active_joints]
         if self.positive_only_active_joints:
             lo = np.maximum(lo, self.default_joint_positions[self.active_joints])
         active_next = np.clip(active_next, lo, hi)

@@ -19,6 +19,7 @@ from pathlib import Path
 import numpy as np
 import torch
 import hydra
+from hydra.utils import to_absolute_path
 from omegaconf import DictConfig, OmegaConf
 
 
@@ -74,6 +75,45 @@ def _save_training_configs_to_success_dir(cfg: DictConfig, success_export_dir: P
     print(f"[config-export] saved training configs to {run_dir}")
 
 
+def _setup_wandb(cfg: DictConfig):
+    wb_cfg = getattr(cfg, "wandb", None)
+    enabled = bool(getattr(wb_cfg, "enabled", False)) if wb_cfg is not None else False
+    if not enabled:
+        return None
+
+    try:
+        import wandb
+    except Exception as exc:
+        raise ImportError(
+            "wandb.enabled=true but wandb is not installed. "
+            "Install with Isaac Sim python: -m pip install wandb"
+        ) from exc
+
+    project = str(getattr(wb_cfg, "project", "cosseratx-rl")).strip() or "cosseratx-rl"
+    entity = str(getattr(wb_cfg, "entity", "")).strip() or None
+    run_name = str(getattr(wb_cfg, "run_name", "")).strip() or None
+    mode = str(getattr(wb_cfg, "mode", "online")).strip() or "online"
+    notes = str(getattr(wb_cfg, "notes", "")).strip() or None
+    tags_cfg = getattr(wb_cfg, "tags", [])
+    tags = [str(t).strip() for t in tags_cfg if str(t).strip()]
+
+    wandb_dir = Path(to_absolute_path(str(getattr(wb_cfg, "dir", "wandb"))))
+    wandb_dir.mkdir(parents=True, exist_ok=True)
+
+    run = wandb.init(
+        project=project,
+        entity=entity,
+        name=run_name,
+        mode=mode,
+        notes=notes,
+        tags=tags if len(tags) > 0 else None,
+        dir=str(wandb_dir),
+        config=OmegaConf.to_container(cfg, resolve=True),
+    )
+    print(f"[wandb] enabled project={project} run={run.name} mode={mode}")
+    return run
+
+
 def _export_success_episode(
     *,
     env_id: int,
@@ -117,6 +157,7 @@ def main(cfg: DictConfig):
     np.random.seed(int(cfg.seed))
 
     device = torch.device(str(cfg.device))
+    wandb_run = _setup_wandb(cfg)
 
     # ---- Env ----
     EnvCls = _load(str(cfg.task.env_cls))
@@ -256,6 +297,20 @@ def main(cfg: DictConfig):
                     f"ret={ep_ret:.3f} len={ep_len} final_dist={final_dist:.3f} "
                     f"min_dist={min_dist:.3f} success={int(is_success)}"
                 )
+            if wandb_run is not None:
+                wandb_run.log(
+                    {
+                        "train/step": int(step),
+                        "episode/index": int(n_completed_episodes),
+                        "episode/env_id": int(env_id),
+                        "episode/return": float(ep_ret),
+                        "episode/len": int(ep_len),
+                        "episode/final_dist": float(final_dist),
+                        "episode/min_dist": float(min_dist),
+                        "episode/success": int(is_success),
+                    },
+                    step=int(step),
+                )
             if log_episode_metrics and n_completed_episodes % episode_log_every == 0:
                 k = len(recent_returns)
                 avg_ret = float(np.mean(np.asarray(recent_returns, dtype=np.float64))) if k > 0 else 0.0
@@ -269,6 +324,19 @@ def main(cfg: DictConfig):
                     f"avg_final_dist={avg_final:.3f} avg_min_dist={avg_min:.3f} "
                     f"success_rate={avg_success:.3f}"
                 )
+                if wandb_run is not None:
+                    wandb_run.log(
+                        {
+                            "train/step": int(step),
+                            "episode_summary/window": int(k),
+                            "episode_summary/avg_ret": float(avg_ret),
+                            "episode_summary/avg_len": float(avg_len),
+                            "episode_summary/avg_final_dist": float(avg_final),
+                            "episode_summary/avg_min_dist": float(avg_min),
+                            "episode_summary/success_rate": float(avg_success),
+                        },
+                        step=int(step),
+                    )
 
             if (
                 is_success
@@ -308,22 +376,42 @@ def main(cfg: DictConfig):
                 extra={"task": str(cfg.task.name), "seed": int(cfg.seed)},
             )
             print(f"[checkpoint] saved {ckpt_path}")
+            if wandb_run is not None:
+                wandb_run.log(
+                    {
+                        "train/step": int(step),
+                        "train/checkpoint_step": int(step),
+                    },
+                    step=int(step),
+                )
 
         if step % log_every == 0:
             extra = ""
+            wandb_payload = {
+                "train/step": int(step),
+                "train/avg_rew": float(ep_rew_acc / log_every),
+            }
             if isinstance(info, dict) and "success_rate" in info:
                 extra = f" | success={info['success_rate']:.3f}"
+                wandb_payload["train/success_rate"] = float(info["success_rate"])
             if isinstance(info, dict) and "dist_mean" in info:
                 extra += f" | dist={info['dist_mean']:.3f}"
+                wandb_payload["train/dist_mean"] = float(info["dist_mean"])
             if isinstance(info, dict) and "r_progress_mean" in info:
                 extra += f" | r_prog={info['r_progress_mean']:.3f}"
+                wandb_payload["reward/r_progress_mean"] = float(info["r_progress_mean"])
             if isinstance(info, dict) and "r_proximity_mean" in info:
                 extra += f" | r_prox={info['r_proximity_mean']:.3f}"
+                wandb_payload["reward/r_proximity_mean"] = float(info["r_proximity_mean"])
             if isinstance(info, dict) and "r_joint3_velocity_mean" in info:
                 extra += f" | r_j3v={info['r_joint3_velocity_mean']:.3f}"
+                wandb_payload["reward/r_joint3_velocity_mean"] = float(info["r_joint3_velocity_mean"])
             if isinstance(info, dict) and "joint3_vel_mean" in info:
                 extra += f" | j3v={info['joint3_vel_mean']:.3f}"
+                wandb_payload["train/joint3_vel_mean"] = float(info["joint3_vel_mean"])
             print(f"[step {step}] avg_rew={ep_rew_acc/log_every:.3f}{extra}")
+            if wandb_run is not None:
+                wandb_run.log(wandb_payload, step=int(step))
             ep_rew_acc = 0.0
 
     if save_checkpoints and save_final_checkpoint:
@@ -337,6 +425,8 @@ def main(cfg: DictConfig):
 
     # If your env owns SimulationApp, it should also close it.
     env.close()
+    if wandb_run is not None:
+        wandb_run.finish()
 
 
 if __name__ == "__main__":

@@ -3,3 +3,5 @@ logs/
 outputs/
 asset/
 checkpoints/
+eval_exports/
+wandb/
