@@ -181,6 +181,8 @@ class WireSwingEnv:
         self.ground_kinetic_mu = np.asarray(getattr(cfg, "ground_kinetic_mu", [0.5, 0.5, 0.5]), dtype=np.float64)
         self.ground_slip_velocity_tol = float(getattr(cfg, "ground_slip_velocity_tol", 1.0e-6))
         self.settle_time = float(getattr(cfg, "settle_time", 1.0))
+        self.initial_wire_theta = getattr(cfg, "initial_wire_theta", None)
+        self.axial_stretch_stiffening = float(getattr(cfg, "axial_stretch_stiffening", 1.0))
         self._warned_unsupported_joint_model = False
 
         # Action and limits
@@ -589,6 +591,10 @@ class WireSwingEnv:
             ground_kinetic_mu=np.asarray(self.ground_kinetic_mu, dtype=np.float64),
             ground_slip_velocity_tol=float(self.ground_slip_velocity_tol),
             settle_time=float(self.settle_time),
+            initial_wire_theta=None
+            if self.initial_wire_theta is None
+            else float(self.initial_wire_theta),
+            axial_stretch_stiffening=float(self.axial_stretch_stiffening),
             density=float(self.wire_density),
             youngs_modulus=float(self.wire_youngs_modulus),
             shear_modulus_ratio=float(self.wire_shear_modulus_ratio),

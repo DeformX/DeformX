@@ -20,7 +20,7 @@ episode_log_every: 1
 episode_log_avg_window: 10
 
 # render in Isaac Sim (slower). Usually false for training.
-render: false
+render: true
 
 # checkpointing
 save_checkpoints: true

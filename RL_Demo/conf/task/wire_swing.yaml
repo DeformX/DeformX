@@ -20,18 +20,18 @@ stick_length: 0.65
 stick_radius: 0.010
 
 wire_base_length: 1.0
-wire_n_elem: 20
+wire_n_elem: 50
 wire_base_radius: 0.00635
-py_dt: 2.0e-5
+py_dt: 1.0e-5
 wire_density: 700.0
-wire_youngs_modulus: 2.2e5
+wire_youngs_modulus: 2.0e5
 wire_shear_modulus_ratio: 1.5
-wire_damping_constant: 0.02
-joint_k: 500.0
+wire_damping_constant: 0.1
+joint_k: 1500.0
 joint_nu: 20.0
 joint_kt: 10.0
 joint_nut: 0.0
-use_ground_contact: true
+use_ground_contact: false
 ground_z: 0.0
 ground_contact_k: 1.0e2
 ground_contact_nu: 1.0
@@ -39,6 +39,8 @@ ground_static_mu: [1.0, 1.0, 1.0]
 ground_kinetic_mu: [0.5, 0.5, 0.5]
 ground_slip_velocity_tol: 1.0e-6
 settle_time: 1.0
+initial_wire_theta: -1.5707963267948966
+axial_stretch_stiffening: 500.0
 
 joint_pos_lower_limits: [-6.28, -6.28, -6.28, -6.28, -6.28, -6.28]
 joint_pos_upper_limits: [6.28, -1.92, -0.44, 6.28, 6.28, 6.28]

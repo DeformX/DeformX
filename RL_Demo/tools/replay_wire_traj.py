@@ -360,13 +360,13 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
 
         cfg_kwargs: dict[str, object] = dict(
             base_length=1.0,
-            n_elem=20,
+            n_elem=50,
             base_radius=0.00635,
             py_dt=1.0e-5,
             isaac_dt=sim_dt,
             final_time=1.0e9,
             render=False,
-            joint_k=500.0,
+            joint_k=1500.0,
             joint_nu=20.0,
             joint_kt=10.0,
             joint_nut=0.0,
