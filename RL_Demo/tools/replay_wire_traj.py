@@ -362,7 +362,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             base_length=1.0,
             n_elem=20,
             base_radius=0.00635,
-            py_dt=2.0e-5,
+            py_dt=1.0e-5,
             isaac_dt=sim_dt,
             final_time=1.0e9,
             render=False,
@@ -371,7 +371,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             joint_kt=10.0,
             joint_nut=0.0,
             density=700.0,
-            youngs_modulus=1e6,
+            youngs_modulus=2e5,
             shear_modulus_ratio=1.5,
             damping_constant=0.1,
             rod_direction=np.asarray(frame_init.director[2], dtype=np.float64),
@@ -391,7 +391,8 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
             settle_time = 1,
-            wire_initial_theta = (0.5 * np.pi),
+            initial_wire_theta = -0.5*np.pi,
+            axial_stretch_stiffening = 1000,
         )
         if cosim_overrides:
             cfg_kwargs.update(cosim_overrides)

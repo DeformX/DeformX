@@ -1,16 +1,16 @@
 name: wire_swing
 env_cls: RL.envs.wire_swing_env.WireSwingEnv
 
-num_envs: 1
+num_envs: 4
 env_spacing: 3.0
 phys_dt: 0.002
 num_substeps: 1
-max_steps: 1000
+max_steps: 500
 
 num_robot_dofs: 6
 end_effector_link: wrist_3_link
 active_joints: [1, 2, 3]
-default_joint_positions: [-1.5935, -2.2756, -1.1913, -0.3241, 1.7070, 3.0234]
+default_joint_positions: [-1.5935, -2.2756, -1.1913, -0.3241, 1.5707, 3.1415]
 robot_offset: [0.0, 0.0, 1.7]
 robot_orient_xyz_deg: [-90.0, 0.0, 0.0]
 
@@ -41,9 +41,9 @@ ground_slip_velocity_tol: 1.0e-6
 settle_time: 1.0
 
 joint_pos_lower_limits: [-6.28, -6.28, -6.28, -6.28, -6.28, -6.28]
-joint_pos_upper_limits: [6.28, -1.92, -0.44, 1.75, 6.28, 6.28]
+joint_pos_upper_limits: [6.28, -1.92, -0.44, 6.28, 6.28, 6.28]
 joint_vel_limits: [1.5708, 1.5708, 1.5708, 1.5708, 1.5708, 1.5708]
-joint_delta_scale: 1.0
+joint_delta_scale: 3.0
 positive_only_active_joints: true
 
 success_thresh: 0.05
@@ -57,7 +57,7 @@ w_proximity: 1.0
 w_progress: 10.0
 w_new_best: 30.0
 w_tip_velocity_toward_target: 1.0
-w_joint3_velocity: 20
+w_joint3_velocity: 0.5
 joint3_reward_index: 3
 joint3_velocity_abs: false
 w_time_penalty: 0.05
@@ -72,11 +72,15 @@ bonus_value_3: 5.0
 bonus_value_4: 10.0
 touch_bonus: 50.0
 
-swing_done_enabled: true
+swing_done_enabled: false
 swing_grace_steps: 300
 swing_fallback_steps: 400
 terminate_on_success: true
 
-enable_wire_visual: false
+enable_wire_visual: true
+wire_visual_mode: debug_spheres
 max_visual_envs: 1
+max_visual_nodes: 21
+wire_debug_sphere_radius: 0.015
+wire_debug_sphere_color: [1.0, 0.0, 0.0]
 wire_usd: /home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc

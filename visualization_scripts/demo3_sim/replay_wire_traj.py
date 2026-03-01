@@ -477,7 +477,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_slip_velocity_tol=1.0e-6,
             settle_duration=0.0,
             wire_settle_time = 1.0,
-            wire_initial_theta = (0.5 * np.pi),
+            wire_initial_theta = -(0.5 * np.pi),
         )
         if cosim_overrides:
             cfg_kwargs.update(cosim_overrides)

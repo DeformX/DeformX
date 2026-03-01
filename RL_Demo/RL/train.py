@@ -55,6 +55,23 @@ def _write_joint_csv(path: Path, joint_traj: list[np.ndarray], dt: float, joint_
             writer.writerow([float(i) * float(dt), *[float(v) for v in q]])
 
 
+def _trajectory_name_prefix(min_dist: float | None, target_pos: np.ndarray) -> str:
+    min_tag = "na"
+    if min_dist is not None and np.isfinite(min_dist):
+        min_tag = f"{float(min_dist):.2f}"
+
+    target_arr = np.asarray(target_pos, dtype=np.float64).reshape(-1)
+    if target_arr.size < 3:
+        padded = np.full((3,), np.nan, dtype=np.float64)
+        padded[: target_arr.size] = target_arr
+        target_arr = padded
+
+    return (
+        f"min_dis_{min_tag}_"
+        f"target_{float(target_arr[0]):.1f}_{float(target_arr[1]):.1f}_{float(target_arr[2]):.1f}"
+    )
+
+
 def _save_training_configs_to_success_dir(cfg: DictConfig, success_export_dir: Path):
     success_export_dir.mkdir(parents=True, exist_ok=True)
 
@@ -125,12 +142,16 @@ def _export_success_episode(
     success_export_dir: Path,
     success_export_prefix: str,
     default_joint_names: list[str],
+    min_dist: float | None,
+    target_pos: np.ndarray,
 ):
     traj_actions = episode_actions[env_id]
     traj_joint = episode_joint_cmds[env_id]
+    traj_prefix = _trajectory_name_prefix(min_dist=min_dist, target_pos=target_pos)
+    file_base = f"{traj_prefix}_{success_export_prefix}_{export_index:03d}_env{env_id}_step{step}"
 
     actions_np = np.asarray(traj_actions, dtype=np.float32)
-    actions_path = success_export_dir / f"{success_export_prefix}_{export_index:03d}_env{env_id}_step{step}_actions.npz"
+    actions_path = success_export_dir / f"{file_base}_actions.npz"
     np.savez_compressed(
         actions_path,
         actions=actions_np,
@@ -143,7 +164,7 @@ def _export_success_episode(
         if dt <= 0.0:
             dt = 1.0
         joint_names = info.get("joint_names", default_joint_names) if isinstance(info, dict) else default_joint_names
-        joint_csv = success_export_dir / f"{success_export_prefix}_{export_index:03d}_env{env_id}_step{step}.csv"
+        joint_csv = success_export_dir / f"{file_base}.csv"
         _write_joint_csv(joint_csv, traj_joint, dt, list(joint_names))
         print(f"[success-export] csv={joint_csv} | actions={actions_path}")
     else:
@@ -225,6 +246,7 @@ def main(cfg: DictConfig):
     recent_success: deque[int] = deque(maxlen=episode_log_avg_window)
     n_success_exports = 0
     default_joint_names = ["shoulder_pan", "shoulder_lift", "elbow", "wrist_1", "wrist_2", "wrist_3"]
+    target_pos = np.asarray(getattr(cfg.task, "target_local", [np.nan, np.nan, np.nan]), dtype=np.float64)
 
     for step in range(1, total_steps + 1):
         actions, logp = algo.act(obs)  # numpy actions, torch logp (cpu)
@@ -259,6 +281,9 @@ def main(cfg: DictConfig):
         first_success_ids = np.where(success_mask & ~success_exported_in_episode)[0].astype(np.int32)
         for env_id in first_success_ids.tolist():
             if export_success_actions and n_success_exports < success_export_limit:
+                min_dist_for_export = None
+                if np.isfinite(episode_min_dist[env_id]):
+                    min_dist_for_export = float(episode_min_dist[env_id])
                 _export_success_episode(
                     env_id=env_id,
                     step=step,
@@ -269,6 +294,8 @@ def main(cfg: DictConfig):
                     success_export_dir=success_export_dir,
                     success_export_prefix=success_export_prefix,
                     default_joint_names=default_joint_names,
+                    min_dist=min_dist_for_export,
+                    target_pos=target_pos,
                 )
                 n_success_exports += 1
             success_exported_in_episode[env_id] = True
@@ -354,6 +381,8 @@ def main(cfg: DictConfig):
                     success_export_dir=success_export_dir,
                     success_export_prefix=success_export_prefix,
                     default_joint_names=default_joint_names,
+                    min_dist=min_dist,
+                    target_pos=target_pos,
                 )
                 n_success_exports += 1
 

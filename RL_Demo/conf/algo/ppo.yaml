@@ -1,6 +1,6 @@
 name: ppo
 
-lr: 3e-4
+lr: 1e-4
 gamma: 0.99
 eps_clip: 0.2
 k_epochs: 4

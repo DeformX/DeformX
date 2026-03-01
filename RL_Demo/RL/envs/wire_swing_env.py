@@ -38,7 +38,10 @@ def _ensure_sim_app(headless: bool):
             from isaacsim import SimulationApp
         except ImportError:
             from omni.isaac.kit import SimulationApp
-        _SIM_APP = SimulationApp({"headless": bool(headless)})
+        app_cfg = {"headless": bool(headless)}
+        if not bool(headless):
+            app_cfg.update({"physics_gpu": 0, "active_gpu": 0})
+        _SIM_APP = SimulationApp(app_cfg)
     return _SIM_APP
 
 
@@ -110,6 +113,7 @@ class WireSwingEnv:
         self.phys_dt = float(getattr(cfg, "phys_dt", 1.0 / 60.0))
         self.num_substeps = int(getattr(cfg, "num_substeps", 2))
         self.max_steps = int(getattr(cfg, "max_steps", 300))
+        self.init_warmup_steps = int(getattr(cfg, "init_warmup_steps", 20))
 
         # Robot/task params
         self.num_robot_dofs = int(getattr(cfg, "num_robot_dofs", 6))
@@ -270,9 +274,18 @@ class WireSwingEnv:
                 f"got {self.joint3_reward_index}."
             )
 
-        # Optional rope visual via skeleton driver.
+        # Optional rope visual: skeleton driver or debug spheres.
         self.enable_wire_visual = bool(getattr(cfg, "enable_wire_visual", not self.headless))
         self.max_visual_envs = int(getattr(cfg, "max_visual_envs", 1))
+        mode_default = "skeleton" if self.enable_wire_visual else "none"
+        self.wire_visual_mode = str(getattr(cfg, "wire_visual_mode", mode_default)).strip().lower()
+        if self.wire_visual_mode in ("off", "false"):
+            self.wire_visual_mode = "none"
+        if self.wire_visual_mode not in ("none", "skeleton", "debug_spheres"):
+            print(f"[WireSwingEnv] Unknown wire_visual_mode '{self.wire_visual_mode}', fallback to 'none'.")
+            self.wire_visual_mode = "none"
+        if not self.enable_wire_visual:
+            self.wire_visual_mode = "none"
         self.wire_usd = str(
             getattr(
                 cfg,
@@ -280,11 +293,20 @@ class WireSwingEnv:
                 "/home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc",
             )
         )
-        if self.enable_wire_visual and not os.path.isfile(self.wire_usd):
+        if self.wire_visual_mode == "skeleton" and not os.path.isfile(self.wire_usd):
             print(f"[WireSwingEnv] wire_usd not found, disable visual driver: {self.wire_usd}")
-            self.enable_wire_visual = False
+            self.wire_visual_mode = "none"
+        self.max_visual_nodes = int(getattr(cfg, "max_visual_nodes", self.wire_n_elem + 1))
+        self.wire_debug_sphere_radius = float(getattr(cfg, "wire_debug_sphere_radius", 0.015))
+        self.wire_debug_sphere_color = np.asarray(
+            getattr(cfg, "wire_debug_sphere_color", [1.0, 0.0, 0.0]), dtype=np.float64
+        )
+        if self.wire_debug_sphere_color.shape != (3,):
+            raise ValueError("wire_debug_sphere_color must be length-3 RGB values.")
+        if self.wire_debug_sphere_radius <= 0.0:
+            raise ValueError("wire_debug_sphere_radius must be > 0.")
         self.skeleton_driver_cls = None
-        if self.enable_wire_visual:
+        if self.wire_visual_mode == "skeleton":
             SkeletonRodDriver = None
             try:
                 from tools.rod_skel_driver_sim import SkeletonRodDriver
@@ -293,9 +315,10 @@ class WireSwingEnv:
                     from rod_skel_driver_sim import SkeletonRodDriver
                 except Exception as exc:
                     print(f"[WireSwingEnv] Failed to import SkeletonRodDriver, disable visual driver: {exc}")
-                    self.enable_wire_visual = False
+                    self.wire_visual_mode = "none"
                     SkeletonRodDriver = None
             self.skeleton_driver_cls = SkeletonRodDriver
+        print(f"[WireSwingEnv] wire_visual_mode={self.wire_visual_mode}")
 
         self.episode_steps = np.zeros((self.num_envs,), dtype=np.int32)
         self.best_approach_step = np.zeros((self.num_envs,), dtype=np.int32)
@@ -315,6 +338,8 @@ class WireSwingEnv:
         self.engines = [None for _ in range(self.num_envs)]
         self.kin_state = [None for _ in range(self.num_envs)]
         self.wire_drivers = [None for _ in range(self.num_envs)]
+        self.wire_debug_marker_ops = [[] for _ in range(self.num_envs)]
+        self._wire_update_warned = np.zeros((self.num_envs,), dtype=np.bool_)
         self.last_good_rod_pos = [None for _ in range(self.num_envs)]
         self.last_good_rod_dir = [None for _ in range(self.num_envs)]
         self.ee_link_paths: list[str] = []
@@ -380,11 +405,7 @@ class WireSwingEnv:
             tip_path = self._create_long_stick_with_tip(ee_link_path)
             self.stick_tip_paths.append(tip_path)
 
-            if self.enable_wire_visual and i < self.max_visual_envs and self.skeleton_driver_cls is not None:
-                driver = self.skeleton_driver_cls(self.stage, skeleton_path=f"{root}/PyElasticaWire")
-                driver.load_asset(self.wire_usd)
-                self.wire_drivers[i] = driver
-
+        self.world.reset()
         self.robot_view = ArticulationView("/World/Env_*/UR5e", name="ur5e_view")
         self.world.scene.add(self.robot_view)
         self.world.reset()
@@ -398,10 +419,90 @@ class WireSwingEnv:
         self.robot_view.set_joint_velocities(np.zeros_like(jp), indices=all_ids)
         self.robot_view.set_joint_position_targets(jp, indices=all_ids)
 
-        for _ in range(8):
+        for _ in range(max(0, self.init_warmup_steps)):
             self.world.step(render=not self.headless)
 
+        self._init_wire_visuals()
         self.target_world = self.env_origins + self.target_local.reshape(1, 3)
+
+    def _init_wire_visuals(self):
+        if self.wire_visual_mode == "skeleton":
+            self._init_wire_visual_drivers()
+        elif self.wire_visual_mode == "debug_spheres":
+            self._init_wire_debug_markers()
+
+    def _init_wire_visual_drivers(self):
+        if self.wire_visual_mode != "skeleton" or self.skeleton_driver_cls is None:
+            return
+
+        for i in range(min(self.num_envs, self.max_visual_envs)):
+            if i == 0:
+                skel_root = "/World/PyElasticaWire"
+            else:
+                skel_root = f"/World/PyElasticaWire_{i}"
+            try:
+                driver = self.skeleton_driver_cls(self.stage, skeleton_path=skel_root)
+                driver.load_asset(self.wire_usd)
+                self.wire_drivers[i] = driver
+            except Exception as exc:
+                self.wire_drivers[i] = None
+                print(f"[WireSwingEnv] Failed to initialize wire driver for env {i}: {exc}")
+
+    def _init_wire_debug_markers(self):
+        if self.wire_visual_mode != "debug_spheres":
+            return
+        n_markers = int(max(1, min(self.max_visual_nodes, self.wire_n_elem + 1)))
+        color = Gf.Vec3f(
+            float(self.wire_debug_sphere_color[0]),
+            float(self.wire_debug_sphere_color[1]),
+            float(self.wire_debug_sphere_color[2]),
+        )
+        for env_idx in range(min(self.num_envs, self.max_visual_envs)):
+            root = f"/World/Env_{env_idx}/WireDebug"
+            UsdGeom.Xform.Define(self.stage, root)
+            marker_ops = []
+            for marker_idx in range(n_markers):
+                marker_path = f"{root}/Node_{marker_idx:03d}"
+                sphere = UsdGeom.Sphere.Define(self.stage, marker_path)
+                sphere.GetRadiusAttr().Set(float(self.wire_debug_sphere_radius))
+                sphere.GetDisplayColorAttr().Set([color])
+                xf = UsdGeom.Xformable(sphere.GetPrim())
+                xf.ClearXformOpOrder()
+                marker_ops.append(xf.AddTranslateOp())
+            self.wire_debug_marker_ops[env_idx] = marker_ops
+
+    def _update_wire_driver(self, env_idx: int, rod_pos: np.ndarray, rod_dir: np.ndarray, *, strict: bool):
+        driver = self.wire_drivers[env_idx]
+        if driver is None:
+            return
+        try:
+            driver.update_skeleton(rod_pos, rod_dir, time_code=None)
+        except Exception as exc:
+            if strict:
+                raise RuntimeError(f"Wire driver update failed for env {env_idx}: {exc}") from exc
+            if not bool(self._wire_update_warned[env_idx]):
+                self._wire_update_warned[env_idx] = True
+                print(f"[WireSwingEnv] wire update skipped for env {env_idx}: {exc}")
+
+    def _update_wire_debug_markers(self, env_idx: int, rod_pos: np.ndarray):
+        marker_ops = self.wire_debug_marker_ops[env_idx]
+        if len(marker_ops) == 0:
+            return
+        n_nodes = int(rod_pos.shape[1])
+        if n_nodes <= 0:
+            return
+        node_ids = np.linspace(0, n_nodes - 1, num=len(marker_ops), dtype=np.int64)
+        for marker_idx, node_idx in enumerate(node_ids.tolist()):
+            p = np.asarray(rod_pos[:, node_idx], dtype=np.float64).reshape(3)
+            if not np.all(np.isfinite(p)):
+                continue
+            marker_ops[marker_idx].Set(Gf.Vec3d(float(p[0]), float(p[1]), float(p[2])))
+
+    def _update_wire_visual(self, env_idx: int, rod_pos: np.ndarray, rod_dir: np.ndarray, *, strict: bool):
+        if self.wire_visual_mode == "skeleton":
+            self._update_wire_driver(env_idx, rod_pos, rod_dir, strict=strict)
+        elif self.wire_visual_mode == "debug_spheres":
+            self._update_wire_debug_markers(env_idx, rod_pos)
 
     def _set_ur5e_default_joint_targets(self, robot_path: str):
         joint_names = [
@@ -594,12 +695,7 @@ class WireSwingEnv:
             self.tip_vel_world[idx] = 0.0
             self.ee_tip_world[idx] = tip_pos
 
-            driver = self.wire_drivers[idx]
-            if driver is not None:
-                try:
-                    driver.update_skeleton(rod_pos, rod_dir, time_code=None)
-                except Exception:
-                    pass
+            self._update_wire_visual(idx, rod_pos, rod_dir, strict=True)
 
     def _step_cosim(self, duration: float):
         for i in range(self.num_envs):
@@ -627,12 +723,7 @@ class WireSwingEnv:
                 tip = self.prev_tip_world[i].copy()
             self.tip_world[i] = tip
 
-            driver = self.wire_drivers[i]
-            if driver is not None:
-                try:
-                    driver.update_skeleton(rod_pos, rod_dir, time_code=None)
-                except Exception:
-                    pass
+            self._update_wire_visual(i, rod_pos, rod_dir, strict=False)
 
     def reset(self, ids=None) -> np.ndarray:
         if ids is None:
@@ -656,7 +747,7 @@ class WireSwingEnv:
         self.robot_view.set_joint_position_targets(jp, indices=ids)
         self.commanded_q[ids] = self.default_joint_positions.reshape(1, -1)
 
-        self.world.step(render=False)
+        self.world.step(render=not self.headless)
         self._rebuild_cosim(ids)
 
         dist = np.linalg.norm(self.tip_world[ids] - self.target_world[ids], axis=1).astype(np.float32)
