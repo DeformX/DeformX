@@ -84,8 +84,21 @@ class WireSwingBallJointEnv(WireSwingEnv):
 
     def __init__(self, cfg, *, headless: bool = True):
         self._bj_joint_damping = float(getattr(cfg, "bj_joint_damping", 5.0))
+        self._bj_joint_stiffness = float(getattr(cfg, "bj_joint_stiffness", 0.0))
+        self._bj_joint_drive_type = str(getattr(cfg, "bj_joint_drive_type", "force")).strip().lower()
+        if self._bj_joint_drive_type not in ("force", "acceleration"):
+            print(
+                f"[WireSwingBallJointEnv] unsupported bj_joint_drive_type='{self._bj_joint_drive_type}', "
+                "fallback to 'force'."
+            )
+            self._bj_joint_drive_type = "force"
+        self._bj_link_linear_damping = float(getattr(cfg, "bj_link_linear_damping", 0.6))
+        self._bj_link_angular_damping = float(getattr(cfg, "bj_link_angular_damping", 1.2))
         self._bj_mat_static_friction = float(getattr(cfg, "bj_mat_static_friction", 0.6))
         self._bj_mat_dynamic_friction = float(getattr(cfg, "bj_mat_dynamic_friction", 0.5))
+        self._bj_mat_restitution = float(getattr(cfg, "bj_mat_restitution", 0.0))
+        self._bj_collision_rest_offset = float(getattr(cfg, "bj_collision_rest_offset", 0.0))
+        self._bj_collision_contact_offset = float(getattr(cfg, "bj_collision_contact_offset", 0.002))
         self._bj_link_density = float(getattr(cfg, "bj_link_density", getattr(cfg, "wire_density", 700.0)))
 
         self._bj_wire_states: list[_BjWireState] = []
@@ -268,7 +281,7 @@ class WireSwingBallJointEnv(WireSwingEnv):
         mat = _base.UsdPhysics.MaterialAPI.Apply(self.stage.GetPrimAtPath(mat_path))
         mat.CreateStaticFrictionAttr().Set(float(self._bj_mat_static_friction))
         mat.CreateDynamicFrictionAttr().Set(float(self._bj_mat_dynamic_friction))
-        mat.CreateRestitutionAttr().Set(0.0)
+        mat.CreateRestitutionAttr().Set(float(self._bj_mat_restitution))
 
         origin = self.env_origins[env_idx]
         x0 = float(origin[0])
@@ -293,11 +306,11 @@ class WireSwingBallJointEnv(WireSwingEnv):
             _base.UsdPhysics.MassAPI.Apply(prim).CreateDensityAttr().Set(float(self._bj_link_density))
 
             rb = _base.PhysxSchema.PhysxRigidBodyAPI.Apply(prim)
-            rb.CreateLinearDampingAttr().Set(0.6)
-            rb.CreateAngularDampingAttr().Set(1.2)
+            rb.CreateLinearDampingAttr().Set(float(self._bj_link_linear_damping))
+            rb.CreateAngularDampingAttr().Set(float(self._bj_link_angular_damping))
             col = _base.PhysxSchema.PhysxCollisionAPI.Apply(prim)
-            col.CreateRestOffsetAttr().Set(0.0)
-            col.CreateContactOffsetAttr().Set(0.002)
+            col.CreateRestOffsetAttr().Set(float(self._bj_collision_rest_offset))
+            col.CreateContactOffsetAttr().Set(float(self._bj_collision_contact_offset))
 
             physicsUtils.add_physics_material_to_prim(self.stage, prim, mat_path)
             link_paths.append(path)
@@ -314,9 +327,9 @@ class WireSwingBallJointEnv(WireSwingEnv):
             joint.CreateLocalRot1Attr().Set(_base.Gf.Quatf(1.0))
 
             drive = _base.UsdPhysics.DriveAPI.Apply(joint.GetPrim(), "angular")
-            drive.CreateTypeAttr("force")
+            drive.CreateTypeAttr(str(self._bj_joint_drive_type))
             drive.CreateDampingAttr(float(self._bj_joint_damping))
-            drive.CreateStiffnessAttr(0.0)
+            drive.CreateStiffnessAttr(float(self._bj_joint_stiffness))
 
         first_link_path = link_paths[0]
         self._set_kinematic(first_link_path)

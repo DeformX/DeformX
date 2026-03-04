@@ -5,7 +5,7 @@ num_envs: 4
 env_spacing: 3.0
 phys_dt: 0.002
 num_substeps: 1
-max_steps: 500
+max_steps: 700
 
 num_robot_dofs: 6
 end_effector_link: wrist_3_link
@@ -14,7 +14,7 @@ default_joint_positions: [-1.5935, -2.2756, -1.1913, -0.3241, 1.5707, 3.1415]
 robot_offset: [0.0, 0.0, 1.7]
 robot_orient_xyz_deg: [-90.0, 0.0, 0.0]
 
-target_local: [0,1.7,0.5] 
+target_local: [0,2.0,1.5] 
 # high target_local: [0.0, 2.0, 2.3] medium target_local: [0.0, 2.0, 1.5] low target_local: [0.0, 1.7, 0.5]
 stick_length: 0.65
 stick_radius: 0.010
@@ -44,8 +44,8 @@ axial_stretch_stiffening: 1.0
 
 joint_pos_lower_limits: [-6.28, -6.28, -6.28, -6.28, -6.28, -6.28]
 joint_pos_upper_limits: [6.28, -1.92, -0.44, 6.28, 6.28, 6.28]
-joint_vel_limits: [1.5708, 0.785, 0.785, 0.785, 1.5708, 1.5708]
-joint_delta_scale: 2.5
+joint_vel_limits: [1.5708, 1.5708, 1.5708, 1.5708, 1.5708, 1.5708]
+joint_delta_scale: 3
 positive_only_active_joints: true
 
 success_thresh: 0.05

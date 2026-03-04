@@ -391,7 +391,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
             settle_time = 1,
-            initial_wire_theta = 0.5*np.pi,
+            initial_wire_theta = -0.5*np.pi,
             axial_stretch_stiffening = 1.0,
         )
         if cosim_overrides:
