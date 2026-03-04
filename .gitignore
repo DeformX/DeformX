@@ -5,3 +5,5 @@ asset/
 checkpoints/
 eval_exports/
 wandb/
+__pycache__/
+*.pyc

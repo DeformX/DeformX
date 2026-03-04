@@ -25,8 +25,6 @@ From the `RL_Demo/` directory:
 # swing-wire task (CoSimEngine + SkeletonRodDriver)
  /path/to/isaac-sim/python.sh -m RL.train task=wire_swing algo=ppo render=false
 
-# swing-wire task with ball-joint wire attachment
- /path/to/isaac-sim/python.sh -m RL.train task=wire_swing_bj algo=ppo render=false
 ```
 
 ## Optional Weights & Biases Logging

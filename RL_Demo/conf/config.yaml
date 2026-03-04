@@ -20,7 +20,7 @@ episode_log_every: 1
 episode_log_avg_window: 10
 
 # render in Isaac Sim (slower). Usually false for training.
-render: true
+render: false
 
 # checkpointing
 save_checkpoints: true
@@ -34,7 +34,7 @@ export_success_actions: true
 # save run configs (merged/task/algo) into success_export_dir at training start
 save_configs_to_success_dir: true
 success_export_limit: 20
-success_export_dir: data/success_traj_csv_high_26_low_lr_more_envs
+success_export_dir: data/success_traj_csv_high_34_low_cosim
 success_export_prefix: success_episode
 
 # optional Weights & Biases logging

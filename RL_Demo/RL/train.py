@@ -58,7 +58,7 @@ def _write_joint_csv(path: Path, joint_traj: list[np.ndarray], dt: float, joint_
 def _trajectory_name_prefix(min_dist: float | None, target_pos: np.ndarray) -> str:
     min_tag = "na"
     if min_dist is not None and np.isfinite(min_dist):
-        min_tag = f"{float(min_dist):.2f}"
+        min_tag = f"{float(min_dist):.3f}"
 
     target_arr = np.asarray(target_pos, dtype=np.float64).reshape(-1)
     if target_arr.size < 3:

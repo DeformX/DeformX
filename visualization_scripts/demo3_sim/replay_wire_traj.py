@@ -38,11 +38,11 @@ LONG_STICK_RADIUS = 0.010
 
 ROBOT_OFFSET = np.array([0.0, 0.0, 1.7], dtype=np.float64)
 ROBOT_ORIENT_XYZ_DEG = np.array([-90.0, 0.0, 0.0], dtype=np.float64)
-TARGET_LOCAL = np.array([0.0, 1.7, 2.5], dtype=np.float64)
+TARGET_LOCAL = np.array([0.0, 2.0, 2.3], dtype=np.float64)
 CAMERA_PATH = "/World/ReplayCamera"
-CAMERA_POS = np.array([2.5, 1.2, 1.2], dtype=np.float64)
-CAMERA_ROT_XYZ_DEG = np.array([0, 90.0, 0], dtype=np.float64)  # Look toward -X.
-CAMERA_FOCAL_LENGTH_MM = 10.0  # Larger focal length -> smaller FOV.
+CAMERA_POS = np.array([5.2, 1.8, 1.7], dtype=np.float64)
+CAMERA_ROT_XYZ_DEG = np.array([87.0, 0.0, 90], dtype=np.float64)  # typical "look toward -X" intent
+CAMERA_FOCAL_LENGTH_MM = 20.0
 WIRE_USD = (
     "/home/robot/Workspace/Siemens_Cable_Simulator/usd/"
     "wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc"
@@ -51,7 +51,7 @@ WIRE_USD = (
 DEFAULT_PHYS_DT = 1.0 / 500.0
 SETTLE_SECONDS = 1.0
 PATH_TRACING_SPP = 5
-VIDEO_TARGET_FPS = 30.0
+VIDEO_TARGET_FPS = 60.0
 VIDEO_CRF = 18
 GROUND_COLOR = np.array([0.0, 0.0, 0.0], dtype=np.float32)
 
@@ -446,17 +446,17 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         cfg_kwargs: dict[str, object] = dict(
             base_length=1.0,
             n_elem=20,
-            base_radius=0.006,
-            py_dt=2.0e-5,
+            base_radius=0.00635,
+            py_dt=1.0e-5,
             isaac_dt=sim_dt,
             final_time=1.0e9,
             render=False,
-            joint_k=500.0,
+            joint_k=1500.0,
             joint_nu=20.0,
             joint_kt=10.0,
             joint_nut=0.0,
-            density=500.0,
-            youngs_modulus=5e5,
+            density=700.0,
+            youngs_modulus=2e6,
             shear_modulus_ratio=1.5,
             damping_constant=0.1,
             rod_direction=np.asarray(frame_init.director[2], dtype=np.float64),
@@ -468,16 +468,15 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             frame_initial_omega=np.asarray(frame_init.omega, dtype=np.float64),
             frame_initial_alpha=np.asarray(frame_init.alpha, dtype=np.float64),
             rod_start=np.asarray(frame_init.position, dtype=np.float64),
-            use_ground_contact=False,
+            use_ground_contact=True,
             ground_z=0.0,
             ground_contact_k=1.0e2,
             ground_contact_nu=1.0,
             ground_static_mu=np.array([1.0, 1.0, 1.0], dtype=np.float64),
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
-            settle_duration=0.0,
-            wire_settle_time = 1.0,
-            wire_initial_theta = -(0.5 * np.pi),
+            settle_time=1.0,
+            initial_wire_theta = -0.5 * np.pi,
         )
         if cosim_overrides:
             cfg_kwargs.update(cosim_overrides)

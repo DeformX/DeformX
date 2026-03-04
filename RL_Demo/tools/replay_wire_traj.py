@@ -36,7 +36,7 @@ LONG_STICK_RADIUS = 0.010
 
 ROBOT_OFFSET = np.array([0.0, 0.0, 1.7], dtype=np.float64)
 ROBOT_ORIENT_XYZ_DEG = np.array([-90.0, 0.0, 0.0], dtype=np.float64)
-TARGET_LOCAL = np.array([0.0, 2.0, 2.3], dtype=np.float64)
+TARGET_LOCAL = np.array([0.0, 2.0, 1.5], dtype=np.float64)
 WIRE_USD = (
     "/home/robot/Workspace/Siemens_Cable_Simulator/usd/"
     "wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc"
@@ -360,7 +360,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
 
         cfg_kwargs: dict[str, object] = dict(
             base_length=1.0,
-            n_elem=50,
+            n_elem=20,
             base_radius=0.00635,
             py_dt=1.0e-5,
             isaac_dt=sim_dt,
@@ -391,8 +391,8 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
             settle_time = 1,
-            initial_wire_theta = -0.5*np.pi,
-            axial_stretch_stiffening = 1000,
+            initial_wire_theta = 0.5*np.pi,
+            axial_stretch_stiffening = 1.0,
         )
         if cosim_overrides:
             cfg_kwargs.update(cosim_overrides)
@@ -514,6 +514,18 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         print(
             "[replay] target world position: "
             f"x={target_world[0]:+.4f}, y={target_world[1]:+.4f}, z={target_world[2]:+.4f}"
+        )
+        yz_delta = tip_arr[:, 1:3] - target_world[1:3]
+        yz_dist = np.linalg.norm(yz_delta, axis=1)
+        min_idx = int(np.argmin(yz_dist))
+        min_dist_yz = float(yz_dist[min_idx])
+        min_time_yz = float(sim_t_arr[min_idx])
+        min_tip = tip_arr[min_idx]
+        print(
+            "[replay] min tip-target distance on YZ plane: "
+            f"{min_dist_yz:.6f} m at t={min_time_yz:.4f}s (frame={min_idx}) | "
+            f"tip=(x={min_tip[0]:+.4f}, y={min_tip[1]:+.4f}, z={min_tip[2]:+.4f})",
+            flush=True,
         )
 
         out_prefix = path_traj.with_suffix("")

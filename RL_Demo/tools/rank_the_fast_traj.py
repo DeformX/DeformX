@@ -16,7 +16,10 @@ from pathlib import Path
 import numpy as np
 
 
-TRAJ_NAME_RE = re.compile(r"^success_episode_\d+_env\d+_step\d+\.csv$")
+FLOAT = r"(?:\d+(?:\.\d+)?)"
+TRAJ_NAME_RE = re.compile(
+    rf"^min_dis_{FLOAT}_target_{FLOAT}_{FLOAT}_{FLOAT}_success_episode_\d+_env\d+_step\d+\.csv$"
+)
 JOINT_CANDIDATES: tuple[tuple[str, ...], ...] = (
     ("shoulder_pan", "shoulder_pan_joint"),
     ("shoulder_lift", "shoulder_lift_joint"),
