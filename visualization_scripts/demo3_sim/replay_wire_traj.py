@@ -38,7 +38,7 @@ LONG_STICK_RADIUS = 0.010
 
 ROBOT_OFFSET = np.array([0.0, 0.0, 1.7], dtype=np.float64)
 ROBOT_ORIENT_XYZ_DEG = np.array([-90.0, 0.0, 0.0], dtype=np.float64)
-TARGET_LOCAL = np.array([0.0, 2.0, 1.5], dtype=np.float64)
+TARGET_LOCAL = np.array([0.0, 1.7, 0.5], dtype=np.float64)
 CAMERA_PATH = "/World/ReplayCamera"
 CAMERA_POS = np.array([5.5, 1.8, 1.6], dtype=np.float64)
 CAMERA_ROT_XYZ_DEG = np.array([87.0, 0.0, 90], dtype=np.float64)  # typical "look toward -X" intent
@@ -340,6 +340,12 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         distant = UsdLux.DistantLight.Define(stage, "/World/DistantLight")
         distant.CreateIntensityAttr().Set(3800.0)
         distant.CreateColorAttr().Set(Gf.Vec3f(1.0, 1.0, 1.0))
+        extra = UsdLux.DistantLight.Define(stage, "/World/ExtraLight")
+        extra.CreateIntensityAttr().Set(1200.0)
+        extra.CreateColorAttr().Set(Gf.Vec3f(1.0, 1.0, 1.0))
+        xf = UsdGeom.Xformable(extra.GetPrim())
+        xf.ClearXformOpOrder()
+        xf.AddRotateXYZOp().Set(Gf.Vec3f(0.0, 90.0, 0.0))  # 左前方斜下
         fill = UsdLux.DistantLight.Define(stage, "/World/FillLight")
         fill.CreateIntensityAttr().Set(1200.0)
         fill.CreateColorAttr().Set(Gf.Vec3f(0.95, 0.95, 1.0))
@@ -476,7 +482,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
             settle_time=1.0,
-            initial_wire_theta = 0.5 * np.pi,
+            initial_wire_theta = -0.5 * np.pi,
             axial_stretch_stiffening = 1.0,
         )
         if cosim_overrides:
@@ -759,8 +765,8 @@ def main() -> None:
         help="Enable co-sim ground contact/friction.",
     )
     parser.add_argument("--ground-z", type=float, default=0.0, help="Ground plane z height for co-sim.")
-    parser.add_argument("--ground-contact-k", type=float, default=1.0e4, help="Ground contact stiffness.")
-    parser.add_argument("--ground-contact-nu", type=float, default=5.0, help="Ground contact damping.")
+    parser.add_argument("--ground-contact-k", type=float, default=1.0e2, help="Ground contact stiffness.")
+    parser.add_argument("--ground-contact-nu", type=float, default=1.0, help="Ground contact damping.")
     parser.add_argument(
         "--ground-static-mu",
         type=float,
