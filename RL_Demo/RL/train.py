@@ -238,6 +238,8 @@ def main(cfg: DictConfig):
     episode_returns = np.zeros((num_envs,), dtype=np.float64)
     episode_lengths = np.zeros((num_envs,), dtype=np.int32)
     episode_min_dist = np.full((num_envs,), np.inf, dtype=np.float64)
+    # For sync-reset envs: mark episodes that already ended and are waiting for batched reset.
+    episode_closed = np.zeros((num_envs,), dtype=np.bool_)
     n_completed_episodes = 0
     recent_returns: deque[float] = deque(maxlen=episode_log_avg_window)
     recent_lengths: deque[int] = deque(maxlen=episode_log_avg_window)
@@ -256,11 +258,12 @@ def main(cfg: DictConfig):
         next_obs, rew, done, info = env.step(actions)
         rew_arr = np.asarray(rew, dtype=np.float64).reshape(-1)
         dist_arr = _as_dist_array(info, num_envs)
+        active_mask = ~episode_closed
         if rew_arr.size == num_envs:
-            episode_returns += rew_arr
-            episode_lengths += 1
+            episode_returns[active_mask] += rew_arr[active_mask]
+            episode_lengths[active_mask] += 1
         if dist_arr is not None:
-            episode_min_dist = np.minimum(episode_min_dist, dist_arr)
+            episode_min_dist[active_mask] = np.minimum(episode_min_dist[active_mask], dist_arr[active_mask])
 
         if isinstance(info, dict) and "commanded_joint_positions" in info:
             q_cmd = np.asarray(info["commanded_joint_positions"], dtype=np.float64)
@@ -274,7 +277,21 @@ def main(cfg: DictConfig):
         ep_rew_acc += float(np.mean(rew))
 
         done_mask = np.asarray(done, dtype=np.bool_).reshape(-1)
-        done_ids = np.where(done_mask)[0].astype(np.int32)
+        sync_mode = isinstance(info, dict) and (
+            ("pending_reset_count" in info) or ("sync_reset_triggered" in info)
+        )
+        sync_reset_triggered = bool(info.get("sync_reset_triggered", False)) if isinstance(info, dict) else False
+
+        if sync_mode:
+            newly_done_mask = done_mask & (~episode_closed)
+            episode_closed |= done_mask
+            done_ids = (
+                np.where(episode_closed)[0].astype(np.int32)
+                if sync_reset_triggered
+                else np.zeros((0,), dtype=np.int32)
+            )
+        else:
+            done_ids = np.where(done_mask)[0].astype(np.int32)
         success_mask = _as_success_mask(info, num_envs)
 
         # Export immediately on first goal hit in each episode (even if env is not done yet).
@@ -393,6 +410,7 @@ def main(cfg: DictConfig):
             episode_returns[env_id] = 0.0
             episode_lengths[env_id] = 0
             episode_min_dist[env_id] = np.inf
+            episode_closed[env_id] = False
 
         if step % rollout_len == 0:
             algo.update()

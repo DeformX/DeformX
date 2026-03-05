@@ -7,3 +7,4 @@ eval_exports/
 wandb/
 __pycache__/
 *.pyc
+test/

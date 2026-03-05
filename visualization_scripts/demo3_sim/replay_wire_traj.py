@@ -38,9 +38,9 @@ LONG_STICK_RADIUS = 0.010
 
 ROBOT_OFFSET = np.array([0.0, 0.0, 1.7], dtype=np.float64)
 ROBOT_ORIENT_XYZ_DEG = np.array([-90.0, 0.0, 0.0], dtype=np.float64)
-TARGET_LOCAL = np.array([0.0, 2.0, 2.3], dtype=np.float64)
+TARGET_LOCAL = np.array([0.0, 2.0, 1.5], dtype=np.float64)
 CAMERA_PATH = "/World/ReplayCamera"
-CAMERA_POS = np.array([5.2, 1.8, 1.7], dtype=np.float64)
+CAMERA_POS = np.array([5.5, 1.8, 1.6], dtype=np.float64)
 CAMERA_ROT_XYZ_DEG = np.array([87.0, 0.0, 90], dtype=np.float64)  # typical "look toward -X" intent
 CAMERA_FOCAL_LENGTH_MM = 20.0
 WIRE_USD = (
@@ -456,7 +456,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             joint_kt=10.0,
             joint_nut=0.0,
             density=700.0,
-            youngs_modulus=2e6,
+            youngs_modulus=2e5,
             shear_modulus_ratio=1.5,
             damping_constant=0.1,
             rod_direction=np.asarray(frame_init.director[2], dtype=np.float64),
@@ -476,7 +476,8 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
             ground_kinetic_mu=np.array([0.5, 0.5, 0.5], dtype=np.float64),
             ground_slip_velocity_tol=1.0e-6,
             settle_time=1.0,
-            initial_wire_theta = -0.5 * np.pi,
+            initial_wire_theta = 0.5 * np.pi,
+            axial_stretch_stiffening = 1.0,
         )
         if cosim_overrides:
             cfg_kwargs.update(cosim_overrides)

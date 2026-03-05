@@ -1,7 +1,7 @@
 name: wire_swing_bj
 env_cls: RL.envs.wire_swing_bj_env.WireSwingBallJointEnv
 
-num_envs: 8
+num_envs: 32
 env_spacing: 3.0
 phys_dt: 0.002
 num_substeps: 1
@@ -14,7 +14,7 @@ default_joint_positions: [-1.5935, -2.2756, -1.1913, -0.3241, 1.5707, 3.1415]
 robot_offset: [0.0, 0.0, 1.7]
 robot_orient_xyz_deg: [-90.0, 0.0, 0.0]
 
-target_local: [0,1.7,0.5]
+target_local: [0,2.0,1.5]
 # high target_local: [0.0, 2.0, 2.3] medium target_local: [0.0, 2.0, 1.5] low target_local: [0.0, 1.7, 0.5]
 stick_length: 0.65
 stick_radius: 0.010

@@ -756,6 +756,9 @@ class WireSwingEnv:
         self.world.step(render=not self.headless)
         self._rebuild_cosim(ids)
 
+        for _ in range(500):
+            self.world.step(render=True)
+
         dist = np.linalg.norm(self.tip_world[ids] - self.target_world[ids], axis=1).astype(np.float32)
         dist = np.nan_to_num(dist, nan=1.0e3, posinf=1.0e3, neginf=1.0e3)
         self.prev_dist[ids] = dist
