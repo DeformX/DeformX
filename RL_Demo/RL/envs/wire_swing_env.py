@@ -181,7 +181,17 @@ class WireSwingEnv:
         self.ground_kinetic_mu = np.asarray(getattr(cfg, "ground_kinetic_mu", [0.5, 0.5, 0.5]), dtype=np.float64)
         self.ground_slip_velocity_tol = float(getattr(cfg, "ground_slip_velocity_tol", 1.0e-6))
         self.settle_time = float(getattr(cfg, "settle_time", 1.0))
-        self.initial_wire_theta = getattr(cfg, "initial_wire_theta", None)
+        raw_initial_wire_theta = getattr(cfg, "initial_wire_theta", None)
+        if isinstance(raw_initial_wire_theta, str):
+            token = raw_initial_wire_theta.strip().lower()
+            if token in ("", "none", "null", "~"):
+                self.initial_wire_theta = None
+            else:
+                self.initial_wire_theta = float(raw_initial_wire_theta)
+        elif raw_initial_wire_theta is None:
+            self.initial_wire_theta = None
+        else:
+            self.initial_wire_theta = float(raw_initial_wire_theta)
         self.axial_stretch_stiffening = float(getattr(cfg, "axial_stretch_stiffening", 1.0))
         self._warned_unsupported_joint_model = False
 
@@ -591,9 +601,6 @@ class WireSwingEnv:
             ground_kinetic_mu=np.asarray(self.ground_kinetic_mu, dtype=np.float64),
             ground_slip_velocity_tol=float(self.ground_slip_velocity_tol),
             settle_time=float(self.settle_time),
-            initial_wire_theta=None
-            if self.initial_wire_theta is None
-            else float(self.initial_wire_theta),
             axial_stretch_stiffening=float(self.axial_stretch_stiffening),
             density=float(self.wire_density),
             youngs_modulus=float(self.wire_youngs_modulus),
@@ -609,6 +616,8 @@ class WireSwingEnv:
             frame_initial_alpha=np.asarray(frame_initial_state.alpha, dtype=np.float64),
             rod_start=np.asarray(frame_initial_state.position, dtype=np.float64),
         )
+        if self.initial_wire_theta is not None:
+            cfg_kwargs["initial_wire_theta"] = float(self.initial_wire_theta)
         accepted_keys = set(inspect.signature(CoSimConfig).parameters.keys())
         dropped_keys = [k for k in cfg_kwargs.keys() if k not in accepted_keys]
         if "joint_model" in dropped_keys and self.joint_model != "fixed" and not self._warned_unsupported_joint_model:

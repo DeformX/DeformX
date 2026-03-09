@@ -515,7 +515,7 @@ def main() -> None:
         type=float,
         nargs=3,
         metavar=("X", "Y", "Z"),
-        default=[0.0, 1.5, 0.5],
+        default=[0.0, 2.0, 2.3],
         help="Target position in env-local coordinates.",
     )
     parser.add_argument(

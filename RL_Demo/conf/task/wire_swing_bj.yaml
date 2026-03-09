@@ -5,7 +5,8 @@ num_envs: 8
 env_spacing: 3.0
 phys_dt: 0.002
 num_substeps: 1
-max_steps: 500
+max_steps: 700
+init_warmup_steps: 20
 
 num_robot_dofs: 6
 end_effector_link: wrist_3_link
@@ -24,15 +25,11 @@ wire_n_elem: 20
 wire_base_radius: 0.00635
 
 # Ball-joint wire backend params (PhysX chain).
-bj_joint_damping: 100.0
+bj_joint_damping: 5.0
 bj_joint_stiffness: 0.0
-bj_attach_stiffness: 5000.0
-bj_attach_damping: 200.0
-bj_attach_rot_stiffness: 100.0
-bj_attach_rot_damping: 10.0
 bj_joint_drive_type: force
-bj_link_linear_damping: 1.0
-bj_link_angular_damping: 0.3
+bj_link_linear_damping: 0.6
+bj_link_angular_damping: 1.2
 bj_mat_static_friction: 0.6
 bj_mat_dynamic_friction: 0.5
 bj_mat_restitution: 0.0
@@ -42,8 +39,8 @@ bj_link_density: 600.0
 
 joint_pos_lower_limits: [-6.28, -6.28, -6.28, -6.28, -6.28, -6.28]
 joint_pos_upper_limits: [6.28, -1.92, -0.44, 6.28, 6.28, 6.28]
-joint_vel_limits: [1.5708, 1.5708, 1.5708, 1.5708, 1.5708, 1.5708]
-joint_delta_scale: 3.0
+joint_vel_limits: [1.5708, 1, 1, 1.4, 1.5708, 1.5708]
+joint_delta_scale: 2
 positive_only_active_joints: true
 
 success_thresh: 0.05
@@ -77,11 +74,4 @@ swing_grace_steps: 300
 swing_fallback_steps: 400
 terminate_on_success: true
 sync_reset_ratio: 2.0
-
-enable_wire_visual: true
-wire_visual_mode: debug_spheres
-max_visual_envs: 1
-max_visual_nodes: 21
-wire_debug_sphere_radius: 0.015
-wire_debug_sphere_color: [1.0, 0.0, 0.0]
-wire_usd: /home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc
+enable_wire_visual: false

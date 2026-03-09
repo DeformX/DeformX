@@ -95,6 +95,14 @@ class WireSwingBallJointEnv(WireSwingEnv):
                 "fallback to 'force'."
             )
             self._bj_joint_drive_type = "force"
+        # Attach impedance: soft spring between stick tip and first link.
+        # When stiffness > 0, link_000 is dynamic (not kinematic) and connected
+        # to the stick tip via a D6 joint with translational + angular drives.
+        # When stiffness == 0 (default), link_000 is kinematic and tracks tip rigidly.
+        self._bj_attach_stiffness = float(getattr(cfg, "bj_attach_stiffness", 0.0))
+        self._bj_attach_damping = float(getattr(cfg, "bj_attach_damping", 0.0))
+        self._bj_attach_rot_stiffness = float(getattr(cfg, "bj_attach_rot_stiffness", 0.0))
+        self._bj_attach_rot_damping = float(getattr(cfg, "bj_attach_rot_damping", 0.0))
         self._bj_link_linear_damping = float(getattr(cfg, "bj_link_linear_damping", 0.6))
         self._bj_link_angular_damping = float(getattr(cfg, "bj_link_angular_damping", 1.2))
         self._bj_mat_static_friction = float(getattr(cfg, "bj_mat_static_friction", 0.6))
@@ -321,23 +329,75 @@ class WireSwingBallJointEnv(WireSwingEnv):
             link_paths.append(path)
 
         # joints: link_i +Z  <->  link_{i+1} -Z
+        # Use generic UsdPhysics.Joint (D6Joint) — SphericalJoint ignores drives.
         for i in range(self._bj_num_links - 1):
             joint_path = f"{root_path}/joint_{i:03d}"
-            joint = _base.UsdPhysics.SphericalJoint.Define(self.stage, joint_path)
+            joint = _base.UsdPhysics.Joint.Define(self.stage, joint_path)
             joint.GetBody0Rel().SetTargets([link_paths[i]])
             joint.GetBody1Rel().SetTargets([link_paths[i + 1]])
             joint.CreateLocalPos0Attr().Set(_base.Gf.Vec3f(0.0, 0.0, float(self._bj_link_half)))    # +Z on link_i
             joint.CreateLocalPos1Attr().Set(_base.Gf.Vec3f(0.0, 0.0, float(-self._bj_link_half)))   # -Z on link_{i+1}
             joint.CreateLocalRot0Attr().Set(_base.Gf.Quatf(1.0))
             joint.CreateLocalRot1Attr().Set(_base.Gf.Quatf(1.0))
+            joint.CreateCollisionEnabledAttr().Set(False)
 
-            drive = _base.UsdPhysics.DriveAPI.Apply(joint.GetPrim(), "angular")
-            drive.CreateTypeAttr(str(self._bj_joint_drive_type))
-            drive.CreateDampingAttr(float(self._bj_joint_damping))
-            drive.CreateStiffnessAttr(float(self._bj_joint_stiffness))
+            jprim = joint.GetPrim()
 
+            # Lock translation (hard constraint between links)
+            for ax in ("transX", "transY", "transZ"):
+                limit = _base.UsdPhysics.LimitAPI.Apply(jprim, ax)
+                limit.CreateLowAttr(0.0)
+                limit.CreateHighAttr(0.0)
+
+            # Per-axis angular drives
+            for ax in ("rotX", "rotY", "rotZ"):
+                drive = _base.UsdPhysics.DriveAPI.Apply(jprim, ax)
+                drive.CreateTypeAttr(str(self._bj_joint_drive_type))
+                drive.CreateDampingAttr(float(self._bj_joint_damping))
+                drive.CreateStiffnessAttr(float(self._bj_joint_stiffness))
+
+        # --- Attach joint: stick tip <-> link_000 ---
+        use_soft_attach = (self._bj_attach_stiffness > 0.0 or self._bj_attach_damping > 0.0)
         first_link_path = link_paths[0]
-        self._set_kinematic(first_link_path)
+
+        if use_soft_attach:
+            # link_000 is dynamic (NOT kinematic) — connected via soft D6 joint
+            # to the stick tip.  The stick tip prim is body0 (driven by robot),
+            # link_000 is body1.
+            attach_path = f"{root_path}/attach_joint"
+            aj = _base.UsdPhysics.Joint.Define(self.stage, attach_path)
+            aj.GetBody0Rel().SetTargets([self.stick_tip_paths[env_idx]])
+            aj.GetBody1Rel().SetTargets([first_link_path])
+            # body0 local frame: joint at the stick tip origin
+            aj.CreateLocalPos0Attr().Set(_base.Gf.Vec3f(0.0, 0.0, 0.0))
+            # body1 local frame: link_000's -Z end (pinned end)
+            aj.CreateLocalPos1Attr().Set(_base.Gf.Vec3f(0.0, 0.0, float(-self._bj_link_half)))
+            aj.CreateLocalRot0Attr().Set(_base.Gf.Quatf(1.0))
+            aj.CreateLocalRot1Attr().Set(_base.Gf.Quatf(1.0))
+            aj.CreateCollisionEnabledAttr().Set(False)
+
+            ajp = aj.GetPrim()
+            # Soft translational drives (the attach impedance)
+            for ax in ("transX", "transY", "transZ"):
+                drive = _base.UsdPhysics.DriveAPI.Apply(ajp, ax)
+                drive.CreateTypeAttr(str(self._bj_joint_drive_type))
+                drive.CreateStiffnessAttr(float(self._bj_attach_stiffness))
+                drive.CreateDampingAttr(float(self._bj_attach_damping))
+            # Soft rotational drives on attach
+            for ax in ("rotX", "rotY", "rotZ"):
+                drive = _base.UsdPhysics.DriveAPI.Apply(ajp, ax)
+                drive.CreateTypeAttr(str(self._bj_joint_drive_type))
+                drive.CreateStiffnessAttr(float(self._bj_attach_rot_stiffness))
+                drive.CreateDampingAttr(float(self._bj_attach_rot_damping))
+
+            print(
+                f"[WireSwingBallJointEnv] env={env_idx}: soft attach joint "
+                f"(trans K={self._bj_attach_stiffness}, D={self._bj_attach_damping}, "
+                f"rot K={self._bj_attach_rot_stiffness}, D={self._bj_attach_rot_damping})"
+            )
+        else:
+            # Original behavior: link_000 is kinematic, rigidly tracks stick tip.
+            self._set_kinematic(first_link_path)
 
         view = None
         try:
@@ -426,9 +486,18 @@ class WireSwingBallJointEnv(WireSwingEnv):
         """
         Pin link_000 LOCAL -Z endpoint to stick tip position.
         Also ensure link_000 LOCAL +Z aligns with stick tip local +Z direction.
+        Skipped when soft attach is active (the D6 joint handles coupling).
         """
         tip_pos, tip_rot = self._get_prim_world_pose(self.stick_tip_paths[env_idx])
         if tip_pos is None:
+            return
+
+        # Always update ee_tip_world for reward/obs
+        self.ee_tip_world[env_idx] = np.asarray(tip_pos, dtype=np.float64).copy()
+
+        # When soft attach is active, link_000 is dynamic and driven by the
+        # attach joint — do NOT override its pose kinematically.
+        if self._bj_attach_stiffness > 0.0 or self._bj_attach_damping > 0.0:
             return
 
         wire = self._bj_wire_states[env_idx]
@@ -534,8 +603,46 @@ class WireSwingBallJointEnv(WireSwingEnv):
                 np.array([0.0, 0.0, 1.0], dtype=np.float64),
             )
 
-            chain_dir = stick_dir  # outward along stick +Z
-            self._set_wire_chain_pose(idx, first_node=np.asarray(tip_pos, dtype=np.float64), chain_dir=chain_dir)
+            # Link_000 along stick_dir (consistent with anchor / attach joint),
+            # remaining links drape along -Y to stay above ground.
+            wire = self._bj_wire_states[idx]
+            tip_arr = np.asarray(tip_pos, dtype=np.float64)
+
+            q0 = _quat_wxyz_from_z_axis(stick_dir).astype(np.float64)
+            center_0 = tip_arr + stick_dir * self._bj_link_half
+            self._set_orient_op_wxyz(wire.link_paths[0], q0)
+            self._set_translate_op(wire.link_paths[0], center_0)
+            if wire.link_view is not None:
+                try:
+                    wire.link_view.set_world_poses(
+                        positions=center_0.reshape(1, 3).astype(np.float32),
+                        orientations=q0.reshape(1, 4).astype(np.float32),
+                        indices=np.asarray([0], dtype=np.int32),
+                    )
+                except Exception:
+                    pass
+
+            if self._bj_num_links > 1:
+                drape_dir = np.array([0.0, -1.0, 0.0], dtype=np.float64)
+                q_drape = _quat_wxyz_from_z_axis(drape_dir).astype(np.float64)
+                start_pt = center_0 + stick_dir * self._bj_link_half
+                for i in range(1, self._bj_num_links):
+                    ci = start_pt + drape_dir * ((i - 1 + 0.5) * self._bj_link_len)
+                    self._set_orient_op_wxyz(wire.link_paths[i], q_drape)
+                    self._set_translate_op(wire.link_paths[i], ci)
+                if wire.link_view is not None:
+                    try:
+                        n_dyn = self._bj_num_links - 1
+                        centers = np.zeros((n_dyn, 3), dtype=np.float32)
+                        quats = np.tile(q_drape.astype(np.float32), (n_dyn, 1))
+                        for i in range(n_dyn):
+                            centers[i] = (start_pt + drape_dir * ((i + 0.5) * self._bj_link_len)).astype(np.float32)
+                        wire.link_view.set_world_poses(
+                            positions=centers, orientations=quats,
+                            indices=np.arange(1, self._bj_num_links, dtype=np.int32),
+                        )
+                    except Exception:
+                        pass
             self._set_link_velocities_zero(idx)
             self._anchor_first_link_to_tip(idx)
 

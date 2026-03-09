@@ -37,8 +37,15 @@ if PYELASTICA_MESH_ROOT.is_dir() and str(PYELASTICA_MESH_ROOT) not in sys.path:
 from RL.envs.wire_swing_bj_env import WireSwingBallJointEnv
 
 
-DEFAULT_PHYS_DT = 1.0 / 500.0
-SETTLE_SECONDS = 1.0
+DEFAULT_PHYS_DT = 0.002
+SETTLE_SECONDS = 2.0
+DEFAULT_TARGET_LOCAL = np.array([0.0, 2.0, 2.3], dtype=np.float64)
+DEFAULT_WIRE_BASE_LENGTH = 1.0
+DEFAULT_WIRE_N_ELEM = 20
+DEFAULT_WIRE_BASE_RADIUS = 0.00635
+DEFAULT_BJ_JOINT_DAMPING = 5.0
+DEFAULT_BJ_LINK_LINEAR_DAMPING = 0.6
+DEFAULT_BJ_LINK_ANGULAR_DAMPING = 1.2
 
 CAMERA_PATH = "/World/ReplayCamera"
 CAMERA_POS = np.array([5.5, 1.8, 1.6], dtype=np.float64)
@@ -50,6 +57,7 @@ VIDEO_TARGET_FPS = 60.0
 VIDEO_CRF = 18
 SCENE_LIGHT_INTENSITY = 900.0
 SCENE_LIGHT_COLOR = (1.0, 1.0, 1.0)
+GROUND_COLOR = np.array([0.0, 0.0, 0.0], dtype=np.float32)
 
 
 def _derive_sim_dt_from_csv(times: np.ndarray, default_dt: float) -> float:
@@ -104,16 +112,6 @@ def _build_replay_cfg(
     *,
     sim_dt: float,
     num_envs: int,
-    target_local: np.ndarray,
-    wire_n_elem: int,
-    wire_radius: float,
-    bj_joint_damping: float,
-    bj_attach_stiffness: float,
-    bj_attach_damping: float,
-    bj_attach_rot_stiffness: float,
-    bj_attach_rot_damping: float,
-    bj_link_linear_damping: float,
-    bj_link_angular_damping: float,
     task_overrides: dict[str, object] | None = None,
 ) -> SimpleNamespace:
     cfg_dict: dict[str, object] = dict(
@@ -122,7 +120,6 @@ def _build_replay_cfg(
         env_spacing=3.0,
         phys_dt=float(sim_dt),
         num_substeps=1,
-        max_steps=500,
         init_warmup_steps=20,
         num_robot_dofs=6,
         end_effector_link="wrist_3_link",
@@ -130,21 +127,17 @@ def _build_replay_cfg(
         default_joint_positions=[-1.5935, -2.2756, -1.1913, -0.3241, 1.5707, 3.1415],
         robot_offset=[0.0, 0.0, 1.7],
         robot_orient_xyz_deg=[-90.0, 0.0, 0.0],
-        target_local=np.asarray(target_local, dtype=np.float64).tolist(),
+        target_local=DEFAULT_TARGET_LOCAL.tolist(),
         stick_length=0.65,
         stick_radius=0.010,
-        wire_base_length=1.0,
-        wire_n_elem=int(max(1, wire_n_elem)),
-        wire_base_radius=float(wire_radius),
-        bj_joint_damping=float(bj_joint_damping),
+        wire_base_length=float(DEFAULT_WIRE_BASE_LENGTH),
+        wire_n_elem=int(DEFAULT_WIRE_N_ELEM),
+        wire_base_radius=float(DEFAULT_WIRE_BASE_RADIUS),
+        bj_joint_damping=float(DEFAULT_BJ_JOINT_DAMPING),
         bj_joint_stiffness=0.0,
-        bj_attach_stiffness=float(bj_attach_stiffness),
-        bj_attach_damping=float(bj_attach_damping),
-        bj_attach_rot_stiffness=float(bj_attach_rot_stiffness),
-        bj_attach_rot_damping=float(bj_attach_rot_damping),
         bj_joint_drive_type="force",
-        bj_link_linear_damping=float(bj_link_linear_damping),
-        bj_link_angular_damping=float(bj_link_angular_damping),
+        bj_link_linear_damping=float(DEFAULT_BJ_LINK_LINEAR_DAMPING),
+        bj_link_angular_damping=float(DEFAULT_BJ_LINK_ANGULAR_DAMPING),
         bj_mat_static_friction=0.6,
         bj_mat_dynamic_friction=0.5,
         bj_mat_restitution=0.0,
@@ -156,62 +149,21 @@ def _build_replay_cfg(
         joint_vel_limits=[1.5708, 1.5708, 1.5708, 1.5708, 1.5708, 1.5708],
         joint_delta_scale=3.0,
         positive_only_active_joints=True,
-        success_thresh=0.05,
-        touch_thresh=0.03,
-        too_far_thresh=4.0,
-        reward_clip_min=-10.0,
-        reward_clip_max=200.0,
-        action_penalty=0.05,
-        smooth_penalty=0.02,
-        w_proximity=1.0,
-        w_progress=10.0,
-        w_new_best=30.0,
-        w_tip_velocity_toward_target=1.0,
-        w_joint3_velocity=0.5,
-        joint3_reward_index=3,
-        joint3_velocity_abs=False,
-        w_time_penalty=0.05,
-        success_bonus=50.0,
-        bonus_thresh_1=0.5,
-        bonus_thresh_2=0.2,
-        bonus_thresh_3=0.1,
-        bonus_thresh_4=0.05,
-        bonus_value_1=1.0,
-        bonus_value_2=3.0,
-        bonus_value_3=5.0,
-        bonus_value_4=10.0,
-        touch_bonus=50.0,
-        swing_done_enabled=False,
-        swing_grace_steps=300,
-        swing_fallback_steps=400,
-        terminate_on_success=True,
-        enable_wire_visual=True,
-        wire_visual_mode="debug_spheres",
-        max_visual_envs=1,
-        max_visual_nodes=21,
-        wire_debug_sphere_radius=0.015,
-        wire_debug_sphere_color=[1.0, 0.0, 0.0],
-        wire_usd=(
-            "/home/robot/Workspace/Siemens_Cable_Simulator/usd/"
-            "wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc"
-        ),
-        sync_reset_ratio=1.0,
     )
     if task_overrides:
         cfg_dict.update(task_overrides)
 
     cfg_dict["num_envs"] = int(num_envs)
     cfg_dict["phys_dt"] = float(sim_dt)
-    cfg_dict["target_local"] = np.asarray(target_local, dtype=np.float64).tolist()
-    cfg_dict["wire_n_elem"] = int(max(1, wire_n_elem))
-    cfg_dict["wire_base_radius"] = float(wire_radius)
-    cfg_dict["bj_joint_damping"] = float(bj_joint_damping)
-    cfg_dict["bj_attach_stiffness"] = float(bj_attach_stiffness)
-    cfg_dict["bj_attach_damping"] = float(bj_attach_damping)
-    cfg_dict["bj_attach_rot_stiffness"] = float(bj_attach_rot_stiffness)
-    cfg_dict["bj_attach_rot_damping"] = float(bj_attach_rot_damping)
-    cfg_dict["bj_link_linear_damping"] = float(bj_link_linear_damping)
-    cfg_dict["bj_link_angular_damping"] = float(bj_link_angular_damping)
+    # Keep replay running without env auto-resets.
+    cfg_dict["max_steps"] = int(1_000_000_000)
+    cfg_dict["terminate_on_success"] = False
+    cfg_dict["too_far_thresh"] = float(1.0e9)
+    cfg_dict["swing_done_enabled"] = False
+    cfg_dict["swing_grace_steps"] = int(1_000_000_000)
+    cfg_dict["swing_fallback_steps"] = int(1_000_000_000)
+    # Replay runs with only one env trajectory (others are unknown), so disable
+    # batched sync-reset trigger to avoid cross-env reset interference.
     cfg_dict["sync_reset_ratio"] = 2.0
     return SimpleNamespace(**cfg_dict)
 
@@ -260,16 +212,6 @@ def replay(
     *,
     headless: bool,
     settle_seconds: float,
-    target_local: np.ndarray,
-    wire_n_elem: int,
-    wire_radius: float,
-    bj_joint_damping: float,
-    bj_attach_stiffness: float,
-    bj_attach_damping: float,
-    bj_attach_rot_stiffness: float,
-    bj_attach_rot_damping: float,
-    bj_link_linear_damping: float,
-    bj_link_angular_damping: float,
     task_overrides: dict[str, object] | None,
     num_envs: int,
     replay_env_id: int,
@@ -310,16 +252,6 @@ def replay(
     cfg = _build_replay_cfg(
         sim_dt=float(sim_dt),
         num_envs=int(num_envs),
-        target_local=np.asarray(target_local, dtype=np.float64),
-        wire_n_elem=int(wire_n_elem),
-        wire_radius=float(wire_radius),
-        bj_joint_damping=float(bj_joint_damping),
-        bj_attach_stiffness=float(bj_attach_stiffness),
-        bj_attach_damping=float(bj_attach_damping),
-        bj_attach_rot_stiffness=float(bj_attach_rot_stiffness),
-        bj_attach_rot_damping=float(bj_attach_rot_damping),
-        bj_link_linear_damping=float(bj_link_linear_damping),
-        bj_link_angular_damping=float(bj_link_angular_damping),
         task_overrides=task_overrides,
     )
 
@@ -343,7 +275,7 @@ def replay(
         except Exception:
             pass
 
-        from pxr import Gf, UsdGeom, UsdLux
+        from pxr import Gf, Usd, UsdGeom, UsdLux
 
         stage = env.stage
 
@@ -355,6 +287,43 @@ def replay(
             xf.AddTranslateOp().Set(Gf.Vec3d(*CAMERA_POS.tolist()))
             xf.AddRotateXYZOp().Set(Gf.Vec3f(*CAMERA_ROT_XYZ_DEG.tolist()))
             return CAMERA_PATH
+
+        def colorize_default_ground(stage_):
+            root = stage_.GetPrimAtPath("/World/defaultGroundPlane")
+            if not root.IsValid():
+                return
+            color = Gf.Vec3f(float(GROUND_COLOR[0]), float(GROUND_COLOR[1]), float(GROUND_COLOR[2]))
+            changed = 0
+            for prim in Usd.PrimRange(root):
+                if not prim.IsA(UsdGeom.Gprim):
+                    continue
+                gp = UsdGeom.Gprim(prim)
+                attr = gp.GetDisplayColorAttr()
+                if not attr.IsValid():
+                    attr = gp.CreateDisplayColorAttr()
+                attr.Set([color])
+                changed += 1
+            if changed > 0:
+                print(f"[replay-bj] ground color set to {GROUND_COLOR.tolist()} on {changed} prim(s)", flush=True)
+
+        def use_black_ground_plane():
+            # Match replay_wire_traj.py behavior: explicit black ground plane.
+            default_ground = stage.GetPrimAtPath("/World/defaultGroundPlane")
+            if default_ground.IsValid():
+                try:
+                    UsdGeom.Imageable(default_ground).MakeInvisible()
+                    print("[replay-bj] hid /World/defaultGroundPlane", flush=True)
+                except Exception:
+                    pass
+
+            black_ground_path = "/World/ReplayGroundPlane"
+            if stage.GetPrimAtPath(black_ground_path).IsValid():
+                return
+            try:
+                env.world.scene.add_ground_plane(prim_path=black_ground_path, color=GROUND_COLOR)
+            except TypeError:
+                env.world.scene.add_ground_plane(color=GROUND_COLOR)
+            print(f"[replay-bj] added black ground plane at {black_ground_path}", flush=True)
 
         dome = UsdLux.DomeLight.Define(stage, "/World/DomeLight")
         dome.CreateIntensityAttr().Set(0.0)
@@ -374,6 +343,8 @@ def replay(
         back = UsdLux.DistantLight.Define(stage, "/World/BackLight")
         back.CreateIntensityAttr().Set(float(SCENE_LIGHT_INTENSITY))
         back.CreateColorAttr().Set(Gf.Vec3f(*SCENE_LIGHT_COLOR))
+        use_black_ground_plane()
+        colorize_default_ground(stage)
 
         camera_path = create_camera(stage)
         try:
@@ -676,24 +647,10 @@ def main() -> None:
         help="Hold final command for this many seconds before exit.",
     )
     parser.add_argument(
-        "--target-local",
-        type=float,
-        nargs=3,
-        metavar=("X", "Y", "Z"),
-        default=[0.0, 1.7, 0.5],
-        help="Target position in env-local coordinates.",
-    )
-    parser.add_argument(
         "--task-config",
         type=str,
         default=None,
         help="Optional YAML with task config (e.g., train config_merged.yaml).",
-    )
-    parser.add_argument(
-        "--num-envs",
-        type=int,
-        default=None,
-        help="Replay world env count. Default: from --task-config task.num_envs, else 1.",
     )
     parser.add_argument(
         "--replay-env-id",
@@ -706,63 +663,6 @@ def main() -> None:
         action="store_true",
         help="Ignore sibling *_actions.npz and always reconstruct actions from joint CSV.",
     )
-    parser.add_argument(
-        "--wire-n-elem",
-        type=int,
-        default=20,
-        help="Number of BJ wire links/elements.",
-    )
-    parser.add_argument(
-        "--wire-base-radius",
-        type=float,
-        default=0.00635,
-        help="BJ wire capsule radius [m].",
-    )
-    parser.add_argument(
-        "--bj-joint-damping",
-        type=float,
-        default=100.0,
-        help="Angular joint damping for BJ wire (D6 drive).",
-    )
-    parser.add_argument(
-        "--bj-attach-stiffness",
-        type=float,
-        default=5000.0,
-        help=(
-            "Translational stiffness of the stick-tip-to-first-link attach joint. "
-            "0 = rigid kinematic attach (default). >0 = soft spring (e.g. 1e3..1e5)."
-        ),
-    )
-    parser.add_argument(
-        "--bj-attach-damping",
-        type=float,
-        default=200.0,
-        help="Translational damping of the attach joint.",
-    )
-    parser.add_argument(
-        "--bj-attach-rot-stiffness",
-        type=float,
-        default=100.0,
-        help="Rotational stiffness of the attach joint.",
-    )
-    parser.add_argument(
-        "--bj-attach-rot-damping",
-        type=float,
-        default=10.0,
-        help="Rotational damping of the attach joint.",
-    )
-    parser.add_argument(
-        "--bj-link-linear-damping",
-        type=float,
-        default=1.0,
-        help="Linear damping for BJ wire links.",
-    )
-    parser.add_argument(
-        "--bj-link-angular-damping",
-        type=float,
-        default=0.3,
-        help="Angular damping for BJ wire links.",
-    )
     args = parser.parse_args()
 
     traj_path = Path(args.path_traj).expanduser().resolve()
@@ -770,12 +670,8 @@ def main() -> None:
         raise FileNotFoundError(f"Trajectory file not found: {traj_path}")
     if float(args.settle_seconds) < 0.0:
         raise ValueError("--settle-seconds must be >= 0.")
-    if int(args.wire_n_elem) <= 0:
-        raise ValueError("--wire-n-elem must be > 0.")
-    if float(args.wire_base_radius) <= 0.0:
-        raise ValueError("--wire-base-radius must be > 0.")
-
     inferred_env_id = _infer_env_id_from_name(traj_path)
+
     task_cfg_path: Path | None = None
     if args.task_config:
         task_cfg_path = Path(args.task_config).expanduser().resolve()
@@ -791,9 +687,9 @@ def main() -> None:
         default_num_envs = int(inferred_env_id) + 1
     else:
         default_num_envs = 1
-    replay_num_envs = int(args.num_envs) if args.num_envs is not None else default_num_envs
+    replay_num_envs = int(default_num_envs)
     if replay_num_envs <= 0:
-        raise ValueError("--num-envs must be > 0.")
+        raise ValueError("resolved replay num_envs must be > 0.")
 
     if args.replay_env_id is not None:
         replay_env_id = int(args.replay_env_id)
@@ -813,16 +709,6 @@ def main() -> None:
         traj_path,
         headless=bool(args.headless),
         settle_seconds=float(args.settle_seconds),
-        target_local=np.asarray(args.target_local, dtype=np.float64),
-        wire_n_elem=int(args.wire_n_elem),
-        wire_radius=float(args.wire_base_radius),
-        bj_joint_damping=float(args.bj_joint_damping),
-        bj_attach_stiffness=float(args.bj_attach_stiffness),
-        bj_attach_damping=float(args.bj_attach_damping),
-        bj_attach_rot_stiffness=float(args.bj_attach_rot_stiffness),
-        bj_attach_rot_damping=float(args.bj_attach_rot_damping),
-        bj_link_linear_damping=float(args.bj_link_linear_damping),
-        bj_link_angular_damping=float(args.bj_link_angular_damping),
         task_overrides=task_overrides,
         num_envs=replay_num_envs,
         replay_env_id=replay_env_id,

@@ -34,7 +34,7 @@ export_success_actions: true
 # save run configs (merged/task/algo) into success_export_dir at training start
 save_configs_to_success_dir: true
 success_export_limit: 20
-success_export_dir: data/bj/success_traj_csv_8_high_target
+success_export_dir: data/wire_swing_bj_2/success_traj_csv_high_new_2
 success_export_prefix: success_episode
 
 # optional Weights & Biases logging
