@@ -9,3 +9,4 @@ __pycache__/
 *.pyc
 test/
 output/
+asset_wireseg32k/
