@@ -1,7 +1,15 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from pathlib import Path
 from typing import Tuple
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+ASSET_ROOT = REPO_ROOT / "asset_wireseg32k"
+USD_ROOT = ASSET_ROOT / "usd"
+DATA_ROOT = REPO_ROOT / "Dataset_generator" / "data"
+OUTPUT_ROOT = REPO_ROOT / "output"
 
 
 @dataclass(frozen=True)
@@ -26,17 +34,25 @@ class GeneratorConfig:
     headless: bool = True
 
     # Scene + data
-    scene_usd: str = "/home/robot/Workspace/Siemens_Cable_Simulator/usd/test_scene.usd"
-    npz_path: str = "/home/robot/Downloads/rod_drop_multi_8_all_runs_last_frames.npz"
+    scene_variant_specs: tuple[tuple[str, str, int], ...] = (
+        (str(USD_ROOT / "rod_drop_multi_2_plane.usdc"), str(ASSET_ROOT / "wires_traj_data" / "drop_n2_100.npz"), 2),
+        (str(USD_ROOT / "rod_drop_multi_4_plane.usdc"), str(ASSET_ROOT / "wires_traj_data" / "drop_n4_100.npz"), 4),
+        (str(USD_ROOT / "rod_drop_multi_8_plane.usdc"), str(ASSET_ROOT / "wires_traj_data" / "drop_n8_100.npz"), 8),
+        (str(USD_ROOT / "rod_hang_flying.usdc"), str(ASSET_ROOT / "wires_traj_data" / "hang_n2_100.npz"), 2),
+        (str(USD_ROOT / "rod_hang_flying.usdc"), str(ASSET_ROOT / "wires_traj_data" / "hang_n4_100.npz"), 4),
+        (str(USD_ROOT / "rod_hang_flying.usdc"), str(ASSET_ROOT / "wires_traj_data" / "hang_n8_100.npz"), 8),
+    )
+    scene_usd: str = scene_variant_specs[0][0]
+    npz_path: str = scene_variant_specs[0][1]
 
     table_prim_path: str = "/root/ground/Plane"   
-    table_texture_dir: str = "/home/robot/Workspace/Siemens_Cable_Simulator/asset/test_asset/ground"
+    table_texture_dir: str = str(ASSET_ROOT / "ground")
     table_texture_exts: tuple[str, ...] = (".png", ".jpg", ".jpeg", ".tif", ".tiff", ".exr")
     randomize_table_material_per_frame: bool = True
 
 
     # Wires assets
-    wire_asset_dir: str = "/home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc_4/wire_usdc_4"
+    wire_asset_dir: str = str(USD_ROOT / "wire_usdc" / "wire_usdc")
     recursive_assets: bool = False
     radius_tag: str = "r0.005"
     num_wires: int = 8
@@ -48,8 +64,8 @@ class GeneratorConfig:
 
     # Lighting: if both hdr_path and hdr_dir are given, hdr_dir is used for randomization,if enabled
     # if hdr_dir is None, hdr_path is always used
-    hdr_path: str = "/home/robot/Workspace/Siemens_Cable_Simulator/usd/boiler_room_4k.hdr"
-    hdr_dir: str = "/home/robot/Workspace/Siemens_Cable_Simulator/asset/test_asset/background"
+    hdr_path: str = str(ASSET_ROOT / "background" / "boiler_room_4k.hdr")
+    hdr_dir: str = str(ASSET_ROOT / "background")
     randomize_hdr_per_frame: bool = True
     
     
@@ -61,12 +77,12 @@ class GeneratorConfig:
     light_name_token: str = "rig_light_"
     occluder_name_prefixes: Tuple[str, ...] = ("occ_",)
 
-    cams_sample_per_frame: int = 2
+    cams_sample_per_frame: int = 1
     lights_on_per_frame: int = 3
     light_intensity_range: Tuple[float, float] = (200.0, 2000.0)
 
     # Output
-    capture_out_dir: str = "/home/robot/Workspace/Siemens_Cable_Simulator/output/capture_reload_each_test_13"
+    capture_out_dir: str = str(OUTPUT_ROOT / "capture_reload_each_test_13")
     capture_width: int = 1024
     capture_height: int = 1024
 

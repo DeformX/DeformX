@@ -1,8 +1,14 @@
+import argparse
+from pathlib import Path
 import os
 import json
 import numpy as np
 from PIL import Image
 import ast
+
+
+REPO_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_SEG_DIR = REPO_ROOT / "output" / "capture_reload_each_test_13" / "seed_042" / "seg"
 
 def clean_plane_segmentation(folder_path):
     """
@@ -85,11 +91,10 @@ def clean_plane_segmentation(folder_path):
             print(f"Successfully cleaned {png_file}")
 
         except Exception as e:
-            print(f"Error processing {base_name}: {e}")
+            print(f"Error processing {json_file}: {e}")
 
 if __name__ == "__main__":
-    # --- CONFIGURATION ---
-    # Replace this with the actual path to your folder
-    TARGET_FOLDER = "/home/robot/Workspace/Siemens_Cable_Simulator/output/capture_reload_each_test_2/seg" 
-    
-    clean_plane_segmentation(TARGET_FOLDER)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("folder", nargs="?", default=str(DEFAULT_SEG_DIR))
+    args = parser.parse_args()
+    clean_plane_segmentation(args.folder)

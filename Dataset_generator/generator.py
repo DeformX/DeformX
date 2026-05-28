@@ -4,6 +4,7 @@
 from __future__ import annotations
 
 import gc
+import hashlib
 import os
 import random
 import sys
@@ -22,39 +23,80 @@ class DatasetGenerator:
         self._sim_app = sim_app
         self.cfg = cfg
         self.global_index: int = 0  # global sample id across ALL cameras & frames
-        self._pos_arr: np.ndarray | None = None
-        self._dir_arr: np.ndarray | None = None
-        self._radius_arr: np.ndarray | None = None
+        self._npz_cache: dict[str, tuple[np.ndarray, np.ndarray, np.ndarray, int]] = {}
         self._assets_by_rtag: dict[str, list[str]] | None = None
-        self._end_frame: int | None = None
         self._hdr_candidates: list[str] | None = None
         self._table_textures: list[str] | None = None
         self._asset_paths: list[str] | None = None
+        self._variant_ranges: list[tuple[int, int, tuple[str, str, int]]] | None = None
 
     # -------------------------
     # Public API
     # -------------------------
-    def load_npz_once(self) -> tuple[np.ndarray, np.ndarray, int]:
-        if self._pos_arr is not None and self._dir_arr is not None and self._end_frame is not None:
-            return self._pos_arr, self._dir_arr, self._end_frame
+    def _scene_variants(self) -> tuple[tuple[str, str, int], ...]:
+        specs = tuple(getattr(self.cfg, "scene_variant_specs", ()) or ())
+        if specs:
+            return tuple((str(scene), str(npz_path), int(num_wires)) for scene, npz_path, num_wires in specs)
+        return ((self.cfg.scene_usd, self.cfg.npz_path, int(self.cfg.num_wires)),)
 
-        data = np.load(self.cfg.npz_path)
+    def _stream_seed(self, seed: int, frame: int, stream: str) -> int:
+        key = f"{int(seed)}:{int(frame)}:{stream}".encode("utf-8")
+        return int.from_bytes(hashlib.sha256(key).digest()[:8], "big", signed=False)
+
+    def _stream_rng(self, seed: int, frame: int, stream: str) -> random.Random:
+        return random.Random(self._stream_seed(seed, frame, stream))
+
+    def _load_npz(self, npz_path: str) -> tuple[np.ndarray, np.ndarray, np.ndarray, int]:
+        key = os.path.abspath(npz_path)
+        cached = self._npz_cache.get(key)
+        if cached is not None:
+            return cached
+
+        data = np.load(key)
         pos_arr = data["pos_arr"]
         dir_arr = data["dir_arr"]
         radius_arr = data["radius_arr"]
-
         end_frame = int(pos_arr.shape[0] - 1)
+        self._npz_cache[key] = (pos_arr, dir_arr, radius_arr, end_frame)
+        return self._npz_cache[key]
 
-        self._pos_arr = pos_arr
-        self._dir_arr = dir_arr
-        self._radius_arr = radius_arr
-        self._end_frame = end_frame
+    def load_npz_once(self) -> tuple[np.ndarray, np.ndarray, int]:
+        _, npz_path, _ = self._scene_variants()[0]
+        pos_arr, dir_arr, _, end_frame = self._load_npz(npz_path)
         return pos_arr, dir_arr, end_frame
+
+    def _variant_ranges_once(self) -> list[tuple[int, int, tuple[str, str, int]]]:
+        if self._variant_ranges is not None:
+            return self._variant_ranges
+
+        ranges: list[tuple[int, int, tuple[str, str, int]]] = []
+        start = 0
+        for spec in self._scene_variants():
+            _, npz_path, _ = spec
+            _, _, _, end_frame = self._load_npz(npz_path)
+            count = int(end_frame) + 1
+            ranges.append((start, start + count - 1, spec))
+            start += count
+        self._variant_ranges = ranges
+        return self._variant_ranges
+
+    def global_end_frame(self) -> int:
+        ranges = self._variant_ranges_once()
+        if not ranges:
+            raise RuntimeError("No scene/data variants configured.")
+        return int(ranges[-1][1])
+
+    def _variant_for_global_frame(self, frame: int) -> tuple[str, str, int, int]:
+        for start, end, spec in self._variant_ranges_once():
+            if start <= int(frame) <= end:
+                scene_usd, npz_path, num_wires = spec
+                return scene_usd, npz_path, int(num_wires), int(frame) - start
+        raise ValueError(f"Global frame {frame} out of range [0, {self.global_end_frame()}]")
 
     def list_assets_once(self) -> list[str]:
         if self._asset_paths is not None:
             return self._asset_paths
-        self._asset_paths = self._list_wire_assets_rtag_exact(self.cfg.num_wires, self.cfg.radius_tag)
+        self._asset_paths = self._build_assets_by_rtag_once().get("__all__", [])
         return self._asset_paths
 
     def _build_assets_by_rtag_once(self) -> dict[str, list[str]]:
@@ -87,11 +129,10 @@ class DatasetGenerator:
     def _radius_to_rtag(self, r: float) -> str:
         return f"r{float(r):.3f}"
 
-    def _select_wire_assets_from_radius(self, frame: int) -> list[str]:
-        if self._radius_arr is None:
-            raise RuntimeError("NPZ does not contain radius_arr, cannot select assets by radius.")
-
-        radius_arr = np.array(self._radius_arr, dtype=np.float32)
+    def _select_wire_assets_from_radius(
+        self, radius_arr: np.ndarray, frame: int, num_wires: int, rng: random.Random
+    ) -> list[str]:
+        radius_arr = np.array(radius_arr, dtype=np.float32)
         if radius_arr.ndim != 2:
             raise RuntimeError(f"radius_arr must be 2D (T, W), got shape={radius_arr.shape}")
 
@@ -99,9 +140,9 @@ class DatasetGenerator:
         if frame < 0 or frame >= T:
             raise ValueError(f"frame {frame} out of range [0, {T-1}]")
 
-        n = int(self.cfg.num_wires)
+        n = int(num_wires)
         if W < n:
-            raise RuntimeError(f"radius_arr has W={W} wires, but cfg.num_wires={n}")
+            raise RuntimeError(f"radius_arr has W={W} wires, but requested num_wires={n}")
 
         # Collect all asset paths once and match by radius tag in filename
         all_assets = self._build_assets_by_rtag_once().get("__all__", [])
@@ -120,28 +161,36 @@ class DatasetGenerator:
                     f"No asset matched for wire[{i}] radius={float(r):.6f} (tag='{rtag}'). "
                     f"Please ensure filenames contain '{rtag}'."
                 )
-            chosen_paths.append(random.choice(matches))
+            chosen_paths.append(rng.choice(matches))
 
         return chosen_paths
 
     def render_frame(self, frame: int, render_cfg: RenderConfig) -> None:
-        pos_arr, dir_arr, _ = self.load_npz_once()
-        asset_paths = self._select_wire_assets_from_radius(frame)
+        scene_usd, npz_path, num_wires, local_frame = self._variant_for_global_frame(frame)
+        pos_arr, dir_arr, radius_arr, _ = self._load_npz(npz_path)
 
         # Deterministic per-frame RNG (keeps content deterministic per frame/seed)
-        random.seed(int(render_cfg.seed) + int(frame))
-        np.random.seed(int(render_cfg.seed) + int(frame))
+        np.random.seed(self._stream_seed(render_cfg.seed, frame, "numpy") % (2**32))
+        asset_rng = self._stream_rng(render_cfg.seed, frame, "wire_asset")
+        dome_rng = self._stream_rng(render_cfg.seed, frame, "domelight")
+        light_rng = self._stream_rng(render_cfg.seed, frame, "lights")
+        camera_rng = self._stream_rng(render_cfg.seed, frame, "camera_pick")
+        asset_paths = self._select_wire_assets_from_radius(radius_arr, local_frame, num_wires, asset_rng)
 
-        stage = self._open_scene()
+        print(
+            f"[SCENE] global_frame={frame} local_frame={local_frame} wires={num_wires} "
+            f"scene={os.path.basename(scene_usd)} npz={os.path.basename(npz_path)}"
+        )
+        stage = self._open_scene(scene_usd)
         try:
             skel_paths = self._reference_wires(stage, asset_paths)
-            self._ensure_single_domelight(stage, frame, render_cfg.seed)
+            self._ensure_single_domelight(stage, frame, render_cfg.seed, dome_rng)
 
             if self.cfg.randomize_table_material_per_frame:
                 self._randomize_table_texture_in_place(stage, frame=frame, seed=int(render_cfg.seed))
             self._wait_updates(self.cfg.warmup_after_domelight)
 
-            self._apply_pose_for_frame(stage, asset_paths, skel_paths, pos_arr, dir_arr, frame)
+            self._apply_pose_for_frame(stage, asset_paths, skel_paths, pos_arr, dir_arr, local_frame, num_wires)
             self._wait_updates(self.cfg.warmup_after_pose)
 
             real_cams_all = self._list_user_cameras(stage)
@@ -169,10 +218,10 @@ class DatasetGenerator:
             self.global_index += K
 
             if lights_all:
-                self._set_only_k_lights_on(stage, lights_all, self.cfg.lights_on_per_frame)
+                self._set_only_k_lights_on(stage, lights_all, self.cfg.lights_on_per_frame, light_rng)
             self._wait_updates(self.cfg.warmup_after_lights)
 
-            chosen_real = random.sample(real_cams_all, k=len(proxy_cam_paths))
+            chosen_real = camera_rng.sample(real_cams_all, k=len(proxy_cam_paths))
             self._sync_real_cams_to_proxies(stage, chosen_real, proxy_cam_paths)
             self._wait_updates(self.cfg.warmup_after_cam_sync)
 
@@ -253,14 +302,17 @@ class DatasetGenerator:
 
         Path(self.cfg.capture_out_dir).mkdir(parents=True, exist_ok=True)
 
-        _, _, end_frame_npz = self.load_npz_once()
+        end_frame_global = self.global_end_frame()
         self.list_assets_once()
 
         for f in frames:
-            if int(f) < 0 or int(f) > end_frame_npz:
-                raise ValueError(f"Frame {f} out of range [0, {end_frame_npz}]")
+            if int(f) < 0 or int(f) > end_frame_global:
+                raise ValueError(f"Frame {f} out of range [0, {end_frame_global}]")
 
-        print(f"[INFO] Will render {len(frames)} frame(s). NPZ frames: 0..{end_frame_npz}")
+        print(
+            f"[INFO] Will render {len(frames)} frame(s). "
+            f"Global frames: 0..{end_frame_global} across {len(self._scene_variants())} scene/data variants"
+        )
 
         for f in frames:
             self.render_frame(int(f), render_cfg)
@@ -308,10 +360,11 @@ class DatasetGenerator:
         for _ in range(int(max(0, n))):
             self._sim_app.update()
 
-    def _open_scene(self):
+    def _open_scene(self, scene_usd: str | None = None):
         omni_usd = self._omni_usd()
         ctx = omni_usd.get_context()
-        ctx.open_stage(os.path.abspath(self.cfg.scene_usd))
+        scene_path = os.path.abspath(scene_usd or self.cfg.scene_usd)
+        ctx.open_stage(scene_path)
         self._wait_updates(self.cfg.warmup_after_open)
         stage = ctx.get_stage()
         if stage is None:
@@ -497,10 +550,10 @@ class DatasetGenerator:
         if not hdrs:
             return None
 
-        rng = random.Random(int(seed) + int(frame))
+        rng = self._stream_rng(seed, frame, "hdr_choice")
         return rng.choice(hdrs)
 
-    def _ensure_single_domelight(self, stage, frame: int, seed: int) -> None:
+    def _ensure_single_domelight(self, stage, frame: int, seed: int, rng: random.Random) -> None:
         _, UsdGeom, UsdLux, _, _ = self._usd()
 
         dome = UsdLux.DomeLight.Define(stage, "/World/DomeLight")
@@ -515,7 +568,7 @@ class DatasetGenerator:
             dome.CreateTextureFileAttr(self.cfg.hdr_path)
 
         lo, hi = self.cfg.dome_intensity_range
-        dome.CreateIntensityAttr(float(float(random.uniform(lo, hi))))
+        dome.CreateIntensityAttr(float(float(rng.uniform(lo, hi))))
         dome.CreateExposureAttr(float(self.cfg.dome_exposure))
 
         for prim in stage.Traverse():
@@ -567,7 +620,7 @@ class DatasetGenerator:
         if not textures:
             print("[Warning] No textures found for table randomization.")
             return
-        rng = random.Random(int(seed) + int(frame))
+        rng = self._stream_rng(seed, frame, "table_texture")
         chosen_texture = os.path.abspath(rng.choice(textures))
 
         # 3) Create/override a material under the table prim's Looks scope
@@ -684,7 +737,9 @@ class DatasetGenerator:
                     lights.append(p)
         return sorted(set(lights))
 
-    def _set_only_k_lights_on(self, stage, light_paths: list[str], k: int) -> list[str]:
+    def _set_only_k_lights_on(
+        self, stage, light_paths: list[str], k: int, rng: random.Random
+    ) -> list[str]:
         _, _, UsdLux, _, _ = self._usd()
 
         for p in light_paths:
@@ -696,12 +751,12 @@ class DatasetGenerator:
             return []
 
         k = min(int(k), len(light_paths))
-        chosen = random.sample(light_paths, k=k)
+        chosen = rng.sample(light_paths, k=k)
         lo, hi = self.cfg.light_intensity_range
         for p in chosen:
             prim = stage.GetPrimAtPath(p)
             if prim.IsValid():
-                UsdLux.SphereLight(prim).GetIntensityAttr().Set(float(random.uniform(lo, hi)))
+                UsdLux.SphereLight(prim).GetIntensityAttr().Set(float(rng.uniform(lo, hi)))
         return chosen
 
     # -------------------------
@@ -710,7 +765,7 @@ class DatasetGenerator:
     def _apply_camera_pose_jitter(self, stage, proxy_cam_paths: list[str], frame: int, seed: int) -> None:
         Usd, UsdGeom, _, _, Gf = self._usd()
 
-        rng = random.Random(int(seed) + int(frame) * 10007)
+        rng = self._stream_rng(seed, frame, "camera_pose")
         pos_std = float(getattr(self.cfg, "camera_jitter_pos_std_m", 0.0))
         rot_std_deg = float(getattr(self.cfg, "camera_jitter_rot_std_deg", 0.0))
 
@@ -749,7 +804,7 @@ class DatasetGenerator:
     def _apply_camera_intrinsics_jitter(self, stage, proxy_cam_paths: list[str], frame: int, seed: int) -> None:
         _, UsdGeom, _, _, _ = self._usd()
 
-        rng = random.Random(int(seed) + int(frame) * 10009)
+        rng = self._stream_rng(seed, frame, "camera_intrinsics")
 
         focal_std = float(getattr(self.cfg, "camera_jitter_focal_std_mm", 0.0))
         ap_std = float(getattr(self.cfg, "camera_jitter_aperture_std_mm", 0.0))
@@ -858,6 +913,7 @@ class DatasetGenerator:
         pos_arr: np.ndarray,
         dir_arr: np.ndarray,
         frame: int,
+        num_wires: int,
     ) -> None:
         SkeletonRodDriver = self._import_skeleton_driver()
         Usd, _, _, _, _ = self._usd()
@@ -867,7 +923,7 @@ class DatasetGenerator:
         if frame < 0 or frame >= T:
             raise ValueError(f"frame {frame} out of range [0, {T-1}]")
 
-        w_use = min(self.cfg.num_wires, w_data, len(asset_paths), len(skel_paths))
+        w_use = min(int(num_wires), w_data, len(asset_paths), len(skel_paths))
 
         drivers: list[tuple[int, Any]] = []
         for i in range(int(w_use)):
@@ -1098,4 +1154,3 @@ class DatasetGenerator:
                     shutil.move(str(src), str(dst))
 
     # --- keep your _write_one_rgb/_write_one_seg/_write_one_depth as "return t0" versions ---
-

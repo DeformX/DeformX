@@ -2,16 +2,19 @@
 # -*- coding: utf-8 -*-
 """
 Headless example:
-  /home/robot/isaacsim/python.sh --/app/window/enabled=false --/app/viewport/enabled=false \
-    Dataset_generator/cli.py --frame_start 0 --frame_end 300 --do_seg --accum_steps 80 --accum_subframes 16
+  conda deactivate
+  /home/robot/isaacsim/python.sh Dataset_generator/cli.py \
+    --frame_start 0 --frame_end 300 --do_seg --accum_steps 80 --accum_subframes 16
 
 Single frame:
-  /home/robot/isaacsim/python.sh --/app/window/enabled=false --/app/viewport/enabled=false \
-    Dataset_generator/cli.py --frame 100 --do_seg --accum_steps 120 --accum_subframes 32
+  conda deactivate
+  /home/robot/isaacsim/python.sh Dataset_generator/cli.py \
+    --frame 100 --do_seg --accum_steps 120 --accum_subframes 32
 
 Multi-variant sweep:
-  /home/robot/isaacsim/python.sh --/app/window/enabled=false --/app/viewport/enabled=false \
-    Dataset_generator/cli.py --do_seg --seed 42 --num_variants 10
+  conda deactivate
+  /home/robot/isaacsim/python.sh Dataset_generator/cli.py \
+    --do_seg --seed 42 --num_variants 10
 """
 
 from __future__ import annotations
@@ -84,9 +87,9 @@ def main() -> None:
     from isaacsim import SimulationApp
 
     sim_app = SimulationApp({"headless": bool(cfg.headless)})
-    # Build frames once using the base cfg (npz length is independent of output dir)
+    # Build frames once using the base cfg (global sample range is independent of output dir)
     gen = DatasetGenerator(sim_app, cfg)
-    _, _, end_frame_npz = gen.load_npz_once()
+    end_frame_npz = gen.global_end_frame()
     frames = build_frames(args, end_frame_npz)
 
     for k in range(int(max(1, args.num_variants))):
