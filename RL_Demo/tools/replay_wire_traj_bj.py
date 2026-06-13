@@ -2,7 +2,7 @@
 """Replay a joint trajectory CSV with the Ball-Joint wire environment backend.
 
 Usage:
-  /home/robot/isaacsim/python.sh RL_Demo/tools/replay_wire_traj_bj.py /abs/path/to/traj.csv
+  $ISAAC_PYTHON RL_Demo/tools/replay_wire_traj_bj.py /abs/path/to/traj.csv
 """
 
 from __future__ import annotations
@@ -31,6 +31,7 @@ if str(RL_DEMO_ROOT) not in sys.path:
 PYELASTICA_MESH_ROOT = REPO_ROOT / "PyElastica-Mesh"
 if PYELASTICA_MESH_ROOT.is_dir() and str(PYELASTICA_MESH_ROOT) not in sys.path:
     sys.path.insert(0, str(PYELASTICA_MESH_ROOT))
+import deformx_paths
 
 from RL.envs.wire_swing_bj_env import WireSwingBallJointEnv
 
@@ -177,10 +178,7 @@ def _build_replay_cfg(
         max_visual_nodes=21,
         wire_debug_sphere_radius=0.015,
         wire_debug_sphere_color=[1.0, 0.0, 0.0],
-        wire_usd=(
-            "/home/robot/Workspace/Siemens_Cable_Simulator/usd/"
-            "wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc"
-        ),
+        wire_usd=deformx_paths.wire_usd(),
         sync_reset_ratio=1.0,
     )
     if task_overrides:

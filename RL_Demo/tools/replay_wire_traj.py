@@ -2,7 +2,7 @@
 """Replay a joint trajectory CSV with SkeletonRodDriver wire visualization.
 
 Usage:
-  /home/robot/isaacsim/python.sh RL_Demo/tools/replay_wire_traj.py /abs/path/to/traj.csv
+  $ISAAC_PYTHON RL_Demo/tools/replay_wire_traj.py /abs/path/to/traj.csv
 """
 
 from __future__ import annotations
@@ -26,6 +26,7 @@ if str(REPO_ROOT) not in sys.path:
 PYELASTICA_MESH_ROOT = REPO_ROOT / "PyElastica-Mesh"
 if PYELASTICA_MESH_ROOT.is_dir() and str(PYELASTICA_MESH_ROOT) not in sys.path:
     sys.path.insert(0, str(PYELASTICA_MESH_ROOT))
+import deformx_paths
 
 NUM_ROBOT_DOFS = 6
 JOINT_NAMES = ["shoulder_pan", "shoulder_lift", "elbow", "wrist_1", "wrist_2", "wrist_3"]
@@ -37,10 +38,7 @@ LONG_STICK_RADIUS = 0.010
 ROBOT_OFFSET = np.array([0.0, 0.0, 1.7], dtype=np.float64)
 ROBOT_ORIENT_XYZ_DEG = np.array([-90.0, 0.0, 0.0], dtype=np.float64)
 TARGET_LOCAL = np.array([0.0, 2.0, 1.9], dtype=np.float64)
-WIRE_USD = (
-    "/home/robot/Workspace/Siemens_Cable_Simulator/usd/"
-    "wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc"
-)
+WIRE_USD = deformx_paths.wire_usd()
 
 DEFAULT_PHYS_DT = 1.0 / 500.0
 SETTLE_SECONDS = 1.0
@@ -149,20 +147,7 @@ def _rotation_matrix_to_rotvec(R: np.ndarray) -> np.ndarray:
 
 
 def _resolve_ur5e_usd_path() -> str:
-    local_candidates = [
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-    ]
-    for path in local_candidates:
-        if os.path.exists(path):
-            return path
-    return (
-        "https://omniverse-content-production.s3-us-west-2.amazonaws.com/"
-        "Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd"
-    )
+    return deformx_paths.resolve_ur_robot_usd(prefer="ur5e")
 
 
 def _import_skeleton_driver():

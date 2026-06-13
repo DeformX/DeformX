@@ -20,9 +20,12 @@ SCRIPT_PATH = Path(__file__).resolve()
 SCRIPT_DIR = SCRIPT_PATH.parent
 BUNDLE_ROOT = SCRIPT_DIR.parent
 REPO_ROOT = next(
-    (p for p in (BUNDLE_ROOT, *BUNDLE_ROOT.parents) if (p / "co_sim").is_dir()),
+    (p for p in (BUNDLE_ROOT, *BUNDLE_ROOT.parents) if (p / "deformx_paths.py").is_file()),
     BUNDLE_ROOT.parents[1],
 )
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
+import deformx_paths
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
@@ -54,7 +57,7 @@ parser.add_argument(
 parser.add_argument(
     "--wire_usd",
     type=str,
-    default="/home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc",
+    default=deformx_paths.wire_usd(),
 )
 parser.add_argument("--wire_base_length", type=float, default=1.0)
 parser.add_argument("--wire_n_elem", type=int, default=20)
@@ -539,17 +542,7 @@ def make_frame_state_from_pose(position, director, prev_kin, dt):
 
 
 def _resolve_ur5e_usd_path():
-    local_candidates = [
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-    ]
-    for path in local_candidates:
-        if os.path.exists(path):
-            return path
-    return "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd"
+    return deformx_paths.resolve_ur_robot_usd(prefer="ur5e")
 
 
 def find_link_path(stage, robot_path, link_name):

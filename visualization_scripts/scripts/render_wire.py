@@ -1,7 +1,15 @@
 from __future__ import annotations
 
 import argparse
+import sys
+from pathlib import Path
+
 import numpy as np
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
 
 
 def parse_args() -> argparse.Namespace:
@@ -13,13 +21,16 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--stage_usd",
         type=str,
-        default="/home/robot/Workspace/Siemens_Cable_Simulator/usd/demo_wire_40.usdc",
+        default=str(deformx_paths.ASSET_ROOT / "usd" / "demo_wire_40.usdc"),
         help="USD stage containing the wire skeleton.",
     )
     parser.add_argument(
         "--npz_path",
         type=str,
-        default="/home/robot/Workspace/Siemens_Cable_Simulator/data/swing_n40_z-0.013_d1200_yn500000_dp0.02_k100_nu1_1_state.npz",
+        default=str(
+            deformx_paths.DATA_ROOT
+            / "swing_n40_z-0.013_d1200_yn500000_dp0.02_k100_nu1_1_state.npz"
+        ),
         help="Input trajectory npz file.",
     )
     parser.add_argument(

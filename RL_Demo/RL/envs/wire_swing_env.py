@@ -20,6 +20,7 @@ import numpy as np
 REPO_ROOT = Path(__file__).resolve().parents[3]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
+import deformx_paths
 PYELASTICA_MESH_ROOT = REPO_ROOT / "PyElastica-Mesh"
 if PYELASTICA_MESH_ROOT.is_dir() and str(PYELASTICA_MESH_ROOT) not in sys.path:
     sys.path.insert(0, str(PYELASTICA_MESH_ROOT))
@@ -75,20 +76,7 @@ def _rotation_matrix_to_rotvec(R: np.ndarray) -> np.ndarray:
 
 
 def _resolve_ur5e_usd_path() -> str:
-    local_candidates = [
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-    ]
-    for path in local_candidates:
-        if os.path.exists(path):
-            return path
-    return (
-        "https://omniverse-content-production.s3-us-west-2.amazonaws.com/"
-        "Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd"
-    )
+    return deformx_paths.resolve_ur_robot_usd(prefer="ur5e")
 
 
 class WireSwingEnv:
@@ -298,13 +286,8 @@ class WireSwingEnv:
             self.wire_visual_mode = "none"
         if not self.enable_wire_visual:
             self.wire_visual_mode = "none"
-        self.wire_usd = str(
-            getattr(
-                cfg,
-                "wire_usd",
-                "/home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc",
-            )
-        )
+        _wire_usd = getattr(cfg, "wire_usd", None)
+        self.wire_usd = str(_wire_usd) if _wire_usd else deformx_paths.wire_usd()
         if self.wire_visual_mode == "skeleton" and not os.path.isfile(self.wire_usd):
             print(f"[WireSwingEnv] wire_usd not found, disable visual driver: {self.wire_usd}")
             self.wire_visual_mode = "none"

@@ -40,7 +40,7 @@ success_export_prefix: success_episode
 # optional Weights & Biases logging
 wandb:
   enabled: true
-  project: cosseratx-rl
+  project: deformx-rl
   entity: ""
   run_name: ""
   mode: online

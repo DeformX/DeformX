@@ -17,12 +17,22 @@ import argparse
 import glob
 import os
 import sys
+from pathlib import Path
+
 import cv2
 
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
 
-# 默认值与 render_datacenter.py 保持一致
-DEFAULT_IMAGE_DIR = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/renders/rgb"
-DEFAULT_OUTPUT = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/renders/output.mp4"
+
+# 默认值与 render_datacenter.py 保持一致（可用 DEFORMX_DATA_ROOT 覆盖）
+_DC_RENDERS = deformx_paths.env_path(
+    "DEFORMX_DATA_ROOT", "Dataset_generator_datacenter", "data"
+) / "renders"
+DEFAULT_IMAGE_DIR = str(_DC_RENDERS / "rgb")
+DEFAULT_OUTPUT = str(_DC_RENDERS / "output.mp4")
 DEFAULT_FPS = 30  # render_datacenter.py 中 fps = 5
 
 

@@ -13,10 +13,22 @@ To the format expected by the original test_drop_multi_diff_rods.py:
 import numpy as np
 import sys
 import os
+from pathlib import Path
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
 
 # ============ CONFIG ============
-INPUT_NPZ  = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/npz_file/easy.npz"
-OUTPUT_NPZ = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/npz_file/easy_converted.npz"
+# Override with DEFORMX_DATA_ROOT (or pass full paths via env) for portability.
+_DC_DATA = deformx_paths.env_path(
+    "DEFORMX_DATA_ROOT", "Dataset_generator_datacenter", "data"
+)
+INPUT_NPZ = os.environ.get("DEFORMX_INPUT_NPZ", str(_DC_DATA / "npz_file" / "easy.npz"))
+OUTPUT_NPZ = os.environ.get(
+    "DEFORMX_OUTPUT_NPZ", str(_DC_DATA / "npz_file" / "easy_converted.npz")
+)
 # ================================
 
 data = np.load(INPUT_NPZ)

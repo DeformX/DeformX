@@ -6,6 +6,7 @@ import argparse
 import csv
 import json
 import math
+import os
 import subprocess
 import sys
 from datetime import datetime
@@ -178,7 +179,7 @@ def main() -> int:
         base_cfg = json.load(f)
 
     replay_script = here / "replay_whip_traj_wire_end_calibration.py"
-    isaac_python = Path("/home/robot/isaacsim/python.sh")
+    isaac_python = Path(os.environ.get("ISAAC_PYTHON", "isaacsim/python.sh"))
     summary_rows = []
 
     total_cases = len(densities) * len(youngs_vals)

@@ -96,4 +96,7 @@ max_visual_envs: 1
 max_visual_nodes: 21
 wire_debug_sphere_radius: 0.015
 wire_debug_sphere_color: [1.0, 0.0, 0.0]
-wire_usd: /home/robot/Workspace/Siemens_Cable_Simulator/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc
+# Wire USD for skeleton visualization. Resolved from $DEFORMX_WIRE_USD, else a
+# repo-relative default (see deformx_paths.wire_usd()). Override here or via
+# `task.wire_usd=/abs/path/to/wire.usdc` if your asset lives elsewhere.
+wire_usd: ${oc.env:DEFORMX_WIRE_USD,null}

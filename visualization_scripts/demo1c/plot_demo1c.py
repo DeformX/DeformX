@@ -527,7 +527,7 @@ def _build_arg_parser():
     parser.add_argument(
         "--npz",
         type=str,
-        default="/home/robot/Workspace/CosseratX/visualization_scripts/data/rope_demo_02212026_1.2Hz_18deg_240Hz_wire_joint_positions.npz",
+        default=str(Path(__file__).resolve().parents[2] / "visualization_scripts" / "data" / "rope_demo_02212026_1.2Hz_18deg_240Hz_wire_joint_positions.npz"),
         help="Input NPZ path.",
     )
     parser.add_argument(

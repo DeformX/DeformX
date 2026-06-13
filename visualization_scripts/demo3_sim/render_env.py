@@ -8,8 +8,8 @@ Minimal Isaac Sim scene:
 - Keeps running so you can tweak parameters and rerun quickly
 
 Run:
-  /home/robot/isaacsim/python.sh minimal_arm_camera_env.py
-  /home/robot/isaacsim/python.sh minimal_arm_camera_env.py --headless
+  $ISAAC_PYTHON visualization_scripts/demo3_sim/render_env.py
+  $ISAAC_PYTHON visualization_scripts/demo3_sim/render_env.py --headless
 """
 
 from __future__ import annotations
@@ -21,6 +21,11 @@ import time
 from pathlib import Path
 
 import numpy as np
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
 
 
 # -------------------------
@@ -44,22 +49,8 @@ RENDER_DT = 1.0 / 60.0
 
 
 def resolve_ur5e_usd_path() -> str:
-    """Try local Isaac Sim assets first, otherwise fall back to an online USD."""
-    local_candidates = [
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim_assets/Assets/Isaac/5.1/Isaac/Robots/UniversalRobots/ur5/ur5.usd",
-        "/home/robot/isaacsim/Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5e/ur5e.usd",
-    ]
-    for p in local_candidates:
-        if os.path.exists(p):
-            return p
-    # fallback
-    return (
-        "https://omniverse-content-production.s3-us-west-2.amazonaws.com/"
-        "Assets/Isaac/4.5/Isaac/Robots/UniversalRobots/ur5/ur5.usd"
-    )
+    """Resolve the UR5e USD path portably (local Isaac assets, else online USD)."""
+    return deformx_paths.resolve_ur_robot_usd(prefer="ur5e")
 
 
 def main():

@@ -10,10 +10,26 @@ Isaac Sim 4.5 Standalone – with RGB capture
 - Renders RGB per frame from a specified camera
 
 Run:
-  /home/robot/isaacsim/python.sh test_drop_multi_diff_rods.py
+  $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_datacenter_rgb_only.py
+
+Paths below default to repo-relative locations and can be overridden with the
+DEFORMX_* / ISAAC_* environment variables (see deformx_paths.py).
 """
 
 from __future__ import annotations
+
+import sys
+from pathlib import Path
+
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
+
+_DC_DATA = deformx_paths.env_path(
+    "DEFORMX_DATA_ROOT", "Dataset_generator_datacenter", "data"
+)
+
 from isaacsim import SimulationApp
 
 simulation_app = SimulationApp({"headless": True})
@@ -29,8 +45,8 @@ from rod_skel_driver import SkeletonRodDriver
 # ============================================================
 # CONFIG
 # ============================================================
-CABLE_ASSET_PATH = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/cables/data cernter cable_blue.usdc"
-NPZ_PATH = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/npz_file/hard.npz"
+CABLE_ASSET_PATH = str(_DC_DATA / "cables" / "data cernter cable_blue.usdc")
+NPZ_PATH = str(_DC_DATA / "npz_file" / "hard.npz")
 
 OFFSET_MODE = "line"
 OFFSET_STEP = 0.00
@@ -39,7 +55,7 @@ ASSUME_CHAIN_PARENT = True
 
 # Unit scale: cable asset & NPZ positions are in m, background scene is in mm.
 POS_SCALE = 100.0
-HDR_PATH = "/home/robot/Downloads/charolettenbrunn_park_4k.hdr"
+HDR_PATH = deformx_paths.hdr_path()
 DOME_INTENSITY = 500.0
 DOME_EXPOSURE = 0.0
 EXPORT_STAGE_PATH = ""
@@ -47,8 +63,8 @@ SKIP_MISMATCH_WIRES = True
 
 # Background scene USDs: list of (path, scale) tuples
 BACKGROUND_USDS = [
-    ("/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/Datacenter_NVD@10012/Assets/DigitalTwin/Assets/Datacenter/Facilities/Stages/Data_Hall/DataHall_Full_01.usd", 1.0),
-    ("/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/data_center_scene.usdc", 100.0),
+    (str(_DC_DATA / "Datacenter_NVD@10012/Assets/DigitalTwin/Assets/Datacenter/Facilities/Stages/Data_Hall/DataHall_Full_01.usd"), 1.0),
+    (str(_DC_DATA / "data_center_scene.usdc"), 100.0),
 ]
 
 # ---- Camera & Rendering Config ----
@@ -62,7 +78,7 @@ RENDER_HEIGHT = 1024
 CAPTURE_FRAMES = "all"
 
 # Output directory for rendered images
-RENDER_OUTPUT_DIR = "/home/robot/Workspace/CosseratX/Dataset_generator_datacenter/data/renders"
+RENDER_OUTPUT_DIR = str(_DC_DATA / "renders")
 
 # Number of app.update() calls before each frame capture to avoid ghosting
 SETTLE_FRAMES = 400

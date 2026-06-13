@@ -2,7 +2,7 @@
 """Replay a joint trajectory CSV after adding random noise to commanded actions.
 
 Usage:
-  /home/robot/isaacsim/python.sh RL_Demo/tools/replay_wire_traj_random_noise.py /abs/path/to/traj.csv
+  $ISAAC_PYTHON RL_Demo/tools/replay_wire_traj_random_noise.py /abs/path/to/traj.csv
 """
 
 from __future__ import annotations

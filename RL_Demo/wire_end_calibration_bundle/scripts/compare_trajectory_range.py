@@ -14,6 +14,9 @@ from pathlib import Path
 
 import numpy as np
 
+_BUNDLE_ROOT = Path(__file__).resolve().parents[1]
+_OUT_DIR = _BUNDLE_ROOT / "outputs"
+
 
 def _normalize_field_name(name: str) -> str:
     return "".join(ch.lower() for ch in str(name) if ch.isalnum())
@@ -188,13 +191,13 @@ def main():
     parser.add_argument(
         "--sim_csv",
         type=str,
-        default="/home/robot/Workspace/PyElastica-Mesh/mytest/whip_wire_end_positions.csv",
+        default=str(_OUT_DIR / "whip_wire_end_positions.csv"),
         help="Simulation CSV (e.g., whip_wire_end_positions.csv)",
     )
     parser.add_argument(
         "--ref_csv",
         type=str,
-        default="/home/robot/Workspace/PyElastica-Mesh/mytest/whipping_high_1_001_stacked.csv",
+        default=str(_BUNDLE_ROOT / "data" / "reference" / "whipping_high_1_001_stacked.csv"),
         help="Reference CSV with time + X,Y,Z",
     )
     parser.add_argument("--t_start", type=float, default=0.0, help="Comparison range start time [s]")
@@ -213,13 +216,13 @@ def main():
     parser.add_argument(
         "--out_csv",
         type=str,
-        default="/home/robot/Workspace/PyElastica-Mesh/mytest/trajectory_error_aligned.csv",
+        default=str(_OUT_DIR / "trajectory_error_aligned.csv"),
         help="Output aligned comparison CSV",
     )
     parser.add_argument(
         "--out_plot",
         type=str,
-        default="/home/robot/Workspace/PyElastica-Mesh/mytest/trajectory_error_plot.png",
+        default=str(_OUT_DIR / "trajectory_error_plot.png"),
         help="Output error plot PNG",
     )
     args = parser.parse_args()

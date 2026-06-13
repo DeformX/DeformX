@@ -1,7 +1,17 @@
+import os
+import sys
+
 import numpy as np
 import matplotlib.pyplot as plt
 
-d = np.load("/home/robot/Workspace/Siemens_Cable_Simulator/archive/dep_002752.npy")   # 形状一般是 (H, W) 或 (H, W, 1)
+# Depth .npy to visualize: pass as the first CLI arg or set DEFORMX_DEPTH_NPY.
+_depth_npy = sys.argv[1] if len(sys.argv) > 1 else os.environ.get("DEFORMX_DEPTH_NPY")
+if not _depth_npy:
+    raise SystemExit(
+        "Usage: python visualize_depth.py <depth.npy>  (or set DEFORMX_DEPTH_NPY)"
+    )
+
+d = np.load(_depth_npy)   # 形状一般是 (H, W) 或 (H, W, 1)
 d = np.squeeze(d).astype(np.float32, copy=False)
 
 valid = np.isfinite(d)  # 排除 inf/nan

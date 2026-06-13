@@ -14,13 +14,18 @@ from pathlib import Path
 import numpy as np
 import numpy.testing  # Keep numpy.testing bound to the same NumPy before Kit mutates import paths.
 
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--headless", action="store_true")
 parser.add_argument("--physics_gpu", type=int, default=0)
 parser.add_argument(
     "--wire_usd",
     type=str,
-    default="/home/robot/Workspace/Siemens_Cable_Simulator/usd/skeleton_mesh_rod_collisions_20_l1.5_r0.005.usdc",
+    default=str(deformx_paths.ASSET_ROOT / "usd" / "skeleton_mesh_rod_collisions_20_l1.5_r0.005.usdc"),
 )
 parser.add_argument("--max_steps", type=int, default=0, help="Stop after N steps (0 = run forever)")
 args, _ = parser.parse_known_args()

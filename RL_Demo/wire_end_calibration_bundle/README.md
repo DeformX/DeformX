@@ -13,7 +13,7 @@ Organized files for whip trajectory replay, wire-end calibration, comparison, an
 - outputs/videos/: generated 3D videos
 
 ## Main command (example)
-/home/robot/isaacsim/python.sh scripts/replay_whip_traj_wire_end_calibration.py \
+$ISAAC_PYTHON scripts/replay_whip_traj_wire_end_calibration.py \
   --headless \
   --traj_csv data/trajectory/whip_traj_high.csv \
   --ref_csv "data/reference/whipping_high_1_001_stacked_transformed (2).csv" \

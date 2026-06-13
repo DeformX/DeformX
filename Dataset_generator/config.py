@@ -1,15 +1,22 @@
 from __future__ import annotations
 
+import sys
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Tuple
 
+# Make the repo-root path helper importable whether this module is run as part
+# of the package or as a plain script path.
+_REPO_ROOT = Path(__file__).resolve().parents[1]
+if str(_REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(_REPO_ROOT))
+import deformx_paths
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
-ASSET_ROOT = REPO_ROOT / "asset_wireseg32k"
+REPO_ROOT = deformx_paths.REPO_ROOT
+ASSET_ROOT = deformx_paths.ASSET_ROOT
 USD_ROOT = ASSET_ROOT / "usd"
-DATA_ROOT = REPO_ROOT / "Dataset_generator" / "data"
-OUTPUT_ROOT = REPO_ROOT / "output"
+DATA_ROOT = deformx_paths.env_path("DEFORMX_DATA_ROOT", "Dataset_generator", "data")
+OUTPUT_ROOT = deformx_paths.OUTPUT_ROOT
 
 
 @dataclass(frozen=True)

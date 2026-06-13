@@ -2,7 +2,7 @@
 """Evaluate a PPO checkpoint, export a trajectory CSV, and replay it with wire visualization.
 
 Usage:
-  /home/robot/isaacsim/python.sh RL_Demo/tools/replay_checkpoint_wire_traj.py \
+  $ISAAC_PYTHON RL_Demo/tools/replay_checkpoint_wire_traj.py \
     --checkpoint /abs/path/to/ppo_step_50000.pt
 """
 

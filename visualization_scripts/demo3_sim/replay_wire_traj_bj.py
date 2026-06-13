@@ -2,7 +2,7 @@
 """Replay a joint trajectory CSV with Ball-Joint wire and camera video export.
 
 Usage:
-  /home/robot/isaacsim/python.sh visualization_scripts/demo3_sim/replay_wire_traj_bj.py /abs/path/to/traj.csv
+  $ISAAC_PYTHON visualization_scripts/demo3_sim/replay_wire_traj_bj.py /abs/path/to/traj.csv
 """
 
 from __future__ import annotations

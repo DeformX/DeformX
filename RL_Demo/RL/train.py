@@ -106,7 +106,7 @@ def _setup_wandb(cfg: DictConfig):
             "Install with Isaac Sim python: -m pip install wandb"
         ) from exc
 
-    project = str(getattr(wb_cfg, "project", "cosseratx-rl")).strip() or "cosseratx-rl"
+    project = str(getattr(wb_cfg, "project", "deformx-rl")).strip() or "deformx-rl"
     entity = str(getattr(wb_cfg, "entity", "")).strip() or None
     run_name = str(getattr(wb_cfg, "run_name", "")).strip() or None
     mode = str(getattr(wb_cfg, "mode", "online")).strip() or "online"

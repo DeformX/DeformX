@@ -3,18 +3,21 @@
 """
 Headless example:
   conda deactivate
-  /home/robot/isaacsim/python.sh Dataset_generator/cli.py \
+  $ISAAC_PYTHON Dataset_generator/cli.py \
     --frame_start 0 --frame_end 300 --do_seg --accum_steps 80 --accum_subframes 16
 
 Single frame:
   conda deactivate
-  /home/robot/isaacsim/python.sh Dataset_generator/cli.py \
+  $ISAAC_PYTHON Dataset_generator/cli.py \
     --frame 100 --do_seg --accum_steps 120 --accum_subframes 32
 
 Multi-variant sweep:
   conda deactivate
-  /home/robot/isaacsim/python.sh Dataset_generator/cli.py \
+  $ISAAC_PYTHON Dataset_generator/cli.py \
     --do_seg --seed 42 --num_variants 10
+
+$ISAAC_PYTHON is the path to Isaac Sim's python.sh (e.g.
+export ISAAC_PYTHON=/path/to/isaacsim/python.sh).
 """
 
 from __future__ import annotations

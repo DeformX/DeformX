@@ -1,8 +1,10 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-PYTHON_SH="/home/robot/isaacsim/python.sh"
-BUNDLE_ROOT="/home/robot/Workspace/PyElastica-Mesh/mytest/wire_end_calibration_bundle"
+# Isaac Sim launcher: override with `export ISAAC_PYTHON=/path/to/isaacsim/python.sh`.
+PYTHON_SH="${ISAAC_PYTHON:-isaacsim/python.sh}"
+# Bundle root is the directory containing this script (portable, no hardcoding).
+BUNDLE_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPLAY_SCRIPT="${BUNDLE_ROOT}/scripts/replay_whip_traj_wire_end_calibration.py"
 
 TRAJ_CSV="${BUNDLE_ROOT}/data/trajectory/whip_traj_medium.csv"

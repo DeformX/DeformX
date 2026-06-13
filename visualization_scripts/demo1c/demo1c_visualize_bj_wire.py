@@ -18,13 +18,15 @@ from pathlib import Path
 import numpy as np
 import numpy.testing  # Keep numpy.testing bound before Kit mutates import paths.
 
+_REPO_ROOT = Path(__file__).resolve().parents[2]
+
 parser = argparse.ArgumentParser()
 parser.add_argument("--headless", action="store_true")
 parser.add_argument("--physics_gpu", type=int, default=0)
 parser.add_argument(
     "--traj_npz",
     type=str,
-    default="/home/robot/Workspace/CosseratX/visualization_scripts/data/rope_demo_02212026_1.2Hz_18deg_240Hz.npz",
+    default=str(_REPO_ROOT / "visualization_scripts" / "data" / "rope_demo_02212026_1.2Hz_18deg_240Hz.npz"),
     help="NPZ containing endpoint trajectory in key `pos` with shape (T,3).",
 )
 parser.add_argument("--num_nodes", type=int, default=42, help="Wire node count (must be >= 2).")

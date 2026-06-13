@@ -1,8 +1,30 @@
-# CosseratX
+# DeformX: A Versatile Co-Simulation Framework for Deformable Linear Objects
 
-CosseratX is a research workspace for cable/wire simulation, Isaac Sim rendering, dataset generation, and reinforcement-learning experiments around Cosserat-style and ball-joint wire models.
+DeformX is a co-simulation framework for deformable linear objects (DLOs) such as wires, cables, and ropes. It couples a dedicated **Cosserat rod physics engine** with **NVIDIA Isaac Sim** to deliver DLO simulation that is **physically faithful** and **visually realistic** at the same time, while remaining directly compatible with scalable synthetic data generation and robot-learning pipelines.
 
-The repository contains code only. Large USD assets, generated datasets, logs, checkpoints, and review images are intentionally ignored by git.
+> **Note**
+> We are about to release a major upgrade built on a **Stable Cosserat Rods solver** with full **GPU/CUDA** acceleration, delivering large speedups over the current CPU engine. If you are interested, please star ⭐ this repo to stay tuned.
+
+## 🔥 Updates
+
+* **\[Coming Soon\]** We will release a **GPU/CUDA-accelerated Stable Cosserat Rods solver**. Built on a split position–rotation optimization scheme with a closed-form Gauss–Seidel quasi-static orientation update, it stays stable under large stiffness parameters and large time steps while supporting GPU parallelization. This **massively accelerates** simulation and helps eliminate the time-scale discrepancy between Isaac Sim and the rod engine. ⭐ Star this repo to be notified.
+* **\[Jun 2026\]** We open-sourced **DeformX**, the co-simulation framework integrating a dedicated Cosserat rod engine with NVIDIA Isaac Sim, together with the dataset-generation and RL tooling in this repository.
+* **\[Jun 2026\]** We released the **WireSeg-32k** generation pipeline — a synthetic wire instance segmentation dataset (32k RGB images, depth maps, and per-wire instance masks).
+
+## Why DeformX?
+
+Existing DLO simulators rarely satisfy three requirements at once: visual realism for perception, physical fidelity under gravity/contact/manipulation, and compatibility with robot-learning frameworks. Procedural tools (e.g. Bézier curves or connected cylinders in Blender) look plausible but lack physically grounded deformation; rigid-link or generic soft-body physics oversimplify the bending, twisting, and shear mechanics of slender elastic structures. DeformX is, to the best of our knowledge, the first framework to unify all three.
+
+Crucially, because DLOs are visualized as meshes skinned to the rod, DeformX also supports **direct import of real DLO CAD assets** — unlike procedural or primitive-based pipelines that cannot use reusable CAD geometry. This further improves visual realism and lets you build diverse, photorealistic cables from existing CAD models.
+
+### Key Advantages
+
+* **Physically faithful Cosserat rod dynamics.** A dedicated Cosserat rod engine explicitly captures stretching, shearing, bending, and twisting of 1D continua — reproducing characteristic behaviors such as gravity-induced equilibria, curvature propagation, and torsion–bending coupling.
+* **Interpretable material parameters, minimal tuning.** Dynamics are driven by physically meaningful properties (Young's modulus, shear modulus) rather than hand-tuned joint stiffness/damping, giving a clear link between simulation and real materials.
+* **Free-form mesh contact.** DLOs interact with arbitrary free-form meshes via a penalty-based contact formulation, accelerated by a Bounding Volume Hierarchy (BVH) with AABB broad-phase pruning and robust repulsion handling for watertight meshes.
+* **CAD-quality visualization via mesh skinning.** Discrete rod deformations are skinned onto smooth tubular meshes, so you can import real DLO CAD assets and render them photorealistically in Isaac Sim while staying fully consistent with the underlying rod dynamics.
+* **Stable multi-rate co-simulation.** A multi-rate scheme advances fine-grained DLO dynamics within each Isaac Sim step and feeds back integrated contact wrenches/impulses, enabling stable bidirectional coupling across disparate time scales.
+* **Built for robot learning.** The same modular interface powers interactive authoring, headless execution, large-scale dataset generation, and closed-loop RL training/evaluation.
 
 ## Repository Layout
 
@@ -47,40 +69,110 @@ The ignored asset/data folders must be restored separately before rendering or t
 
 ## Environment Setup
 
-### Non-Isaac Utilities
+DeformX uses **two separate Python environments** — using the right one for each task is the most common source of confusion:
 
-Use `uv` for normal Python utilities such as dataset organization, segmentation percentage QA, and contact-sheet scripts.
+| Environment | Use it for | Python |
+|---|---|---|
+| **`uv` virtualenv** | Lightweight CPU utilities: dataset organization, segmentation QA, plotting/contact sheets | system Python 3.10–3.12 |
+| **Isaac Sim Python** (`python.sh`) | Anything importing Isaac Sim / Omniverse / the Cosserat rod engine: rendering, dataset generation, RL training & eval, visualization | bundled with Isaac Sim |
+
+### 1. Prerequisites
+
+| Component | Requirement |
+|---|---|
+| OS | Linux (tested on Ubuntu 22.04) |
+| Python | 3.10 – 3.12 (for the `uv` utilities) |
+| NVIDIA Isaac Sim | 4.5 or 5.x, with its bundled `python.sh` |
+| GPU | NVIDIA GPU with a recent CUDA driver (required by Isaac Sim) |
+| [`uv`](https://github.com/astral-sh/uv) | package manager for the utility env (`python3 -m pip install uv` if missing) |
+
+Isaac Sim is **not** a pip package — download it from NVIDIA and note the path to its `python.sh` launcher.
+
+### 2. Clone the repository (with submodules)
+
+The Cosserat rod engine lives in the **`PyElastica-Mesh` submodule**, so you must clone recursively. A plain `git clone` leaves that directory empty and nothing will run.
 
 ```bash
-cd /path/to/CosseratX
-uv sync
+git clone --recursive git@github.com:DeformX/DeformX.git
+cd DeformX
+```
+
+Already cloned without `--recursive`? Pull the submodule in:
+
+```bash
+git submodule update --init --recursive
+```
+
+### 3. Utility environment (`uv`, CPU-only)
+
+For dataset organization, QA, and plotting scripts that don't need Isaac Sim:
+
+```bash
+uv sync                          # core utilities
+uv sync --extra rl --extra dev   # optional: RL + dev extras (torch, wandb, pytest, ruff)
 source .venv/bin/activate
 ```
 
-Optional RL/development dependencies:
+### 4. Isaac Sim runtime environment
+
+Rendering, dataset generation, RL, and visualization must run with **Isaac Sim's Python**, not the `uv` venv. Point `ISAAC_PYTHON` at the launcher and install the extra deps into it. Isaac Sim/Omniverse modules (`isaacsim`, `omni`, `pxr`, `carb`) ship with Isaac Sim and are not pip-installable.
 
 ```bash
-uv sync --extra rl --extra dev
+export ISAAC_PYTHON=/path/to/isaacsim/python.sh
+
+# App-level dependencies used by the generators and RL:
+$ISAAC_PYTHON -m pip install hydra-core omegaconf pillow opencv-python pyyaml wandb
+
+# Cosserat rod engine dependencies (PyElastica-Mesh builds on PyElastica):
+$ISAAC_PYTHON -m pip install numba scipy tqdm matplotlib open3d
 ```
 
-If `uv` is not installed:
+The `PyElastica-Mesh` engine is added to the Python path automatically by the scripts, so it needs no separate install — only the dependencies above.
+
+### 5. Restore assets and configure paths
+
+Large assets and datasets are not tracked in git (see [Tracked vs External Data](#tracked-vs-external-data)) and must be restored into `asset_wireseg32k/` before rendering or training. Every path is overridable via environment variables — see [Configuration](#configuration-paths--environment-variables).
+
+### Quick sanity check
 
 ```bash
-python3 -m pip install uv
+# Utility env: confirm path resolution works (prints repo-relative defaults)
+python -c "import deformx_paths as d; print(d.REPO_ROOT, d.ASSET_ROOT)"
+
+# Isaac env (run from the repo root): confirm the rod engine imports
+PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON -c "from co_sim.engine import CoSimEngine; print('rod engine OK')"
 ```
 
-### Isaac Sim Runtime
+## Configuration (Paths & Environment Variables)
 
-Rendering and RL simulation must run with Isaac Sim Python, not the normal `uv` virtual environment.
+DeformX contains **no machine-specific hardcoded paths**. Every location is
+resolved by the helper module `deformx_paths.py` at the repository root, which
+falls back to sensible **repo-relative defaults** so the code runs right after
+`git clone`. Override any of the following environment variables only if your
+assets/data live elsewhere:
+
+| Variable | Purpose | Default |
+|---|---|---|
+| `ISAAC_PYTHON` | Path to Isaac Sim's `python.sh` launcher | `isaacsim/python.sh` |
+| `ISAAC_ASSETS_ROOT` | Local Isaac `Assets/Isaac` tree (for robot USDs). If unset, DeformX queries Isaac Sim's own assets root and finally falls back to the public Omniverse S3 mirror. | unset |
+| `DEFORMX_ROOT` | Repository root | auto-detected |
+| `DEFORMX_ASSET_ROOT` | Large render/simulation assets (USDs, textures, trajectories) | `<repo>/asset_wireseg32k` |
+| `DEFORMX_DATA_ROOT` | Local working data (npz, renders) | `<repo>/data` |
+| `DEFORMX_OUTPUT_ROOT` | Generated outputs | `<repo>/output` |
+| `DEFORMX_WIRE_USD` | Wire USD used by RL/visualization demos | `<asset_root>/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc` |
+| `DEFORMX_HDR` | HDR dome-light image for datacenter renders | `<asset_root>/hdr/dome.hdr` |
 
 Example:
 
 ```bash
-ISAAC_PYTHON=/path/to/isaacsim/python.sh
-$ISAAC_PYTHON -m pip install hydra-core omegaconf pillow opencv-python pyyaml wandb
+export ISAAC_PYTHON=/opt/isaacsim/python.sh
+export DEFORMX_ASSET_ROOT=/data/deformx/assets
+$ISAAC_PYTHON Dataset_generator/cli.py --frame 0 --do_seg
 ```
 
-Isaac Sim/Omniverse modules such as `isaacsim`, `omni`, `pxr`, and `carb` are provided by Isaac Sim and are not listed as normal PyPI dependencies.
+Hydra-based RL configs read the same variables via interpolation (e.g.
+`wire_usd: ${oc.env:DEFORMX_WIRE_USD,null}`), and you can always override per-run
+on the command line, e.g. `task.wire_usd=/abs/path/to/wire.usdc`.
 
 ## Asset Layout
 
@@ -210,41 +302,6 @@ $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.
   --max_seeds 4
 ```
 
-## Datacenter Organization and Filtering
-
-Organize raw datacenter Replicator output:
-
-```bash
-python Dataset_generator_datacenter/scripts/organize_wireseg32k_datacenter.py \
-  --root output/wireseg32k/datacenter_formal \
-  --out output/wireseg32k/datacenter_formal_organized
-```
-
-Survey segmentation percentage:
-
-```bash
-python Dataset_generator/segment_percentage_survey.py \
-  --root output/wireseg32k/datacenter_formal_organized \
-  --out output/wireseg32k/review/segment_percentage_datacenter \
-  --threshold 2.0 \
-  --all-mapped
-```
-
-Filter and merge original datacenter data with refill data, keeping only samples with `wire_percent > 2.0` and capping each config at 500 samples:
-
-```bash
-python Dataset_generator/filter_reorganize_by_segmentation.py \
-  --source /path/to/base/wireseg32k_organized/datacenter_formal \
-  --source /path/to/refill/datacenter_refill_organized \
-  --out /path/to/final/wireseg32k_organized/datacenter_formal \
-  --threshold 2.0 \
-  --target-per-config 500 \
-  --selection source_order \
-  --copy-mode hardlink
-```
-
-The filter writes a new organized dataset and does not modify the input sources.
-
 ## Final Organized Dataset Structure
 
 Expected final structure:
@@ -299,7 +356,7 @@ Minimal example:
 
 ```bash
 cd RL_Demo
-/path/to/isaacsim/python.sh -m RL.train task=wire_swing_bj algo=ppo render=false total_steps=1000
+$ISAAC_PYTHON -m RL.train task=wire_swing_bj algo=ppo render=false total_steps=1000
 ```
 
 ## Release Checklist
@@ -323,9 +380,21 @@ PY
 Recommended checks:
 
 ```bash
-python Dataset_generator/segment_percentage_survey.py --help
-python Dataset_generator/filter_reorganize_by_segmentation.py --help
-python Dataset_generator_datacenter/scripts/organize_wireseg32k_datacenter.py --help
+python Dataset_generator/organize_after_run.py --help
+python Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.py --help
 ```
 
 Do not commit generated datasets, raw renders, logs, checkpoints, or local asset folders.
+
+## Citation
+
+If you find DeformX useful, please consider citing our work:
+
+```bibtex
+@inproceedings{deformx,
+  title     = {DeformX: A Versatile Co-Simulation Framework for Deformable Linear Objects},
+  author    = {Yang, Yi and Fei, Xiang and Wang, Lehong and Li, Chenhao and Dai, Zilin and Kou, Henry and Li, Lu and Choset, Howie},
+  booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
+  year      = {2026}
+}
+```

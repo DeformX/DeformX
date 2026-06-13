@@ -1,7 +1,7 @@
 [project]
-name = "cosseratx"
+name = "deformx"
 version = "0.1.0"
-description = "Wire simulation, Isaac Sim rendering, dataset generation, and RL utilities for CosseratX."
+description = "DeformX: co-simulation of deformable linear objects with a Cosserat rod engine and Isaac Sim, plus dataset generation and RL utilities."
 requires-python = ">=3.10,<3.13"
 dependencies = [
     "hydra-core>=1.3",

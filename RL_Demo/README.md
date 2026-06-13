@@ -128,7 +128,7 @@
   algo=ppo \
   render=false \
   wandb.enabled=true \
-  wandb.project=cosseratx-rl
+  wandb.project=deformx-rl
 ```
 
 离线模式：
@@ -170,5 +170,5 @@
 ## 备注
 
 - 大多数任务默认使用 `cuda`，如果机器没有可用 GPU，可以显式传 `device=cpu`，但 Isaac Sim 相关环境通常仍建议在 GPU 环境运行。
-- `wire_swing` 和 `wire_swing_hit_apple` 配置里引用了固定的 `wire_usd` 绝对路径；如果本机资源位置不同，需要先改配置。
+- `wire_swing` 和 `wire_swing_hit_apple` 的 `wire_usd` 现在通过环境变量 `DEFORMX_WIRE_USD` 解析（默认指向仓库相对路径，见根目录 `deformx_paths.py`）。如需自定义，可设置该环境变量，或运行时覆盖 `task.wire_usd=/abs/path/to/wire.usdc`。
 - `wire_swing_bj` 目前是 `conf/config.yaml` 中成功轨迹默认导出路径对应的主要任务。
