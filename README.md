@@ -361,33 +361,6 @@ cd RL_Demo
 $ISAAC_PYTHON -m RL.train task=wire_swing_bj algo=ppo render=false total_steps=1000
 ```
 
-## Release Checklist
-
-Before tagging a release:
-
-```bash
-git status --short
-python3 - <<'PY'
-from pathlib import Path
-roots = ['Dataset_generator', 'Dataset_generator_datacenter', 'RL_Demo', 'scripts', 'visualization_scripts']
-for root in roots:
-    for path in Path(root).rglob('*.py'):
-        if '__pycache__' in path.parts:
-            continue
-        compile(path.read_text(encoding='utf-8'), str(path), 'exec')
-print('syntax_ok')
-PY
-```
-
-Recommended checks:
-
-```bash
-python Dataset_generator/organize_after_run.py --help
-python Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.py --help
-```
-
-Do not commit generated datasets, raw renders, logs, checkpoints, or local asset folders.
-
 ## Citation
 
 If you find DeformX useful, please consider citing our work:
