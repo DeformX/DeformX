@@ -9,6 +9,9 @@ import numpy as np
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
+for _extra in (_REPO_ROOT / "RL_Demo", _REPO_ROOT / "PyElastica-Mesh"):
+    if _extra.is_dir() and str(_extra) not in sys.path:
+        sys.path.insert(0, str(_extra))
 import deformx_paths
 
 
@@ -21,17 +24,14 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--stage_usd",
         type=str,
-        default=str(deformx_paths.ASSET_ROOT / "usd" / "demo_wire_40.usdc"),
+        default=deformx_paths.wire_usd(),
         help="USD stage containing the wire skeleton.",
     )
     parser.add_argument(
         "--npz_path",
         type=str,
-        default=str(
-            deformx_paths.DATA_ROOT
-            / "swing_n40_z-0.013_d1200_yn500000_dp0.02_k100_nu1_1_state.npz"
-        ),
-        help="Input trajectory npz file.",
+        default="",
+        help="Input trajectory npz file. If omitted, a tiny synthetic trajectory is used.",
     )
     parser.add_argument(
         "--skeleton_path",
@@ -52,10 +52,7 @@ from pxr import Usd, UsdLux, UsdSkel  # noqa: E402
 import omni.usd  # noqa: E402
 import omni.timeline  # noqa: E402
 
-try:
-    from archive.rod_skel_driver import SkeletonRodDriver  # noqa: E402
-except ModuleNotFoundError:
-    from rod_skel_driver import SkeletonRodDriver  # noqa: E402
+from RL_Demo.tools.rod_skel_driver_sim import SkeletonRodDriver  # noqa: E402
 
 
 TARGET_INTENSITY = 300.0
@@ -140,18 +137,27 @@ def build_director_per_node(pos_3xn: np.ndarray) -> np.ndarray:
     return dirs
 
 
+def load_or_make_trajectory(npz_path: str, rig_joints: int) -> tuple[np.ndarray, np.ndarray | None]:
+    if npz_path:
+        with np.load(npz_path) as data:
+            print_npz_shapes(data)
+            if "position" not in data or "time" not in data:
+                raise RuntimeError("Expected npz keys: 'position' and 'time'.")
+            source_pos = data["position"]  # (T, 3, N)
+            source_dir = data["director"] if "director" in data else None
+        return source_pos, source_dir
+
+    # Smoke-test fallback: drive the rig with two simple frames so the script can
+    # validate skeleton loading without requiring private trajectory data.
+    x = np.linspace(0.0, 1.0, rig_joints, dtype=np.float64)
+    source_pos = np.zeros((2, 3, rig_joints), dtype=np.float64)
+    source_pos[:, 0, :] = x[None, :]
+    source_pos[1, 2, :] = 0.03 * np.sin(np.linspace(0.0, np.pi, rig_joints))
+    print(f"[Info] No --npz_path provided; using synthetic trajectory with {rig_joints} joints.")
+    return source_pos, None
+
+
 def main() -> None:
-    with np.load(ARGS.npz_path) as data:
-        print_npz_shapes(data)
-        if "position" not in data or "time" not in data:
-            raise RuntimeError("Expected npz keys: 'position' and 'time'.")
-        source_pos = data["position"]  # (T, 3, 41)
-        source_dir = data["director"] if "director" in data else None  # (T, 3, 3, 40)
-
-    T, _, source_nodes = source_pos.shape
-    if source_nodes < 2:
-        raise RuntimeError(f"Invalid source node count: {source_nodes}")
-
     ctx = omni.usd.get_context()
     ctx.open_stage(ARGS.stage_usd)
     for _ in range(60):
@@ -189,6 +195,11 @@ def main() -> None:
     driver._setup_animation()
 
     rig_joints = driver.num_joints
+    source_pos, source_dir = load_or_make_trajectory(ARGS.npz_path, rig_joints)
+    T, _, source_nodes = source_pos.shape
+    if source_nodes < 2:
+        raise RuntimeError(f"Invalid source node count: {source_nodes}")
+
     source_elems = source_nodes - 1
     has_src_dir = source_dir is not None and source_dir.ndim == 4 and source_dir.shape[-1] == source_elems
 

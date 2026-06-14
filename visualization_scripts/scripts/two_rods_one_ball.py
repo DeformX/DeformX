@@ -16,6 +16,9 @@ import numpy.testing  # Keep numpy.testing bound to the same NumPy before Kit mu
 _REPO_ROOT = Path(__file__).resolve().parents[2]
 if str(_REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(_REPO_ROOT))
+for _extra in (_REPO_ROOT / "RL_Demo", _REPO_ROOT / "PyElastica-Mesh"):
+    if _extra.is_dir() and str(_extra) not in sys.path:
+        sys.path.insert(0, str(_extra))
 import deformx_paths
 
 parser = argparse.ArgumentParser()
@@ -24,7 +27,7 @@ parser.add_argument("--physics_gpu", type=int, default=0)
 parser.add_argument(
     "--wire_usd",
     type=str,
-    default=str(deformx_paths.ASSET_ROOT / "usd" / "skeleton_mesh_rod_collisions_20_l1.5_r0.005.usdc"),
+    default=deformx_paths.wire_usd(),
 )
 parser.add_argument("--num_links", type=int, default=20)
 parser.add_argument("--wire_length", type=float, default=1.5)
@@ -32,7 +35,7 @@ parser.add_argument("--wire_radius", type=float, default=0.005)
 parser.add_argument("--max_steps", type=int, default=0, help="Stop after N steps (0 = run forever)")
 args, _ = parser.parse_known_args()
 
-REPO_ROOT = Path(__file__).resolve().parents[1]
+REPO_ROOT = _REPO_ROOT
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -54,7 +57,7 @@ from pxr import Gf, PhysxSchema, Usd, UsdGeom, UsdLux, UsdPhysics, UsdShade
 
 from co_sim.engine import CoSimEngine
 from co_sim.models import CoSimConfig, FrameState
-from rod_skel_driver_test import SkeletonRodDriver
+from RL_Demo.tools.rod_skel_driver_sim import SkeletonRodDriver
 
 PHYSICS_DT = 1.0 / 200.0
 PY_DT = 2.0e-5

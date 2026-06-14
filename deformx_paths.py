@@ -14,8 +14,8 @@ Environment variables (all optional):
                         Default: ``<repo>/data``.
   DEFORMX_OUTPUT_ROOT   Root of generated outputs. Default: ``<repo>/output``.
   DEFORMX_WIRE_USD      Path to the wire USD asset used by RL/visualization.
-                        Default: ``<asset_root>/usd/wire_usdc/wire_usdc/
-                        wire_yellow_s20_r0.005_l1.usdc``.
+                        Default: ``<repo>/usd/wire/
+                        wire_yellow_s20_r0.005_l1_smooth.usdc``.
   DEFORMX_HDR           Path to an HDR dome-light image for datacenter renders.
                         Default: ``<asset_root>/hdr/dome.hdr``.
   ISAAC_PYTHON          Path to Isaac Sim's ``python.sh`` launcher.
@@ -53,6 +53,7 @@ def env_path(var: str, *default_parts: object) -> Path:
 ASSET_ROOT = env_path("DEFORMX_ASSET_ROOT", "asset_wireseg32k")
 DATA_ROOT = env_path("DEFORMX_DATA_ROOT", "data")
 OUTPUT_ROOT = env_path("DEFORMX_OUTPUT_ROOT", "output")
+DEFAULT_WIRE_USD = REPO_ROOT / "usd" / "wire" / "wire_yellow_s20_r0.005_l1_smooth.usdc"
 
 #: Path to Isaac Sim's ``python.sh`` launcher (used by docs/subprocess callers).
 ISAAC_PYTHON = os.environ.get("ISAAC_PYTHON", "isaacsim/python.sh")
@@ -63,9 +64,7 @@ def wire_usd() -> str:
     val = os.environ.get("DEFORMX_WIRE_USD")
     if val:
         return str(Path(val).expanduser())
-    return str(
-        ASSET_ROOT / "usd" / "wire_usdc" / "wire_usdc" / "wire_yellow_s20_r0.005_l1.usdc"
-    )
+    return str(DEFAULT_WIRE_USD)
 
 
 def hdr_path() -> str:

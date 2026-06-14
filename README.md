@@ -38,6 +38,7 @@ visualization_scripts/              Standalone Isaac Sim visualization and repla
 scripts/                            Queue/helper scripts
 PyElastica-Mesh/                    Pinned submodule for PyElastica-Mesh
 asset_wireseg32k/                   External dataset/render assets, ignored by git
+usd/wire/                           Small tracked wire USDs for RL/replay visualization
 output/                             Generated local outputs, ignored by git
 logs/                               Local run logs, ignored by git
 ```
@@ -50,6 +51,7 @@ Tracked in git:
 Python source code
 Hydra configs
 small RL initial states/configs
+small wire USD color set for RL/replay visualization
 submodule pointer for PyElastica-Mesh
 ```
 
@@ -67,7 +69,8 @@ __pycache__/
 *.pyc
 ```
 
-The ignored asset/data folders must be restored separately before rendering or training.
+The ignored asset/data folders must be restored separately before dataset rendering or full experiments.
+RL and replay smoke tests can use the small bundled wire assets under `usd/wire/`.
 
 ## Environment Setup
 
@@ -161,7 +164,7 @@ assets/data live elsewhere:
 | `DEFORMX_ASSET_ROOT` | Large render/simulation assets (USDs, textures, trajectories) | `<repo>/asset_wireseg32k` |
 | `DEFORMX_DATA_ROOT` | Local working data (npz, renders) | `<repo>/data` |
 | `DEFORMX_OUTPUT_ROOT` | Generated outputs | `<repo>/output` |
-| `DEFORMX_WIRE_USD` | Wire USD used by RL/visualization demos | `<asset_root>/usd/wire_usdc/wire_usdc/wire_yellow_s20_r0.005_l1.usdc` |
+| `DEFORMX_WIRE_USD` | Wire USD used by RL/visualization demos | `<repo>/usd/wire/wire_yellow_s20_r0.005_l1_smooth.usdc` |
 | `DEFORMX_HDR` | HDR dome-light image for datacenter renders | `<asset_root>/hdr/dome.hdr` |
 
 Example:
@@ -175,6 +178,16 @@ $ISAAC_PYTHON Dataset_generator/cli.py --frame 0 --do_seg
 Hydra-based RL configs read the same variables via interpolation (e.g.
 `wire_usd: ${oc.env:DEFORMX_WIRE_USD,null}`), and you can always override per-run
 on the command line, e.g. `task.wire_usd=/abs/path/to/wire.usdc`.
+
+Bundled wire USD variants for RL/replay visualization live in:
+
+```text
+usd/wire/
+```
+
+They are intentionally small and tracked so the RL and visualization demos do not
+depend on private local asset paths. Large scene assets and generated datasets
+remain external.
 
 ## Asset Layout
 
