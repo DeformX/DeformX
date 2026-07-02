@@ -189,6 +189,16 @@ They are intentionally small and tracked so the RL and visualization demos do no
 depend on private local asset paths. Large scene assets and generated datasets
 remain external.
 
+## Generating Wire Assets
+
+Wire assets are generated procedurally in Blender: a Python script builds each
+wire as a smooth cylindrical mesh rigged to a bone chain, then exports it to USD
+(`.usdc`). To produce more wires, open Blender's **Scripting** tab, load
+`scripts/batch_generate_wire.py`, and click **Run Script** — it generates and
+exports one `.usdc` per color/radius combination, saving them next to your
+`.blend` file (or wherever `WIRE_EXPORT_DIR` points). The companion
+`scripts/make_wire.py` previews a single wire in-scene without exporting.
+
 ## Asset Layout
 
 Expected high-level asset layout:
