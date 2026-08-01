@@ -1,6 +1,6 @@
 # DeformX: Deformable Linear Objects Simulation
 
-### [🌐 Project Page](https://deformx.github.io/) | [📄 Paper](https://arxiv.org/abs/2606.22116) | [🤗 WireSeg-36K Dataset](https://huggingface.co/datasets/DeformX/WireSeg-36K) | [🤗 Render Assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) | [🎥 Video](https://www.youtube.com/watch?v=CQvS8lQYSS8)
+### [🌐 Project Page](https://deformx.github.io/) | [📄 Paper](https://arxiv.org/abs/2606.22116) | [🤗 WireSeg-36k Dataset](https://huggingface.co/datasets/DeformX/WireSeg-36K) | [🤗 Render Assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) | [🎥 Video](https://www.youtube.com/watch?v=CQvS8lQYSS8)
 
 DeformX is a co-simulation framework for deformable linear objects (DLOs) such as wires, cables, and ropes. It couples a dedicated **Cosserat rod physics engine** with **NVIDIA Isaac Sim** to deliver DLO simulation that is **physically faithful** and **visually realistic** at the same time, while remaining directly compatible with scalable synthetic data generation and robot-learning pipelines.
 
@@ -11,7 +11,7 @@ DeformX is a co-simulation framework for deformable linear objects (DLOs) such a
 
 * **\[Coming Soon\]** We will release a **GPU/CUDA-accelerated Stable Cosserat Rods solver**. Built on a split position–rotation optimization scheme with a closed-form Gauss–Seidel quasi-static orientation update, it stays stable under large stiffness parameters and large time steps while supporting GPU parallelization. This **massively accelerates** simulation and helps eliminate the time-scale discrepancy between Isaac Sim and the rod engine. ⭐ Star this repo to be notified.
 * **\[Jun 2026\]** We open-sourced **DeformX**, the co-simulation framework integrating a dedicated Cosserat rod engine with NVIDIA Isaac Sim, together with the dataset-generation and RL tooling in this repository.
-* **\[Jun 2026\]** We released **[WireSeg-36K](https://huggingface.co/datasets/DeformX/WireSeg-36K)** — a synthetic wire instance segmentation dataset (36k RGB images, depth maps, and per-wire instance masks) — together with its generation pipeline and the [render assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) needed to reproduce it.
+* **\[Jun 2026\]** We released **[WireSeg-36k](https://huggingface.co/datasets/DeformX/WireSeg-36K)** — a synthetic wire instance segmentation dataset (36k RGB images, depth maps, and per-wire instance masks) — together with its generation pipeline and the [render assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) needed to reproduce it.
 
 ## Why DeformX?
 
