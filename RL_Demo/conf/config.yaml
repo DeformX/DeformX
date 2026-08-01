@@ -37,9 +37,11 @@ success_export_limit: 20
 success_export_dir: data/wire_swing_bj_2/success_traj_csv_high_new_2
 success_export_prefix: success_episode
 
-# optional Weights & Biases logging
+# optional Weights & Biases logging.
+# Off by default so a fresh clone trains without needing a wandb account.
+# Enable with: wandb.enabled=true (add wandb.mode=offline to log without a login).
 wandb:
-  enabled: true
+  enabled: false
   project: deformx-rl
   entity: ""
   run_name: ""

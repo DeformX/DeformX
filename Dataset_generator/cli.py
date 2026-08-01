@@ -29,7 +29,6 @@ import sys
 from dataclasses import replace
 from pathlib import Path
 from typing import List
-from delete_plane import clean_plane_segmentation
 
 if __package__ is None or __package__ == "":
     # Allow running as a plain script path: `python Dataset_generator/cli.py ...`
@@ -37,9 +36,11 @@ if __package__ is None or __package__ == "":
     if str(repo_root) not in sys.path:
         sys.path.insert(0, str(repo_root))
     from Dataset_generator.config import RenderConfig, default_config
+    from Dataset_generator.delete_plane import clean_plane_segmentation
     from Dataset_generator.generator import DatasetGenerator
 else:
     from .config import RenderConfig, default_config
+    from .delete_plane import clean_plane_segmentation
     from .generator import DatasetGenerator
 
 
@@ -55,7 +56,55 @@ def parse_args():
     p.add_argument("--accum_steps", type=int, default=80, help="How many accumulation steps (no writing).")
     p.add_argument("--accum_subframes", type=int, default=16, help="rt_subframes per accumulation step (no writing).")
     p.add_argument("--num_variants", type=int, default=1, help="How many seed variants to run.")
+    p.add_argument(
+        "--variant",
+        type=int,
+        default=None,
+        help="Render only one scene variant, by index into GeneratorConfig."
+        "scene_variant_specs (0=drop_n2, 1=drop_n4, 2=drop_n8, 3=hang_n2, 4=hang_n4, "
+        "5=hang_n8). Frame numbers then count from 0 within that variant. Without this "
+        "flag every variant is rendered from one concatenated global frame range.",
+    )
+    p.add_argument("--out_dir", type=str, default=None, help="Override the capture output directory.")
+    p.add_argument(
+        "--cams_sample_per_frame",
+        type=int,
+        default=None,
+        help="Override how many cameras are sampled per frame.",
+    )
     return p.parse_args()
+
+
+def apply_overrides(cfg, args):
+    """Return ``cfg`` with any CLI overrides applied (cfg is a frozen dataclass).
+
+    ``--variant`` narrows ``scene_variant_specs`` to the single selected entry. The
+    generator builds its global frame space by concatenating the frame ranges of every
+    spec in that tuple, so restricting the tuple is what actually pins the render to one
+    scene -- and it makes ``--frame``/``--frame_start``/``--frame_end`` local to that
+    variant instead of indices into the concatenated space.
+    """
+    updates = {}
+
+    if args.variant is not None:
+        specs = cfg.scene_variant_specs
+        if not 0 <= args.variant < len(specs):
+            raise SystemExit(f"--variant {args.variant} out of range [0, {len(specs) - 1}]")
+        spec = specs[args.variant]
+        scene_usd, npz_path, num_wires = spec
+        updates.update(
+            scene_variant_specs=(spec,),
+            scene_usd=scene_usd,
+            npz_path=npz_path,
+            num_wires=num_wires,
+        )
+
+    if args.out_dir is not None:
+        updates["capture_out_dir"] = str(args.out_dir)
+    if args.cams_sample_per_frame is not None:
+        updates["cams_sample_per_frame"] = int(args.cams_sample_per_frame)
+
+    return replace(cfg, **updates) if updates else cfg
 
 
 def build_frames(args, end_frame_npz: int) -> List[int]:
@@ -83,7 +132,7 @@ def cleanup_all_replicator_dirs(base_out: str) -> None:
 def main() -> None:
     args = parse_args()
 
-    cfg = default_config()
+    cfg = apply_overrides(default_config(), args)
     base_out = Path(cfg.capture_out_dir)
 
     # Must be created before importing/using most omni.* APIs.

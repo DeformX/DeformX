@@ -9,7 +9,7 @@ Environment variables (all optional):
 
   DEFORMX_ROOT          Repository root. Default: auto-detected from this file.
   DEFORMX_ASSET_ROOT    Root of large render/simulation assets (USDs, textures,
-                        trajectories). Default: ``<repo>/asset_wireseg32k``.
+                        trajectories). Default: ``<repo>/asset_wireseg36k``.
   DEFORMX_DATA_ROOT     Root of local working data (npz files, renders, ...).
                         Default: ``<repo>/data``.
   DEFORMX_OUTPUT_ROOT   Root of generated outputs. Default: ``<repo>/output``.
@@ -50,7 +50,7 @@ def env_path(var: str, *default_parts: object) -> Path:
     return REPO_ROOT.joinpath(*[str(p) for p in default_parts])
 
 
-ASSET_ROOT = env_path("DEFORMX_ASSET_ROOT", "asset_wireseg32k")
+ASSET_ROOT = env_path("DEFORMX_ASSET_ROOT", "asset_wireseg36k")
 DATA_ROOT = env_path("DEFORMX_DATA_ROOT", "data")
 OUTPUT_ROOT = env_path("DEFORMX_OUTPUT_ROOT", "output")
 DEFAULT_WIRE_USD = REPO_ROOT / "usd" / "wire" / "wire_yellow_s20_r0.005_l1_smooth.usdc"

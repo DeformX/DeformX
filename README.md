@@ -1,6 +1,6 @@
 # DeformX: Deformable Linear Objects Simulation
 
-### [🌐 Project Page](https://deformx.github.io/)
+### [🌐 Project Page](https://deformx.github.io/) | [📄 Paper](https://arxiv.org/abs/2606.22116) | [🤗 WireSeg-36K Dataset](https://huggingface.co/datasets/DeformX/WireSeg-36K) | [🤗 Render Assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) | [🎥 Video](https://www.youtube.com/watch?v=CQvS8lQYSS8)
 
 DeformX is a co-simulation framework for deformable linear objects (DLOs) such as wires, cables, and ropes. It couples a dedicated **Cosserat rod physics engine** with **NVIDIA Isaac Sim** to deliver DLO simulation that is **physically faithful** and **visually realistic** at the same time, while remaining directly compatible with scalable synthetic data generation and robot-learning pipelines.
 
@@ -11,7 +11,7 @@ DeformX is a co-simulation framework for deformable linear objects (DLOs) such a
 
 * **\[Coming Soon\]** We will release a **GPU/CUDA-accelerated Stable Cosserat Rods solver**. Built on a split position–rotation optimization scheme with a closed-form Gauss–Seidel quasi-static orientation update, it stays stable under large stiffness parameters and large time steps while supporting GPU parallelization. This **massively accelerates** simulation and helps eliminate the time-scale discrepancy between Isaac Sim and the rod engine. ⭐ Star this repo to be notified.
 * **\[Jun 2026\]** We open-sourced **DeformX**, the co-simulation framework integrating a dedicated Cosserat rod engine with NVIDIA Isaac Sim, together with the dataset-generation and RL tooling in this repository.
-* **\[Jun 2026\]** We released the **WireSeg-32k** generation pipeline — a synthetic wire instance segmentation dataset (32k RGB images, depth maps, and per-wire instance masks).
+* **\[Jun 2026\]** We released **[WireSeg-36K](https://huggingface.co/datasets/DeformX/WireSeg-36K)** — a synthetic wire instance segmentation dataset (36k RGB images, depth maps, and per-wire instance masks) — together with its generation pipeline and the [render assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) needed to reproduce it.
 
 ## Why DeformX?
 
@@ -37,7 +37,7 @@ RL_Demo/                            Isaac Sim RL environments, PPO training, eva
 visualization_scripts/              Standalone Isaac Sim visualization and replay scripts
 scripts/                            Queue/helper scripts
 PyElastica-Mesh/                    Pinned submodule for PyElastica-Mesh
-asset_wireseg32k/                   External dataset/render assets, ignored by git
+asset_wireseg36k/                   External dataset/render assets, ignored by git
 usd/wire/                           Small tracked wire USDs for RL/replay visualization
 output/                             Generated local outputs, ignored by git
 logs/                               Local run logs, ignored by git
@@ -58,7 +58,7 @@ submodule pointer for PyElastica-Mesh
 Not tracked in git:
 
 ```text
-asset_wireseg32k/
+asset_wireseg36k/
 asset/
 output/
 outputs/
@@ -79,26 +79,24 @@ DeformX uses **two separate Python environments** — using the right one for ea
 | Environment | Use it for | Python |
 |---|---|---|
 | **`uv` virtualenv** | Lightweight CPU utilities: dataset organization, segmentation QA, plotting/contact sheets | system Python 3.10–3.12 |
-| **Isaac Sim Python** (`python.sh`) | Anything importing Isaac Sim / Omniverse / the Cosserat rod engine: rendering, dataset generation, RL training & eval, visualization | bundled with Isaac Sim |
+| **Isaac Sim Python** | Anything importing Isaac Sim / Omniverse / the Cosserat rod engine: rendering, dataset generation, RL training & eval, visualization | Isaac Sim's own interpreter |
 
 ### 1. Prerequisites
 
 | Component | Requirement |
 |---|---|
 | OS | Linux (tested on Ubuntu 22.04) |
-| Python | 3.10 – 3.12 (for the `uv` utilities) |
-| NVIDIA Isaac Sim | 4.5 or 5.x, with its bundled `python.sh` |
+| Python | 3.10 – 3.12 (for the `uv` utilities); 3.11 for a pip-installed Isaac Sim |
+| NVIDIA Isaac Sim | 4.5 or 5.x |
 | GPU | NVIDIA GPU with a recent CUDA driver (required by Isaac Sim) |
 | [`uv`](https://github.com/astral-sh/uv) | package manager for the utility env (`python3 -m pip install uv` if missing) |
-
-Isaac Sim is **not** a pip package — download it from NVIDIA and note the path to its `python.sh` launcher.
 
 ### 2. Clone the repository (with submodules)
 
 The Cosserat rod engine lives in the **`PyElastica-Mesh` submodule**, so you must clone recursively. A plain `git clone` leaves that directory empty and nothing will run.
 
 ```bash
-git clone --recursive git@github.com:DeformX/DeformX.git
+git clone --recursive https://github.com/DeformX/DeformX.git
 cd DeformX
 ```
 
@@ -120,23 +118,61 @@ source .venv/bin/activate
 
 ### 4. Isaac Sim runtime environment
 
-Rendering, dataset generation, RL, and visualization must run with **Isaac Sim's Python**, not the `uv` venv. Point `ISAAC_PYTHON` at the launcher and install the extra deps into it. Isaac Sim/Omniverse modules (`isaacsim`, `omni`, `pxr`, `carb`) ship with Isaac Sim and are not pip-installable.
+Rendering, dataset generation, RL, and visualization must run with **Isaac Sim's Python**, not the `uv` venv. Isaac Sim/Omniverse modules (`isaacsim`, `omni`, `pxr`, `carb`) come from Isaac Sim itself. There are two supported install layouts:
+
+**(a) pip install (Isaac Sim 4.5 / 5.x, recommended).** Isaac Sim runs under a normal Python 3.11 environment, so `ISAAC_PYTHON` is just that interpreter:
+
+```bash
+conda create -n deformx python=3.11 -y && conda activate deformx
+pip install "isaacsim[all,extscache]==5.1.0" --extra-index-url https://pypi.nvidia.com
+export ISAAC_PYTHON=python
+```
+
+**(b) Launcher install.** Download Isaac Sim from NVIDIA and use its bundled launcher:
 
 ```bash
 export ISAAC_PYTHON=/path/to/isaacsim/python.sh
+```
+
+Then install the extra dependencies into whichever interpreter you chose:
+
+```bash
+# Cosserat rod engine dependencies (PyElastica-Mesh builds on PyElastica).
+# Install these FIRST: numba pins numpy<1.27, matching what Isaac Sim requires.
+$ISAAC_PYTHON -m pip install numba scipy tqdm matplotlib open3d
 
 # App-level dependencies used by the generators and RL:
-$ISAAC_PYTHON -m pip install hydra-core omegaconf pillow opencv-python pyyaml wandb
-
-# Cosserat rod engine dependencies (PyElastica-Mesh builds on PyElastica):
-$ISAAC_PYTHON -m pip install numba scipy tqdm matplotlib open3d
+$ISAAC_PYTHON -m pip install hydra-core omegaconf pillow pyyaml wandb "numpy<2"
 ```
+
+> **Note**
+> Keep `numpy` below 2.0. Isaac Sim pins `numpy==1.26.0` and `numba` requires `numpy<1.27`; installing a package that pulls numpy 2.x will break `import isaacsim`. For the same reason, do **not** install `opencv-python` here — Isaac Sim already ships `opencv-python-headless`, and having both shadows Isaac's copy.
 
 The `PyElastica-Mesh` engine is added to the Python path automatically by the scripts, so it needs no separate install — only the dependencies above.
 
-### 5. Restore assets and configure paths
+First run only: Isaac Sim asks you to accept the Omniverse EULA. Set `OMNI_KIT_ACCEPT_EULA=YES` for headless/batch runs.
 
-Large assets and datasets are not tracked in git (see [Tracked vs External Data](#tracked-vs-external-data)) and must be restored into `asset_wireseg32k/` before rendering or training. Every path is overridable via environment variables — see [Configuration](#configuration-paths--environment-variables).
+### 5. Download render assets
+
+The scene USDs, wire meshes, rod trajectories, and environment textures used for dataset rendering are not tracked in git. Get them from the companion HuggingFace repo:
+
+```bash
+pip install huggingface_hub
+hf download DeformX/DeformX-Assets --repo-type dataset --local-dir ./asset_wireseg36k
+```
+
+That is the full ~2.1 GB set. Most of it is HDRIs and datacenter trajectories; for a ~200 MB subset that still runs the drop/hang generator end to end:
+
+```bash
+hf download DeformX/DeformX-Assets --repo-type dataset --local-dir ./asset_wireseg36k \
+  --include "usd/*" "wires_traj_data/*" "ground/*" "scripts/*" "*.md" "*.json" \
+            "background/boiler_room_4k.hdr" "background/machine_shop_01_4k.hdr" \
+            "background/empty_workshop_4k.hdr" "background/small_workshop_4k.hdr"
+```
+
+See [Asset Layout](#asset-layout) for what the bundle contains and what it deliberately leaves out. Every path is overridable via environment variables — see [Configuration](#configuration-paths--environment-variables).
+
+The RL and visualization demos need **no** external assets; they run from the wire USDs bundled in `usd/wire/`.
 
 ### Quick sanity check
 
@@ -146,6 +182,10 @@ python -c "import deformx_paths as d; print(d.REPO_ROOT, d.ASSET_ROOT)"
 
 # Isaac env (run from the repo root): confirm the rod engine imports
 PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON -c "from co_sim.engine import CoSimEngine; print('rod engine OK')"
+
+# Isaac env: render a single frame (needs the assets from step 5)
+OMNI_KIT_ACCEPT_EULA=YES PYTHONPATH=PyElastica-Mesh \
+  $ISAAC_PYTHON Dataset_generator/cli.py --frame 0 --do_seg --do_depth
 ```
 
 ## Configuration (Paths & Environment Variables)
@@ -158,10 +198,10 @@ assets/data live elsewhere:
 
 | Variable | Purpose | Default |
 |---|---|---|
-| `ISAAC_PYTHON` | Path to Isaac Sim's `python.sh` launcher | `isaacsim/python.sh` |
+| `ISAAC_PYTHON` | Isaac Sim's interpreter: its `python.sh` launcher, or just `python` for a pip install | `isaacsim/python.sh` |
 | `ISAAC_ASSETS_ROOT` | Local Isaac `Assets/Isaac` tree (for robot USDs). If unset, DeformX queries Isaac Sim's own assets root and finally falls back to the public Omniverse S3 mirror. | unset |
 | `DEFORMX_ROOT` | Repository root | auto-detected |
-| `DEFORMX_ASSET_ROOT` | Large render/simulation assets (USDs, textures, trajectories) | `<repo>/asset_wireseg32k` |
+| `DEFORMX_ASSET_ROOT` | Large render/simulation assets (USDs, textures, trajectories) | `<repo>/asset_wireseg36k` |
 | `DEFORMX_DATA_ROOT` | Local working data (npz, renders) | `<repo>/data` |
 | `DEFORMX_OUTPUT_ROOT` | Generated outputs | `<repo>/output` |
 | `DEFORMX_WIRE_USD` | Wire USD used by RL/visualization demos | `<repo>/usd/wire/wire_yellow_s20_r0.005_l1_smooth.usdc` |
@@ -204,7 +244,7 @@ exports one `.usdc` per color/radius combination, saving them next to your
 Expected high-level asset layout:
 
 ```text
-asset_wireseg32k/
+asset_wireseg36k/
   background/
   ground/
   usd/
@@ -220,18 +260,31 @@ asset_wireseg32k/
     data center camera 4.usdc
     data center lights.usdc
     data center cable_*.usdc
-    Datacenter_NVD@10012/
+    Datacenter_NVD@10012/          # NVIDIA content pack, obtained separately
 ```
 
-The datacenter scene uses `Datacenter_NVD@10012/.../DataHall_Full_01.usd` plus the camera/light/cable USDs under `asset_wireseg32k/datacenter/`.
+Everything except `Datacenter_NVD@10012/` is published at
+[**DeformX/DeformX-Assets**](https://huggingface.co/datasets/DeformX/DeformX-Assets).
+
+**What the published bundle contains.** All scene USDs, the 72 wire meshes (12 colors × 3 radii × 2 finishes), all six drop/hang rod trajectories, the datacenter camera/light/cable USDs, **all 12** datacenter trajectory configs, **all 47** HDRI environment maps, and 18 ground textures. This is everything the **drop/hang generator** needs, and everything the datacenter renderer needs except the NVIDIA scene below.
+
+**What it does not, and why.**
+
+* **`Datacenter_NVD@10012/`** (~9.6 GB) is an NVIDIA Omniverse content pack covered by the [NVIDIA Omniverse License Agreement](https://docs.omniverse.nvidia.com/platform/latest/common/NVIDIA_Omniverse_License_Agreement.html), so we cannot redistribute it. Obtain it from NVIDIA and point `--datahall_usd` at `.../Stages/Data_Hall/DataHall_Full_01.usd`. Only the *datacenter* renders need it.
+* **35 of the 53 ground textures** are from [Texturelabs](https://texturelabs.org), whose license does not permit redistributing the raw files. The 18 [Pexels](https://pexels.com) textures are included; download the Texturelabs ones directly to reproduce the paper's exact randomization.
+
+Both the HDRI and ground-texture samplers randomize over whatever files are present, so a partial set still renders — you just get less appearance diversity.
+
+The datacenter scene uses `Datacenter_NVD@10012/.../DataHall_Full_01.usd` plus the camera/light/cable USDs under `asset_wireseg36k/datacenter/`.
 
 ## Drop/Hang Dataset Generation
 
 Run with Isaac Sim Python:
 
 ```bash
-ISAAC_PYTHON=/path/to/isaacsim/python.sh
-$ISAAC_PYTHON Dataset_generator/cli.py \
+export ISAAC_PYTHON=python          # or /path/to/isaacsim/python.sh
+export OMNI_KIT_ACCEPT_EULA=YES
+PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON Dataset_generator/cli.py \
   --frame_start 0 \
   --frame_end 99 \
   --do_seg \
@@ -242,7 +295,38 @@ $ISAAC_PYTHON Dataset_generator/cli.py \
   --accum_subframes 16
 ```
 
-The generator uses paths from `Dataset_generator/config.py`, including `asset_wireseg32k/usd`, `asset_wireseg32k/wires_traj_data`, `asset_wireseg32k/background`, and `asset_wireseg32k/ground`.
+Pick which scene to render with `--variant`, which indexes
+`GeneratorConfig.scene_variant_specs`:
+
+| `--variant` | Scene | Trajectory | Wires | Frames |
+|---|---|---|---|---|
+| 0 | `rod_drop_multi_2_plane.usdc` | `drop_n2_100.npz` | 2 | 0–99 |
+| 1 | `rod_drop_multi_4_plane.usdc` | `drop_n4_100.npz` | 4 | 0–99 |
+| 2 | `rod_drop_multi_8_plane.usdc` | `drop_n8_100.npz` | 8 | 0–99 |
+| 3 | `rod_hang_flying.usdc` | `hang_n2_100.npz` | 2 | 0–199 |
+| 4 | `rod_hang_flying.usdc` | `hang_n4_100.npz` | 4 | 0–199 |
+| 5 | `rod_hang_flying.usdc` | `hang_n8_100.npz` | 8 | 0–199 |
+
+Without `--variant`, frame numbers index a single **concatenated** range spanning all six
+variants in order (0–99 is variant 0, 100–199 is variant 1, and so on) — which is easy to
+trip over, so prefer `--variant` when you want one specific scene.
+
+`--out_dir` overrides the output directory and `--cams_sample_per_frame` the number of
+cameras sampled per frame, so a full sweep needs no edits to `config.py`:
+
+```bash
+PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON Dataset_generator/cli.py \
+  --variant 3 --out_dir output/wireseg36k/hang_n2 --num_variants 5 --do_seg --do_depth
+```
+
+All three hang configurations can be queued back to back with:
+
+```bash
+python scripts/run_hang_wireseg36k_queue.py            # add --dry_run to preview
+```
+
+Remaining defaults come from `Dataset_generator/config.py`, which resolves everything under
+`asset_wireseg36k/` (`usd`, `wires_traj_data`, `background`, `ground`) via `DEFORMX_ASSET_ROOT`.
 
 After rendering, organize raw Replicator output:
 
@@ -257,15 +341,15 @@ For drop/hang data, plane segmentation cleanup is handled by `Dataset_generator/
 
 ## Datacenter Dataset Generation
 
-Datacenter rendering uses `Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.py`.
+Datacenter rendering uses `Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py`.
 
 Smoke test:
 
 ```bash
-ISAAC_PYTHON=/path/to/isaacsim/python.sh
-$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.py \
-  --asset_root asset_wireseg32k/datacenter \
-  --output_root output/wireseg32k/datacenter_smoke \
+export ISAAC_PYTHON=python          # or /path/to/isaacsim/python.sh
+$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py \
+  --asset_root asset_wireseg36k/datacenter \
+  --output_root output/wireseg36k/datacenter_smoke \
   --config dgrid_c1_ns04 \
   --traj_index 0 \
   --seed_index 0 \
@@ -285,10 +369,10 @@ $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.
 Formal-style render command:
 
 ```bash
-ISAAC_PYTHON=/path/to/isaacsim/python.sh
-$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.py \
-  --asset_root asset_wireseg32k/datacenter \
-  --output_root output/wireseg32k/datacenter_formal \
+export ISAAC_PYTHON=python          # or /path/to/isaacsim/python.sh
+$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py \
+  --asset_root asset_wireseg36k/datacenter \
+  --output_root output/wireseg36k/datacenter_formal \
   --camera_num 5 \
   --reuse_stage \
   --do_seg \
@@ -308,9 +392,9 @@ $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.
 For mixed-color variants:
 
 ```bash
-$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.py \
-  --asset_root asset_wireseg32k/datacenter \
-  --output_root output/wireseg32k/datacenter_formal \
+$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py \
+  --asset_root asset_wireseg36k/datacenter \
+  --output_root output/wireseg36k/datacenter_formal \
   --camera_num 5 \
   --reuse_stage \
   --do_seg \
@@ -332,7 +416,7 @@ $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg32k_datacenter.
 Expected final structure:
 
 ```text
-wireseg32k_organized/
+wireseg36k_organized/
   drop_n2/
     index.jsonl
     rgb/rgb_000000.png

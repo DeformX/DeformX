@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Render the wireseg32k datacenter dataset.
+"""Render the wireseg36k datacenter dataset.
 
 This runner uses the new asset layout:
-  asset_wireseg32k/datacenter/
+  asset_wireseg36k/datacenter/
 
 Dataset rules:
   - dgrid_cX_nsYY.npz uses data center camera X.usdc
@@ -31,8 +31,8 @@ import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parents[2]
 DATACENTER_DIR = Path(__file__).resolve().parents[1]
-DEFAULT_ASSET_ROOT = REPO_ROOT / "asset_wireseg32k" / "datacenter"
-DEFAULT_OUTPUT_ROOT = REPO_ROOT / "output" / "wireseg32k" / "datacenter"
+DEFAULT_ASSET_ROOT = REPO_ROOT / "asset_wireseg36k" / "datacenter"
+DEFAULT_OUTPUT_ROOT = REPO_ROOT / "output" / "wireseg36k" / "datacenter"
 DEFAULT_DATAHALL_USD = (
     DEFAULT_ASSET_ROOT
     / "Datacenter_NVD@10012"
