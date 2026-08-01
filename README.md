@@ -363,6 +363,11 @@ also contains `organize_after_run.py` (flattens that tree into `rgb/seg/depth` p
 `index.jsonl`), `delete_plane.py` (drops the ground plane from segmentation masks), and
 `make_review_contact_sheets.py` (QA contact sheets) — run any of them with `--help`.
 
+`organize_after_run.py` reads the per-camera `Replicator*` directories that Replicator only
+creates when more than one camera is sampled. Against a single-camera run it finds nothing
+and exits 0 with `No samples found`, so render with `--cams_sample_per_frame 2` or more
+before organizing.
+
 ## Datacenter Dataset Generation
 
 Datacenter rendering uses `Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py`.
