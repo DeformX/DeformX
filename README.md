@@ -273,10 +273,45 @@ Everything except `Datacenter_NVD@10012/` is published at
 
 **What it does not, and why.**
 
-* **`Datacenter_NVD@10012/`** (~9.6 GB) is an NVIDIA Omniverse content pack covered by the [NVIDIA Omniverse License Agreement](https://docs.omniverse.nvidia.com/platform/latest/common/NVIDIA_Omniverse_License_Agreement.html), so we cannot redistribute it. Obtain it from NVIDIA and point `--datahall_usd` at `.../Stages/Data_Hall/DataHall_Full_01.usd`. Only the *datacenter* renders need it.
+* **`Datacenter_NVD@10012/`** (~9.6 GB) is an NVIDIA Omniverse content pack covered by the [NVIDIA Omniverse License Agreement](https://docs.omniverse.nvidia.com/platform/latest/common/NVIDIA_Omniverse_License_Agreement.html), so we cannot redistribute it — but NVIDIA mirrors it publicly and you can fetch it yourself. See [Getting the NVIDIA datacenter scene](#getting-the-nvidia-datacenter-scene) below. Only the *datacenter* renders need it.
 * **35 of the 53 ground textures** are from [Texturelabs](https://texturelabs.org), whose license does not permit redistributing the raw files. The 18 [Pexels](https://pexels.com) textures are included; download the Texturelabs ones directly to reproduce the paper's exact randomization.
 
 Both the HDRI and ground-texture samplers randomize over whatever files are present, so a partial set still renders — you just get less appearance diversity.
+
+### Getting the NVIDIA datacenter scene
+
+The datacenter scene lives on NVIDIA's public Omniverse content bucket — no account, no Omniverse Launcher. The bucket permits anonymous access, so `aws s3 sync --no-sign-request` works:
+
+```bash
+# This directory name is what the renderer expects by default.
+NVD='asset_wireseg36k/datacenter/Datacenter_NVD@10012'
+
+aws s3 sync --no-sign-request \
+  s3://omniverse-content-production/Assets/DigitalTwin/Assets/Datacenter/ \
+  "$NVD/Assets/DigitalTwin/Assets/Datacenter/"          # ~0.30 GB
+
+aws s3 sync --no-sign-request \
+  s3://omniverse-content-production/Assets/DigitalTwin/Materials/ \
+  "$NVD/Assets/DigitalTwin/Materials/"                  # ~9.98 GB
+```
+
+Land it at that exact path and `--datahall_usd` can be omitted — it already defaults to
+`<asset_root>/datacenter/Datacenter_NVD@10012/.../Data_Hall/DataHall_Full_01.usd`. Anywhere
+else, pass the stage explicitly:
+
+```bash
+--datahall_usd /abs/path/to/.../Facilities/Stages/Data_Hall/DataHall_Full_01.usd
+```
+
+Individual files are also reachable over plain HTTPS under
+`https://omniverse-content-production.s3.us-west-2.amazonaws.com/Assets/DigitalTwin/`.
+
+> **Note**
+> Sync only the two prefixes above. All of `Assets/DigitalTwin/` is ~34 GB, most of which the datacenter scene does not use.
+>
+> The published renders used the internal `Datacenter_NVD@10012` snapshot. The public mirror is the current tree and carries a superset of the materials, so it is not guaranteed byte-for-byte identical to that pinned version — geometry and the data hall stages match, but exact material parity is not promised. Objects on the mirror are stamped 2024-04-17.
+
+This content remains under the NVIDIA Omniverse License Agreement; it is not covered by this repository's MIT license.
 
 The datacenter scene uses `Datacenter_NVD@10012/.../DataHall_Full_01.usd` plus the camera/light/cable USDs under `asset_wireseg36k/datacenter/`.
 
