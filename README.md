@@ -108,11 +108,11 @@ git submodule update --init --recursive
 
 ### 3. Utility environment (`uv`, CPU-only)
 
-For dataset organization, QA, and plotting scripts that don't need Isaac Sim:
+For the helper scripts that don't need Isaac Sim — segmentation QA, contact sheets, the
+render queue driver, and the Blender wire generators:
 
 ```bash
-uv sync                          # core utilities
-uv sync --extra rl --extra dev   # optional: RL + dev extras (torch, wandb, pytest, ruff)
+uv sync
 source .venv/bin/activate
 ```
 
@@ -209,14 +209,6 @@ assets/data live elsewhere:
 | `DEFORMX_OUTPUT_ROOT` | Generated outputs | `<repo>/output` |
 | `DEFORMX_WIRE_USD` | Wire USD used by RL/visualization demos | `<repo>/usd/wire/wire_yellow_s20_r0.005_l1_smooth.usdc` |
 | `DEFORMX_HDR` | HDR dome-light image for datacenter renders | `<asset_root>/hdr/dome.hdr` |
-
-Example:
-
-```bash
-export ISAAC_PYTHON=/opt/isaacsim/python.sh
-export DEFORMX_ASSET_ROOT=/data/deformx/assets
-$ISAAC_PYTHON Dataset_generator/cli.py --frame 0 --do_seg
-```
 
 Hydra-based RL configs read the same variables via interpolation (e.g.
 `wire_usd: ${oc.env:DEFORMX_WIRE_USD,null}`), and you can always override per-run
@@ -366,51 +358,23 @@ python scripts/run_hang_wireseg36k_queue.py            # add --dry_run to previe
 Remaining defaults come from `Dataset_generator/config.py`, which resolves everything under
 `asset_wireseg36k/` (`usd`, `wires_traj_data`, `background`, `ground`) via `DEFORMX_ASSET_ROOT`.
 
-After rendering, organize raw Replicator output:
-
-```bash
-python Dataset_generator/organize_after_run.py \
-  --root output/<raw_run>/<config_or_seed> \
-  --out output/<organized_run>/<config_name> \
-  --copy
-```
-
-For drop/hang data, plane segmentation cleanup is handled by `Dataset_generator/delete_plane.py` through `organize_after_run.py`.
+Renders land as `<out_dir>/seed_XXX/frame_XXXXXX/{rgb,seg,depth}/`. `Dataset_generator/`
+also contains `organize_after_run.py` (flattens that tree into `rgb/seg/depth` plus an
+`index.jsonl`), `delete_plane.py` (drops the ground plane from segmentation masks), and
+`make_review_contact_sheets.py` (QA contact sheets) — run any of them with `--help`.
 
 ## Datacenter Dataset Generation
 
 Datacenter rendering uses `Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py`.
 
-Smoke test:
+It needs the NVIDIA data hall scene — see [Getting the NVIDIA datacenter scene](#getting-the-nvidia-datacenter-scene). Add `--dry_run` to list what would be rendered without starting Isaac Sim.
 
 ```bash
 export ISAAC_PYTHON=python          # or /path/to/isaacsim/python.sh
+export OMNI_KIT_ACCEPT_EULA=YES
 $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py \
   --asset_root asset_wireseg36k/datacenter \
-  --output_root output/wireseg36k/datacenter_smoke \
-  --config dgrid_c1_ns04 \
-  --traj_index 0 \
-  --seed_index 0 \
-  --camera_num 1 \
-  --reuse_stage \
-  --do_seg \
-  --do_depth \
-  --lights_on_per_frame 8 \
-  --light_intensity_min 800 \
-  --light_intensity_max 2000 \
-  --dome_intensity 700 \
-  --render_mode RayTracedLighting \
-  --accum_steps 80 \
-  --accum_subframes 16
-```
-
-Formal-style render command:
-
-```bash
-export ISAAC_PYTHON=python          # or /path/to/isaacsim/python.sh
-$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py \
-  --asset_root asset_wireseg36k/datacenter \
-  --output_root output/wireseg36k/datacenter_formal \
+  --output_root output/wireseg36k/datacenter \
   --camera_num 5 \
   --reuse_stage \
   --do_seg \
@@ -427,73 +391,16 @@ $ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.
   --max_seeds 6
 ```
 
-For mixed-color variants:
+Vary these flags for the other passes:
 
-```bash
-$ISAAC_PYTHON Dataset_generator_datacenter/scripts/render_wireseg36k_datacenter.py \
-  --asset_root asset_wireseg36k/datacenter \
-  --output_root output/wireseg36k/datacenter_formal \
-  --camera_num 5 \
-  --reuse_stage \
-  --do_seg \
-  --do_depth \
-  --lights_on_per_frame 8 \
-  --light_intensity_min 800 \
-  --light_intensity_max 2000 \
-  --dome_intensity 700 \
-  --render_mode RayTracedLighting \
-  --accum_steps 80 \
-  --accum_subframes 16 \
-  --wire_color_mode mixed \
-  --seed_start 6 \
-  --max_seeds 4
-```
+| Goal | Flags to change |
+|---|---|
+| Quick smoke test (one image) | `--config dgrid_c1_ns04 --traj_index 0 --seed_index 0 --camera_num 1` |
+| Same-color pass (as above) | `--wire_color_mode same --seed_start 0 --max_seeds 6` |
+| Mixed-color pass | `--wire_color_mode mixed --seed_start 6 --max_seeds 4` |
 
-## Final Organized Dataset Structure
-
-Expected final structure:
-
-```text
-wireseg36k_organized/
-  drop_n2/
-    index.jsonl
-    rgb/rgb_000000.png
-    seg/seg_000000.png
-    seg/seg_000000_mapping.json
-    depth/dep_000000.npy
-  drop_n4/
-  drop_n8/
-  hang_n2/
-  hang_n4/
-  hang_n8/
-  datacenter_formal/
-    dgrid_c1_ns04/
-      index.jsonl
-      rgb/
-      seg/
-      depth/
-    dgrid_c1_ns08/
-    dgrid_c1_ns16/
-    ...
-```
-
-Current target counts:
-
-```text
-drop_n2/drop_n4/drop_n8:       5000 each
-hang_n2/hang_n4/hang_n8:       5000 each
-datacenter_formal/dgrid_*:      500 each
-```
-
-Total target size:
-
-```text
-36,000 RGB images
-36,000 segmentation PNGs
-36,000 segmentation mapping JSONs
-36,000 depth NPY files
-36,000 index rows
-```
+The published dataset is the same-color and mixed-color passes combined. Run
+`--help` for the full flag list.
 
 ## RL Demo
 
