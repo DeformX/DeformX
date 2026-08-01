@@ -165,10 +165,13 @@ That is the full ~2.1 GB set. Most of it is HDRIs and datacenter trajectories; f
 
 ```bash
 hf download DeformX/DeformX-Assets --repo-type dataset --local-dir ./asset_wireseg36k \
-  --include "usd/*" "wires_traj_data/*" "ground/*" "scripts/*" "*.md" "*.json" \
-            "background/boiler_room_4k.hdr" "background/machine_shop_01_4k.hdr" \
-            "background/empty_workshop_4k.hdr" "background/small_workshop_4k.hdr"
+  --include "usd/*" --include "wires_traj_data/*" --include "ground/*" \
+  --include "scripts/*" --include "*.md" --include "*.json" \
+  --include "background/boiler_room_4k.hdr" --include "background/machine_shop_01_4k.hdr" \
+  --include "background/empty_workshop_4k.hdr" --include "background/small_workshop_4k.hdr"
 ```
+
+`--include` takes one pattern per flag; passing several patterns to a single `--include` makes the CLI treat all but the first as positional filenames and silently skip them.
 
 See [Asset Layout](#asset-layout) for what the bundle contains and what it deliberately leaves out. Every path is overridable via environment variables — see [Configuration](#configuration-paths--environment-variables).
 
