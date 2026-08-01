@@ -1,66 +1,77 @@
 # RL_Demo
 
-基于 Hydra 组织配置、基于 Isaac Sim 运行环境的最小强化学习 demo。当前训练入口在 `RL/train.py`，评估与轨迹导出入口在 `RL/eval.py`。
+A minimal reinforcement-learning demo for DeformX: Hydra for configuration, Isaac Sim for
+the runtime. Training lives in `RL/train.py`; offline evaluation and trajectory export live
+in `RL/eval.py`.
 
-## 运行前提
+## Prerequisites
 
-必须使用 Isaac Sim 自带的 Python 运行，不能直接用系统 Python 或 Conda Python。
-
-在 `RL_Demo/` 目录下执行：
+These environments must run under **Isaac Sim's Python**, not a plain system or Conda
+interpreter. Two Isaac Sim install layouts are supported:
 
 ```bash
-/path/to/isaac-sim/python.sh -m pip install hydra-core omegaconf
+# Launcher install -> use Isaac Sim's bundled python.sh
+export ISAAC_PYTHON=/path/to/isaac-sim/python.sh
 
-# 可选：启用 wandb 日志
-/path/to/isaac-sim/python.sh -m pip install wandb
+# pip install (Isaac Sim 4.5 / 5.x) -> Isaac Sim runs under the active interpreter
+export ISAAC_PYTHON=python
 ```
 
-## 目录说明
-
-- `conf/config.yaml`：全局训练、日志、checkpoint、eval 导出配置。
-- `conf/task/*.yaml`：任务配置。
-- `conf/algo/ppo.yaml`：PPO 超参数。
-- `RL/train.py`：训练入口，支持 checkpoint、成功轨迹导出、wandb。
-- `RL/eval.py`：底层离线评估入口。
-- `tools/`：轨迹回放、排序等辅助脚本。
-
-## 当前可用任务
-
-- `franka_reach`：Franka 到点任务，适合作为最小 PPO 验证样例。
-- `wire_swing`：Cosserat wire 摆动任务。
-- `wire_swing_bj`：PhysX ball-joint 链式 wire 摆动任务。
-- `wire_swing_hit_apple`：带苹果目标物的击打任务。
-- `wire_twist`：wire 扭转环境。
-
-默认配置来自 `conf/config.yaml`：
-
-- 默认任务：`task=wire_swing`
-- 默认算法：`algo=ppo`
-- 默认设备：`device=cuda`
-- 默认训练步数：`total_steps=200000`
-
-## 训练
-
-### 基本命令
+Install the extra dependencies into that interpreter:
 
 ```bash
-# 最小示例
-/path/to/isaac-sim/python.sh -m RL.train task=franka_reach algo=ppo render=false
+$ISAAC_PYTHON -m pip install hydra-core omegaconf
 
-# Cosserat wire 摆动
-/path/to/isaac-sim/python.sh -m RL.train task=wire_swing algo=ppo render=false
-
-# Ball-joint wire 摆动
-/path/to/isaac-sim/python.sh -m RL.train task=wire_swing_bj algo=ppo render=false
-
-# GUI 渲染
-/path/to/isaac-sim/python.sh -m RL.train task=wire_swing_bj algo=ppo render=true
+# optional: Weights & Biases logging
+$ISAAC_PYTHON -m pip install wandb
 ```
 
-### 常用覆盖参数
+All commands below are run from the `RL_Demo/` directory.
+
+## Layout
+
+- `conf/config.yaml` — global training, logging, checkpoint, and eval-export settings.
+- `conf/task/*.yaml` — per-task configuration.
+- `conf/algo/ppo.yaml` — PPO hyperparameters.
+- `RL/train.py` — training entry point: checkpoints, success-trajectory export, wandb.
+- `RL/eval.py` — offline evaluation entry point.
+- `tools/` — trajectory replay, ranking, and other helpers.
+
+## Available tasks
+
+- `franka_reach` — Franka reaching task; the smallest useful PPO smoke test.
+- `wire_swing` — Cosserat-wire swinging task.
+- `wire_swing_bj` — PhysX ball-joint chain wire swinging task.
+- `wire_swing_hit_apple` — swing-to-strike task with an apple target.
+- `wire_twist` — wire twisting task.
+
+Defaults from `conf/config.yaml`:
+
+- task: `wire_swing`
+- algorithm: `ppo`
+- device: `cuda`
+- total training steps: `200000`
+
+## Training
 
 ```bash
-/path/to/isaac-sim/python.sh -m RL.train \
+# smallest example
+$ISAAC_PYTHON -m RL.train task=franka_reach algo=ppo render=false
+
+# Cosserat wire swing
+$ISAAC_PYTHON -m RL.train task=wire_swing algo=ppo render=false
+
+# ball-joint wire swing
+$ISAAC_PYTHON -m RL.train task=wire_swing_bj algo=ppo render=false
+
+# with the Isaac Sim viewport open
+$ISAAC_PYTHON -m RL.train task=wire_swing_bj algo=ppo render=true
+```
+
+### Common overrides
+
+```bash
+$ISAAC_PYTHON -m RL.train \
   task=wire_swing_bj \
   algo=ppo \
   render=false \
@@ -71,59 +82,60 @@
   task.num_envs=8
 ```
 
-常用参数：
+- `render=true|false` — open the Isaac Sim viewport.
+- `total_steps=<int>` — total training steps.
+- `task.num_envs=<int>` — number of parallel environments.
+- `algo.rollout_len=<int>` — PPO rollout length.
+- `checkpoint_every=<int>` — checkpoint interval.
+- `resume_checkpoint=/abs/path/to/ppo_step_x.pt` — resume from a checkpoint.
 
-- `render=true|false`：是否打开 Isaac Sim 渲染。
-- `total_steps=<int>`：总训练步数。
-- `task.num_envs=<int>`：并行环境数。
-- `algo.rollout_len=<int>`：PPO rollout 长度。
-- `checkpoint_every=<int>`：checkpoint 保存频率。
-- `resume_checkpoint=/abs/path/to/ppo_step_x.pt`：恢复训练。
-
-### 恢复训练
+### Resuming
 
 ```bash
-/path/to/isaac-sim/python.sh -m RL.train \
+$ISAAC_PYTHON -m RL.train \
   task=wire_swing_bj \
   algo=ppo \
   render=false \
   resume_checkpoint=/abs/path/to/checkpoints/ppo_step_50000.pt
 ```
 
-## 训练输出
+## Training outputs
 
-默认会生成以下内容：
+By default a run produces:
 
-- `checkpoints/`：按 `checkpoint_every` 保存的模型，以及最终 checkpoint。
-- `data/wire_swing_bj_2/success_traj_csv_high_new_2/`：成功 episode 导出目录。
-- `wandb/`：wandb 日志目录。
+- `checkpoints/` — periodic checkpoints plus a final one.
+- `data/wire_swing_bj_2/success_traj_csv_high_new_2/` — exported successful episodes.
+- `wandb/` — wandb logs, when enabled.
 
-`train.py` 里默认开启了以下功能：
+`train.py` enables these by default:
 
 - `save_checkpoints: true`
 - `save_final_checkpoint: true`
 - `export_success_actions: true`
 - `save_configs_to_success_dir: true`
 
-成功 episode 导出通常包含：
+An exported successful episode typically contains:
 
-- `*_actions.npz`：策略动作序列。
-- `*.csv`：关节命令轨迹，表头为 `t, shoulder_pan, shoulder_lift, elbow, wrist_1, wrist_2, wrist_3`。
-- `train_config_*/`：启动该次训练时保存的 merged/task/algo 配置。
+- `*_actions.npz` — the policy's action sequence.
+- `*.csv` — joint command trajectory, with header
+  `t, shoulder_pan, shoulder_lift, elbow, wrist_1, wrist_2, wrist_3`.
+- `train_config_*/` — the merged/task/algo configs captured at the start of that run.
 
-如果你不想导出成功轨迹，可以覆盖：
+To skip success-trajectory export:
 
 ```bash
-/path/to/isaac-sim/python.sh -m RL.train \
+$ISAAC_PYTHON -m RL.train \
   task=wire_swing_bj \
   export_success_actions=false \
   save_configs_to_success_dir=false
 ```
 
-## wandb 日志
+## Weights & Biases logging
+
+wandb is **disabled by default** so a fresh clone trains without an account. Enable it with:
 
 ```bash
-/path/to/isaac-sim/python.sh -m RL.train \
+$ISAAC_PYTHON -m RL.train \
   task=wire_swing_bj \
   algo=ppo \
   render=false \
@@ -131,10 +143,10 @@
   wandb.project=deformx-rl
 ```
 
-离线模式：
+Offline mode (logs locally, no login required):
 
 ```bash
-/path/to/isaac-sim/python.sh -m RL.train \
+$ISAAC_PYTHON -m RL.train \
   task=wire_swing_bj \
   algo=ppo \
   render=false \
@@ -142,16 +154,16 @@
   wandb.mode=offline
 ```
 
-## 回放
+## Replay
 
-如果你已经有训练导出的关节轨迹 CSV，直接用 `tools/replay_wire_traj.py`：
+Given a joint-trajectory CSV exported by training, replay it with
+`tools/replay_wire_traj.py`:
 
 ```bash
-/path/to/isaac-sim/python.sh RL_Demo/tools/replay_wire_traj.py \
-  /abs/path/to/trajectory.csv
+$ISAAC_PYTHON RL_Demo/tools/replay_wire_traj.py /abs/path/to/trajectory.csv
 ```
 
-这个脚本会读取 CSV 表头中的：
+The script reads these CSV columns:
 
 - `t`
 - `shoulder_pan`
@@ -161,14 +173,16 @@
 - `wrist_2`
 - `wrist_3`
 
-然后在 Isaac Sim 中回放关节轨迹，并生成 replay 结果文件。
+It replays the joint trajectory in Isaac Sim and writes the replay results — typically a
+tip-trace CSV, a YZ trajectory plot, and per-joint arm plots.
 
-## 回放输出
+## Notes
 
-使用 `tools/replay_wire_traj.py` 时，通常会生成 replay 阶段的 tip trace CSV、YZ 轨迹图、机械臂关节图。
-
-## 备注
-
-- 大多数任务默认使用 `cuda`，如果机器没有可用 GPU，可以显式传 `device=cpu`，但 Isaac Sim 相关环境通常仍建议在 GPU 环境运行。
-- `wire_swing` 和 `wire_swing_hit_apple` 的 `wire_usd` 现在通过环境变量 `DEFORMX_WIRE_USD` 解析（默认指向仓库相对路径，见根目录 `deformx_paths.py`）。如需自定义，可设置该环境变量，或运行时覆盖 `task.wire_usd=/abs/path/to/wire.usdc`。
-- `wire_swing_bj` 目前是 `conf/config.yaml` 中成功轨迹默认导出路径对应的主要任务。
+- Most tasks default to `cuda`. Pass `device=cpu` if no GPU is available, though Isaac Sim
+  environments are still best run on a GPU machine.
+- `wire_swing` and `wire_swing_hit_apple` resolve `wire_usd` through the `DEFORMX_WIRE_USD`
+  environment variable, defaulting to a repo-relative path (see `deformx_paths.py` at the
+  repository root). Override it with that variable, or per run with
+  `task.wire_usd=/abs/path/to/wire.usdc`.
+- `wire_swing_bj` is the task the default success-export path in `conf/config.yaml`
+  corresponds to.

@@ -39,14 +39,14 @@ def pick_single_file(folder: Path, exts: Tuple[str, ...]) -> Optional[Path]:
     files = [p for p in folder.rglob("*") if p.is_file() and p.suffix.lower() in exts]
     if not files:
         return None
-    files.sort(key=lambda p: p.name)  # 稳定
+    files.sort(key=lambda p: p.name)  # stable ordering
     return files[-1]
 
 
 def move_or_copy(src: Path, dst: Path, do_copy: bool) -> None:
     dst.parent.mkdir(parents=True, exist_ok=True)
     if dst.exists():
-        # 避免覆盖，追加后缀
+        # Avoid clobbering an existing file: append a numeric suffix.
         stem, suf = dst.stem, dst.suffix
         i = 1
         while True:
@@ -74,7 +74,7 @@ class Sample:
 
 
 def collect_samples(root: Path) -> List[Sample]:
-    # 如果存在 seed_*，就按 seed 目录遍历；否则 root 本身当作一个 seed
+    # If seed_* dirs exist, iterate over them; otherwise treat root itself as one seed.
     seed_dirs = sorted([p for p in root.iterdir() if p.is_dir() and p.name.startswith("seed_")])
     if not seed_dirs:
         seed_dirs = [root]
@@ -94,7 +94,7 @@ def collect_samples(root: Path) -> List[Sample]:
             rgb_root = fd / "rgb"
             rgb_rep_dirs = sorted([p for p in rgb_root.iterdir() if p.is_dir() and p.name.startswith("Replicator")]) if rgb_root.is_dir() else []
 
-            # SEG camera dirs（通常同名）
+            # SEG camera dirs (usually share the RGB camera names)
             seg_root = fd / "seg"
             seg_rep_dirs = sorted([p for p in seg_root.iterdir() if p.is_dir() and p.name.startswith("Replicator")]) if seg_root.is_dir() else []
 
@@ -102,7 +102,7 @@ def collect_samples(root: Path) -> List[Sample]:
             depth_root = fd / "depth"
             depth_rep_dirs = sorted([p for p in depth_root.iterdir() if p.is_dir() and p.name.startswith("Replicator")]) if depth_root.is_dir() else []
 
-            # 以 rgb 的相机为主；没有 rgb 就合并
+            # Prefer the RGB camera set; fall back to the union when there is no RGB.
             rep_names = {p.name for p in rgb_rep_dirs} or {p.name for p in seg_rep_dirs} or {p.name for p in depth_rep_dirs}
             rep_names = set(rep_names) | {p.name for p in seg_rep_dirs} | {p.name for p in depth_rep_dirs}
 
@@ -120,7 +120,7 @@ def collect_samples(root: Path) -> List[Sample]:
                 seg_map = pick_single_file(seg_rep, (".json",))
                 depth_file = pick_single_file(depth_rep, DEPTH_EXTS)
 
-                # 如果一个样本完全没东西，就跳过
+                # Skip samples that have no outputs at all.
                 if not any([rgb_file, seg_file, seg_map, depth_file]):
                     continue
 
@@ -134,16 +134,16 @@ def collect_samples(root: Path) -> List[Sample]:
                     depth=depth_file,
                 ))
 
-    # 稳定排序：seed -> frame -> cam
+    # Stable ordering: seed -> frame -> cam
     samples.sort(key=lambda s: (s.seed_name, s.frame_idx, s.cam_idx))
     return samples
 
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--root", required=True, help="原始输出目录（包含 seed_*/frame_*）")
-    ap.add_argument("--out", default=None, help="输出目录；默认：<root>_organized")
-    ap.add_argument("--copy", action="store_true", help="复制而不是移动（默认移动）")
+    ap.add_argument("--root", required=True, help="Raw Replicator output directory (contains seed_*/frame_*).")
+    ap.add_argument("--out", default=None, help="Destination directory. Default: <root>_organized")
+    ap.add_argument("--copy", action="store_true", help="Copy files instead of moving them (default: move).")
     args = ap.parse_args()
 
     root = Path(args.root).resolve()

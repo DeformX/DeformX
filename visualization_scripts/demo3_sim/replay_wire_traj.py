@@ -330,7 +330,7 @@ def replay(path_traj: Path, cosim_overrides: dict[str, object] | None = None) ->
         extra.CreateColorAttr().Set(Gf.Vec3f(1.0, 1.0, 1.0))
         xf = UsdGeom.Xformable(extra.GetPrim())
         xf.ClearXformOpOrder()
-        xf.AddRotateXYZOp().Set(Gf.Vec3f(0.0, 90.0, 0.0))  # 左前方斜下
+        xf.AddRotateXYZOp().Set(Gf.Vec3f(0.0, 90.0, 0.0))  # angled down from front-left
         fill = UsdLux.DistantLight.Define(stage, "/World/FillLight")
         fill.CreateIntensityAttr().Set(1200.0)
         fill.CreateColorAttr().Set(Gf.Vec3f(0.95, 0.95, 1.0))

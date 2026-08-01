@@ -7,12 +7,12 @@ except Exception:
     PhysxSchema = None
 
 class SkeletonRodDriver:
-    def __init__(self, stage, skeleton_path, assume_chain=True): # 添加参数
+    def __init__(self, stage, skeleton_path, assume_chain=True):
         self.stage = stage
         self.skeleton_path = skeleton_path
         self.skel_prim = None
         self.anim_prim = None
-        self.assume_chain = assume_chain  # 保存该属性
+        self.assume_chain = assume_chain
         self.num_joints = 0
         self.skel_cache = None
 
@@ -71,7 +71,7 @@ class SkeletonRodDriver:
 
     def _disable_physics_on_skeleton(self):
         """
-        集成步骤：禁用骨骼及其子节点的物理属性
+        Disable physics on the skeleton and all of its descendants.
         """
         if self.skel_prim is None or not self.skel_prim.IsValid():
             raise RuntimeError("Skeleton prim is not set; cannot disable physics.")
@@ -79,17 +79,17 @@ class SkeletonRodDriver:
         root_prim = self._find_skel_root_prim() or self.skel_prim
         print(f"Checking physics on skeleton: {root_prim.GetPath()} (skel: {self.skel_prim.GetPath()})")
 
-        # 遍历骨骼根下的所有节点
+        # Walk every prim under the skeleton root.
         for p in Usd.PrimRange(root_prim):
             self._remove_physics_api(p)
 
-        # 也检查祖先节点（有时刚体挂在上层 Xform 上）
+        # Also check ancestors: the rigid body sometimes sits on a parent Xform.
         parent = root_prim.GetParent()
         while parent and parent.IsValid():
             self._remove_physics_api(parent)
             parent = parent.GetParent()
         
-        # 也可以简单粗暴地禁用该 Prim 的物理参与 (Isaac Sim 特有)
+        # Isaac Sim specific: opt the prim out of physics entirely.
         # from pxr import PhysxSchema
         # if not p.HasAPI(PhysxSchema.PhysxRigidBodyAPI):
         #     PhysxSchema.PhysxRigidBodyAPI.Apply(p)
@@ -97,15 +97,15 @@ class SkeletonRodDriver:
 
     def load_asset(self, asset_usd_path):
         """
-        集成步骤：将外部骨骼模型 USD 载入到场景中
+        Load an external skinned-skeleton USD asset into the stage.
         """
-        # 1. 创建容器并引用模型
+        # 1. Create a container prim and reference the asset into it.
         prim = self.stage.DefinePrim(self.skeleton_path, "Xform")
         prim.GetReferences().AddReference(asset_usd_path)
         
-        # --- 核心改进：递归搜索 Skeleton 类型的节点 ---
+        # Recursively search for a Skeleton prim: the asset may nest it at any depth.
         found_skel = None
-        # 使用 PrimRange 遍历 /World/CableAssembly 下的所有子孙节点
+        # PrimRange walks every descendant under the container prim.
         for p in Usd.PrimRange(self.stage.GetPrimAtPath(self.skeleton_path)):
             if p.IsA(UsdSkel.Skeleton):
                 found_skel = p
@@ -113,21 +113,21 @@ class SkeletonRodDriver:
         
         if found_skel:
             self.skel_prim = found_skel
-            # 更新路径为实际找到的骨骼路径，确保后续动画绑定正确
+            # Point at the skeleton we actually found so animation binding targets it.
             self.skeleton_path = found_skel.GetPath().pathString
         else:
-            # 调试信息：如果没找到，打印出该路径下的结构，帮你定位问题
-            print(f"调试：在 {self.skeleton_path} 路径下发现的节点有：")
+            # Nothing found: dump the subtree so the mismatch is easy to spot.
+            print(f"[debug] prims found under {self.skeleton_path}:")
             for p in Usd.PrimRange(self.stage.GetPrimAtPath(self.skeleton_path)):
                 print(f"  - {p.GetPath()} [{p.GetTypeName()}]")
-            raise RuntimeError(f"在 {asset_usd_path} 中没找到有效的 Skeleton Prim")
+            raise RuntimeError(f"No valid Skeleton prim found in {asset_usd_path}")
 
-        # 3. 初始化动画
+        # 2. Initialize the animation binding.
         self._setup_animation()
-        print(f"成功加载模型并初始化骨骼: {self.skeleton_path}")
+        print(f"Loaded asset and initialized skeleton: {self.skeleton_path}")
 
     def _setup_animation(self):
-        """内部方法：设置动画绑定"""
+        """Create the SkelAnimation prim and bind it to the skeleton."""
         self._disable_physics_on_skeleton()
         self.skel = UsdSkel.Skeleton(self.skel_prim)
         self.joints = self.skel.GetJointsAttr().Get() or []
@@ -141,10 +141,10 @@ class SkeletonRodDriver:
             except Exception:
                 self.parent_indices = None
         
-        # 获取 Rest Transforms 保持初始比例
+        # Rest transforms are kept so the original per-joint scale is preserved.
         self.rest_transforms = self.skel.GetRestTransformsAttr().Get()
         
-        # 创建 SkelAnimation 节点（放在 /World 以避免实例/引用限制）
+        # Create the SkelAnimation prim under /World to dodge instancing/reference limits.
         anim_parent = self.stage.DefinePrim("/World/SkelAnimations", "Xform")
         self.anim_path = anim_parent.GetPath().AppendChild(
             f"{self.skel_prim.GetName()}_RealtimeAnim"
@@ -177,13 +177,13 @@ class SkeletonRodDriver:
         self.anim = UsdSkel.Animation(self.anim_prim)
         self.anim.CreateJointsAttr().Set(self.joints)
         
-        # 创建属性句柄
+        # Cache the attribute handles written every frame.
         self.rot_attr = self.anim.CreateRotationsAttr()
         self.trans_attr = self.anim.CreateTranslationsAttr()
         self.scale_attr = self.anim.CreateScalesAttr()
         self.joint_xforms_attr = None
 
-        # ★ 创建 SkelCache 用于强制刷新
+        # SkelCache handle, used to force a refresh after writing new samples.
         self.skel_cache = UsdSkel.Cache()
 
     def _ensure_mesh_bindings(self):
@@ -223,13 +223,13 @@ class SkeletonRodDriver:
 
     def _mat3_to_quat(self, R):
         """Matrix to Gf.Quatf"""
-        # 简单转换逻辑
+        # Standard branch on the matrix trace for numerical stability.
         tr = np.trace(R)
         if tr > 0:
             s = np.sqrt(tr + 1.0) * 2
             w, x, y, z = 0.25 * s, (R[2,1]-R[1,2])/s, (R[0,2]-R[2,0])/s, (R[1,0]-R[0,1])/s
         else:
-            # 简化版逻辑，实际生产建议用你原脚本中更健壮的判断
+            # Trace is non-positive: pivot on the largest diagonal entry.
             i = np.argmax([R[0,0], R[1,1], R[2,2]])
             j, k = (i+1)%3, (i+2)%3
             s = np.sqrt(R[i,i] - R[j,j] - R[k,k] + 1.0) * 2
@@ -243,7 +243,7 @@ class SkeletonRodDriver:
 
     def update_skeleton(self, rod_pos, rod_dir, time_code = None):
         """
-        根据 rod_pos (3, N_nodes) 和 rod_dir (3, 3, N_elems) 更新骨骼
+        Drive the skeleton from rod_pos (3, N_nodes) and rod_dir (3, 3, N_elems).
         """
         tc = Usd.TimeCode.Default() if time_code is None else time_code
         # Convert world-space inputs into skeleton local space if needed
@@ -258,14 +258,14 @@ class SkeletonRodDriver:
         R_world = []
         t_world = []
         
-        # 1. 计算世界坐标系下的变换
+        # 1. Build the world-space transform of every joint.
         for i in range(self.num_joints):
             p0 = rod_pos[:, i].astype(np.float64)
             if w2s is not None:
                 p0 = np.array(w2s.Transform(Gf.Vec3d(float(p0[0]), float(p0[1]), float(p0[2]))))
             t_world.append(p0)
             
-            # 使用 rod_dir 构建旋转 (对应你 animate 脚本中的逻辑)
+            # Build the rotation from the rod director frame.
             D = rod_dir[:, :, i].astype(np.float64) 
             Rw = np.zeros((3, 3), dtype=np.float64)
             Rw[:, 1] = D[2] # Tangent
@@ -278,7 +278,7 @@ class SkeletonRodDriver:
 
         rotations, translations, scales = [], [], []
 
-        # 2. 转换为局部坐标系 (Local Space)
+        # 2. Convert world-space transforms into joint-local space.
         for i in range(self.num_joints):
             # Scale
             rest_matrix = self.rest_transforms[i]
@@ -305,9 +305,9 @@ class SkeletonRodDriver:
             rotations.append(self._mat3_to_quat(self._orthonormalize(R_loc)))
             translations.append(Gf.Vec3f(float(t_loc[0]), float(t_loc[1]), float(t_loc[2])))
 
-        # 3. 写入 USD 属性
+        # 3. Write the sampled attributes at this time code.
         self.rot_attr.Set(rotations, tc)
         self.trans_attr.Set(translations, tc)
         self.scale_attr.Set(scales, tc)
-    # ★ 强制刷新骨骼缓存
+    # Force the skeleton cache to refresh.
         self.skel_cache.Clear()
