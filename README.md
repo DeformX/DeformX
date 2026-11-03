@@ -5,11 +5,11 @@
 DeformX is a co-simulation framework for deformable linear objects (DLOs) such as wires, cables, and ropes. It couples a dedicated **Cosserat rod physics engine** with **NVIDIA Isaac Sim** to deliver DLO simulation that is **physically faithful** and **visually realistic** at the same time, while remaining directly compatible with scalable synthetic data generation and robot-learning pipelines.
 
 > **Note**
-> We are about to release a major upgrade built on a **Stable Cosserat Rods solver** with full **GPU/CUDA** acceleration, delivering large speedups over the current CPU engine. If you are interested, please star ⭐ this repo to stay tuned.
+> The **GPU/CUDA Stable Cosserat Rods solver** is here: the `Cosserat-Rod-Solver-CUDA` submodule (Python module `ropesim`), with Isaac Lab demos and the rope-swing RL task under `demo/`. See [The GPU rod solver](#the-gpu-rod-solver).
 
 ## 🔥 Updates
 
-* **\[Coming Soon\]** We will release a **GPU/CUDA-accelerated Stable Cosserat Rods solver**. Built on a split position–rotation optimization scheme with a closed-form Gauss–Seidel quasi-static orientation update, it stays stable under large stiffness parameters and large time steps while supporting GPU parallelization. This **massively accelerates** simulation and helps eliminate the time-scale discrepancy between Isaac Sim and the rod engine. ⭐ Star this repo to be notified.
+* **\[Nov 2026\]** We released the **GPU/CUDA Stable Cosserat Rods solver** ([Cosserat-Rod-Solver-CUDA](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA)): thousands of ropes in one solver, contact with planes, meshes and other ropes, and two-way coupling with PhysX in Isaac Lab, with the rope-swing RL task and new demos in this repository.
 * **\[Jun 2026\]** We open-sourced **DeformX**, the co-simulation framework integrating a dedicated Cosserat rod engine with NVIDIA Isaac Sim, together with the dataset-generation and RL tooling in this repository.
 * **\[Jun 2026\]** We released **[WireSeg-36k](https://huggingface.co/datasets/DeformX/WireSeg-36K)** — a synthetic wire instance segmentation dataset (36k RGB images, depth maps, and per-wire instance masks) — together with its generation pipeline and the [render assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) needed to reproduce it.
 
@@ -31,16 +31,20 @@ Crucially, because DLOs are visualized as meshes skinned to the rod, DeformX als
 ## Repository Layout
 
 ```text
-dataset_generator/   WireSeg-36k generation: drop/hang and datacenter renderers, the tracked wire USDs, Blender and queue tools
-PyElastica-Mesh/     the Cosserat rod engine (git submodule)
-demo/                Isaac Sim demos: interactive cable demos, trajectory replay, the rope-swing RL demo and wire-end calibration
+dataset_generator/          WireSeg-36k generation: drop/hang and datacenter renderers, the tracked wire USDs, Blender and queue tools
+PyElastica-Mesh/            the CPU Cosserat rod engine (git submodule)
+Cosserat-Rod-Solver-CUDA/   the GPU Cosserat rod solver, module `ropesim` (git submodule)
+demo/
+  cable_sim_demo/           Isaac Sim cable demos on the CPU engine: interactive, ball-joint wire, trajectory replay, bunny
+  rope_swing_rl/            rope-swing RL (CPU engine, Isaac Sim + Hydra PPO) and wire-end calibration
 ```
 
 Each folder has a README with every command:
 [dataset_generator](dataset_generator/README.md) ·
 [demo](demo/README.md) ·
 [demo/rope_swing_rl](demo/rope_swing_rl/README.md) ·
-[demo/rope_swing_rl/calibration](demo/rope_swing_rl/calibration/README.md).
+[demo/rope_swing_rl/calibration](demo/rope_swing_rl/calibration/README.md) ·
+[Cosserat-Rod-Solver-CUDA](Cosserat-Rod-Solver-CUDA/README.md).
 
 Created on demand and ignored by git: `asset_wireseg36k/` (render assets), `output/`,
 `outputs/`, `logs/`, `checkpoints/`, `data/`, `eval_exports/`, `wandb/`.
@@ -66,7 +70,7 @@ DeformX uses **two Python environments**. Using the right one is the most common
 
 ### 2. Clone with submodules
 
-The rod engine lives in the **`PyElastica-Mesh` submodule**; a plain `git clone` leaves it empty.
+Both rod engines are submodules (`PyElastica-Mesh`, `Cosserat-Rod-Solver-CUDA`); a plain `git clone` leaves them empty.
 
 ```bash
 git clone --recursive https://github.com/DeformX/DeformX.git
@@ -168,6 +172,27 @@ $ISAAC_PYTHON dataset_generator/datacenter/render_wireseg36k_datacenter.py --dry
 Everything else (asset download, scene variants, the datacenter passes, post-processing,
 wire asset generation in Blender) is in [dataset_generator/README.md](dataset_generator/README.md).
 
+## The GPU rod solver
+
+`Cosserat-Rod-Solver-CUDA/` is the Stable Cosserat Rods solver (Hsu et al., SIGGRAPH 2025)
+wrapped as the Python module `ropesim`: all ropes of all environments in one GPU solver,
+kinematic root driving for a robot end effector, contact with planes, signed-distance meshes
+and other ropes, and `ropesim.isaac_bridge`, which turns PhysX bodies into rope colliders and
+hands the rope's wrench back to PhysX. It is GPL-3.0 (its vendored solver is) and has its own
+[README](Cosserat-Rod-Solver-CUDA/README.md) and [solver notes](Cosserat-Rod-Solver-CUDA/docs/SOLVER.md).
+
+Build it into the Isaac Sim environment (a CUDA toolkit matching your torch build, CMake,
+Ninja and glm are needed):
+
+```bash
+export CUDACXX=/usr/local/cuda-12.8/bin/nvcc             # torch cu128 <-> CUDA 12.8
+$ISAAC_PYTHON -m pip install -e Cosserat-Rod-Solver-CUDA  # about a minute
+$ISAAC_PYTHON -m pytest Cosserat-Rod-Solver-CUDA/tests    # 124 physics tests, optional
+```
+
+The GPU demos (next commits) run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
+`$ISAAC_PYTHON -m pip install "isaaclab[all]==2.3.2.post1" --extra-index-url https://pypi.nvidia.com`.
+
 ## Demos
 
 All demos run from the repository root with Isaac Sim's Python and take `--headless`
@@ -195,5 +220,7 @@ If you find DeformX useful, please consider citing our work:
 
 ## License
 
-MIT (see `LICENSE`). The NVIDIA datacenter content pack and the Texturelabs ground textures
-are not covered by it and are not redistributed here; `PyElastica-Mesh` carries its own license.
+MIT (see `LICENSE`) for this repository. The submodules carry their own licenses:
+`PyElastica-Mesh` (see its LICENSE) and `Cosserat-Rod-Solver-CUDA` (GPL-3.0, it vendors the
+YarnBall solver). The NVIDIA datacenter content pack and the Texturelabs ground textures are
+not covered and are not redistributed here.
