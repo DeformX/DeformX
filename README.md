@@ -38,6 +38,7 @@ demo/
   cable_sim_demo/           Isaac Sim cable demos on the CPU engine: interactive, ball-joint wire, trajectory replay, bunny
   cable_sim_demo_gpu/       Isaac Lab demos on the GPU solver: rope curtain, rope pile, two-way coupling with PhysX bodies
   rope_swing_rl/            rope-swing RL (CPU engine, Isaac Sim + Hydra PPO) and wire-end calibration
+  rope_swing_rl_gpu/        rope-swing RL (GPU solver, Isaac Lab + rsl_rl PPO), 512 environments in one solver
 ```
 
 Each folder has a README with every command:
@@ -45,6 +46,7 @@ Each folder has a README with every command:
 [demo](demo/README.md) ·
 [demo/cable_sim_demo_gpu](demo/cable_sim_demo_gpu/README.md) ·
 [demo/rope_swing_rl](demo/rope_swing_rl/README.md) ·
+[demo/rope_swing_rl_gpu](demo/rope_swing_rl_gpu/README.md) ·
 [demo/rope_swing_rl/calibration](demo/rope_swing_rl/calibration/README.md) ·
 [Cosserat-Rod-Solver-CUDA](Cosserat-Rod-Solver-CUDA/README.md).
 
@@ -198,14 +200,14 @@ The GPU demos and the GPU RL task run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
 ```bash
 python demo/cable_sim_demo_gpu/rope_curtain.py                     # 48 ropes swept by a box, viewport
 python demo/cable_sim_demo_gpu/rope_box_pulley.py --scene pulley   # two-way coupling with a PhysX cylinder
+python demo/rope_swing_rl_gpu/train.py --headless --num_envs 1024  # RL: 1024 envs, one rope solver
 ```
 
 ## Demos
 
 All demos run from the repository root with Isaac Sim's Python and take `--headless`
 (plus `--max_steps N` where there is a free-running loop). Commands and inputs for each are in
-[demo/README.md](demo/README.md); training, evaluation, replay and calibration are in
-[demo/rope_swing_rl/README.md](demo/rope_swing_rl/README.md).
+[demo/README.md](demo/README.md); the two RL demos and the calibration have their own READMEs.
 
 ```bash
 PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON demo/cable_sim_demo/interactive/move_wire_with_ball.py      # drag the ball in the viewport
