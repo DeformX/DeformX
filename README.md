@@ -36,12 +36,14 @@ PyElastica-Mesh/            the CPU Cosserat rod engine (git submodule)
 Cosserat-Rod-Solver-CUDA/   the GPU Cosserat rod solver, module `ropesim` (git submodule)
 demo/
   cable_sim_demo/           Isaac Sim cable demos on the CPU engine: interactive, ball-joint wire, trajectory replay, bunny
+  cable_sim_demo_gpu/       Isaac Lab demos on the GPU solver: rope curtain, rope pile, two-way coupling with PhysX bodies
   rope_swing_rl/            rope-swing RL (CPU engine, Isaac Sim + Hydra PPO) and wire-end calibration
 ```
 
 Each folder has a README with every command:
 [dataset_generator](dataset_generator/README.md) ·
 [demo](demo/README.md) ·
+[demo/cable_sim_demo_gpu](demo/cable_sim_demo_gpu/README.md) ·
 [demo/rope_swing_rl](demo/rope_swing_rl/README.md) ·
 [demo/rope_swing_rl/calibration](demo/rope_swing_rl/calibration/README.md) ·
 [Cosserat-Rod-Solver-CUDA](Cosserat-Rod-Solver-CUDA/README.md).
@@ -194,6 +196,7 @@ The GPU demos and the GPU RL task run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
 `$ISAAC_PYTHON -m pip install "isaaclab[all]==2.3.2.post1" --extra-index-url https://pypi.nvidia.com`.
 
 ```bash
+python demo/cable_sim_demo_gpu/rope_curtain.py                     # 48 ropes swept by a box, viewport
 python demo/cable_sim_demo_gpu/rope_box_pulley.py --scene pulley   # two-way coupling with a PhysX cylinder
 ```
 

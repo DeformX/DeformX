@@ -12,14 +12,20 @@ solver built in it (`pip install -e Cosserat-Rod-Solver-CUDA`, see the
 
 | Script | What it shows |
 |---|---|
+| `rope_curtain.py` | 48 ropes hanging in a row; a box sweeps back and forth through them. Rod-mesh contact against a kinematic signed-distance box (friction relative to the moving surface), rope-rope contact between all ropes, and the force the ropes put on the box |
+| `rope_pile.py` | 128 (or 512) ropes dropped onto a box and the floor and piling up with rope-rope contact; prints solver throughput |
 | `rope_box_pulley.py` | Two-way coupling through `ropesim.isaac_bridge`: a rope draped over a PhysX box is pulled and drags the box (`--scene box`), rolls a cylinder (`--scene pulley`), or rams a floating box in zero gravity (`--scene freebox`); the wrench PhysX receives is printed |
 | `rope_markers.py` | The viewport markers (cylinder per segment) the demos share |
 
 ```bash
+python demo/cable_sim_demo_gpu/rope_curtain.py                                   # viewport
+python demo/cable_sim_demo_gpu/rope_curtain.py --headless --seconds 4 --out curtain.npz
+python demo/cable_sim_demo_gpu/rope_pile.py --num_ropes 256
+python demo/cable_sim_demo_gpu/rope_pile.py --headless --num_ropes 512 --seconds 4 --out pile.npz
 python demo/cable_sim_demo_gpu/rope_box_pulley.py --scene box
 python demo/cable_sim_demo_gpu/rope_box_pulley.py --headless --scene pulley --exchange 10 --out pulley.npz
 ```
 
-Isaac Lab's own flags apply (`--headless`, `--device`, ...). `rope_box_pulley.py` runs at several times real time. The saved `.npz` files hold rope
+Isaac Lab's own flags apply (`--headless`, `--device`, ...). Rope-rope contact is brute force within a group, so these all-ropes-interact scenes run below real time (48 curtain ropes or 128 pile ropes: ~75 ms per 60 Hz frame on an RTX PRO 6000); `rope_box_pulley.py` runs at several times real time. The saved `.npz` files hold rope
 positions per frame (`P` `[T, N, V, 3]`) plus the scene parameters. The ropes use the DeformX
 wire's calibrated parameters (12.7 mm braided nylon: ρ 0.117 kg/m, EA 11.5 kN, EI 4.5e-3 N·m²).
