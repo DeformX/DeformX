@@ -25,13 +25,31 @@ Run from the repository root.
 ```bash
 # wiring check: Isaac Sim boots, the UR5e loads, ropes rest on the floor and follow the stick, resets work
 python demo/rope_swing_rl_gpu/run_env_smoke.py --headless --num_envs 16 --steps 180
+
+# train headless (512 envs by default); logs and checkpoints in logs/rsl_rl/rope_swing/<run>/
+python demo/rope_swing_rl_gpu/train.py --headless --num_envs 1024 --max_iterations 3000
+
+# watch training in the viewport (16 envs, markers on; --realtime paces to wall clock)
+python demo/rope_swing_rl_gpu/train.py --realtime
+
+# evaluate a checkpoint (success rate, closest approach), watch it, or export env-0 rollouts
+python demo/rope_swing_rl_gpu/play.py --headless --num_envs 256 --episodes 5 --checkpoint logs/rsl_rl/rope_swing/<run>/model_<n>.pt
+python demo/rope_swing_rl_gpu/play.py --num_envs 4 --realtime --checkpoint <model.pt>
+python demo/rope_swing_rl_gpu/play.py --headless --episodes 8 --export out.npz --checkpoint <model.pt>
+
+# the same environment with the UR5e's link meshes as rope colliders (ropesim.isaac_bridge)
+python demo/rope_swing_rl_gpu/swing_contact_compare.py --headless --contact 1 --out swing_contact1.npz
+python demo/rope_swing_rl_gpu/swing_contact_compare.py --headless --contact 0 --out swing_contact0.npz
 ```
 
 `ropesim_tasks/swing_env.py` holds the environment; `RopeSwingEnvCfg` has every parameter
 (target, limits, wire, solver, floor friction, reward weights) and documents the few places
 where the solver, not the task, dictates a value. `visualization.py` draws the target sphere,
-the rope and the stick in the viewport. Training, evaluation and the contact variant follow
-in the next commit.
+the rope and the stick in the viewport.
+
+The exported `.npz` holds one row per step (`episode`, `actions`, `joint_targets`, `rope`
+positions `[V, 3]`, `dist`) plus per-episode `success` and `min_dist`; the joint targets are the
+60 Hz sequence a real arm would execute open-loop.
 
 Notes: the reset shape is the rope settled on the floor, computed once at construction
 (`from_positions(..., straight_rest=True)`, so the folded rope still wants to be straight).

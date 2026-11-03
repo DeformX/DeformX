@@ -11,6 +11,7 @@ rope-swing reinforcement-learning demo.
 | `cable_sim_demo/bunny_wire/` | A wire draped over the bunny, rendered from a precomputed rod trajectory |
 | `rope_swing_rl/` | RL environments, PPO training and evaluation, replay tools and wire-end calibration: see [its README](rope_swing_rl/README.md) |
 | `cable_sim_demo_gpu/` | **GPU solver** (Isaac Lab): a rope curtain swept by a box, a pile of hundreds of ropes, two-way coupling with PhysX bodies: see [its README](cable_sim_demo_gpu/README.md) |
+| `rope_swing_rl_gpu/` | **GPU solver** (Isaac Lab + rsl_rl): the rope-swing RL task with 512 environments in one solver, plus the contact variant: see [its README](rope_swing_rl_gpu/README.md) |
 | `common/` | Shared code: `paths.py` (wire and robot USD resolution) and `rod_skel_driver.py` (`SkeletonRodDriver`) |
 
 The `*_gpu` demos need the `Cosserat-Rod-Solver-CUDA` submodule built and Isaac Lab installed
