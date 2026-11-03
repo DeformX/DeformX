@@ -1,3 +1,6 @@
 [submodule "PyElastica-Mesh"]
 	path = PyElastica-Mesh
 	url = https://github.com/DeformX/PyElastica-Mesh.git
+[submodule "Cosserat-Rod-Solver-CUDA"]
+	path = Cosserat-Rod-Solver-CUDA
+	url = https://github.com/DeformX/Cosserat-Rod-Solver-CUDA.git
