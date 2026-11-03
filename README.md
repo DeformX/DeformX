@@ -190,8 +190,12 @@ $ISAAC_PYTHON -m pip install -e Cosserat-Rod-Solver-CUDA  # about a minute
 $ISAAC_PYTHON -m pytest Cosserat-Rod-Solver-CUDA/tests    # 124 physics tests, optional
 ```
 
-The GPU demos (next commits) run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
+The GPU demos and the GPU RL task run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
 `$ISAAC_PYTHON -m pip install "isaaclab[all]==2.3.2.post1" --extra-index-url https://pypi.nvidia.com`.
+
+```bash
+python demo/cable_sim_demo_gpu/rope_box_pulley.py --scene pulley   # two-way coupling with a PhysX cylinder
+```
 
 ## Demos
 
