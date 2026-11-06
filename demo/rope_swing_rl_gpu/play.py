@@ -8,7 +8,8 @@ Watch in the Isaac Sim GUI (target sphere, rope+stick cylinders,
 tip trails; --realtime paces to 60 Hz so swings are watchable):
     python demo/rope_swing_rl_gpu/play.py --num_envs 4 --realtime --checkpoint <pt>
 
-Export env-0 rollouts (actions, joint targets, rope trajectory, distances):
+Export env-0 rollouts (actions, joint targets, rope trajectory, distances; one row per step
+of each finished episode, the last row being its terminal state, not the reset):
     python demo/rope_swing_rl_gpu/play.py --headless --episodes 8 --export out.npz \
         --checkpoint <pt>
 """
@@ -117,6 +118,25 @@ def main():
     # offline from the exported trajectory with the env's own criterion (Y-Z distance).
     rec = {"episode": [], "actions": [], "targets": [], "rope": [], "dist": []} if args.export else None
     ep0 = 0
+
+    def env0_state():
+        return (u._targets[0].detach().cpu().numpy().copy(),
+                u._rope_pos[0].detach().cpu().numpy().copy(),
+                float(u._dist[0].item()))
+
+    # DirectRLEnv.step() resets finished envs before it returns, so after env 0's last step
+    # its targets, rope and distance already hold the next episode's start. Capture env 0's
+    # terminal state inside _reset_idx, before the reset overwrites it.
+    terminal0 = []
+    if rec is not None:
+        reset_idx = u._reset_idx
+
+        def reset_idx_keep_env0(env_ids):
+            if env_ids is None or bool((env_ids == 0).any()):
+                terminal0[:] = [env0_state()]
+            reset_idx(env_ids)
+
+        u._reset_idx = reset_idx_keep_env0
     obs = wrapped.get_observations()
     dt_wall = u.physics_dt
     for k in range(steps_total):
@@ -127,11 +147,13 @@ def main():
             rec["actions"].append(actions[0].detach().cpu().numpy().copy())
         obs, _, _, extras = wrapped.step(actions)
         if rec is not None:
+            done0 = bool(u.reset_buf[0].item())
+            targets, rope, dist = terminal0.pop() if done0 else env0_state()
             rec["episode"].append(ep0)
-            rec["targets"].append(u._targets[0].detach().cpu().numpy().copy())
-            rec["rope"].append(u._rope_pos[0].detach().cpu().numpy().copy())
-            rec["dist"].append(float(u._dist[0].item()))
-            if bool(u.reset_buf[0].item()):
+            rec["targets"].append(targets)
+            rec["rope"].append(rope)
+            rec["dist"].append(dist)
+            if done0:
                 ep0 += 1
         n_reset = int(u.reset_buf.sum().item())
         log = extras.get("log") or {}
@@ -149,16 +171,23 @@ def main():
     if rec is not None:
         import numpy as np
 
+        # only finished episodes: env 0's last one may still be running when the steps run out
+        n_ep = ep0
+        if n_ep == 0:
+            print("  env 0 finished no episode - nothing exported; increase --episodes")
+            env.close()
+            return
         ep = np.array(rec["episode"])
-        dist = np.array(rec["dist"])
-        n_ep = int(ep.max()) + 1 if ep.size else 0
+        keep = ep < n_ep
+        ep = ep[keep]
+        dist = np.array(rec["dist"])[keep]
         min_dist = np.array([dist[ep == e].min() for e in range(n_ep)])
         success = min_dist < env_cfg.success_thresh
         np.savez(args.export,
                  episode=ep,
-                 actions=np.array(rec["actions"]),
-                 joint_targets=np.array(rec["targets"]),
-                 rope=np.array(rec["rope"]),
+                 actions=np.array(rec["actions"])[keep],
+                 joint_targets=np.array(rec["targets"])[keep],
+                 rope=np.array(rec["rope"])[keep],
                  dist=dist,
                  target=np.asarray(env_cfg.target_local),
                  success=success, min_dist=min_dist, dt=u.physics_dt)

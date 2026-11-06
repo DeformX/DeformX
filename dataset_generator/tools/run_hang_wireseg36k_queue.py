@@ -6,7 +6,7 @@ through CLI flags -- this script never edits tracked source. Logs land in
 ``logs/dataset_queue/<name>.log``.
 
 Usage:
-    export ISAAC_PYTHON=/path/to/isaacsim/python.sh   # or a pip-install Isaac python
+    export ISAAC_PYTHON=python              # or /path/to/isaacsim/python.sh
     python dataset_generator/tools/run_hang_wireseg36k_queue.py
 
     python dataset_generator/tools/run_hang_wireseg36k_queue.py --dry_run    # print commands only
@@ -16,6 +16,7 @@ from __future__ import annotations
 
 import argparse
 import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -41,9 +42,10 @@ CAMS_SAMPLE_PER_FRAME = 5
 def isaac_python() -> str:
     """Interpreter used to run the generator.
 
-    ``ISAAC_PYTHON`` should point at Isaac Sim's ``python.sh`` for a launcher-style
-    install. For a pip install (``pip install isaacsim[all]``) Isaac Sim runs under
-    the active interpreter, so that is the default.
+    ``ISAAC_PYTHON`` is either a path (Isaac Sim's ``python.sh`` for a launcher-style
+    install) or a command on ``PATH`` such as ``python``. For a pip install
+    (``pip install isaacsim[all]``) Isaac Sim runs under the active interpreter, so that
+    is the default.
     """
     return os.environ.get("ISAAC_PYTHON") or sys.executable
 
@@ -73,18 +75,21 @@ def parse_args() -> argparse.Namespace:
 
 def main() -> int:
     args = parse_args()
-    python = isaac_python()
+    requested = isaac_python()
+    python = shutil.which(requested)   # resolves both a path and a bare command such as `python`
+    if python is not None:
+        python = os.path.abspath(python)   # the runs use cwd=REPO; keep a relative path meaning what it did here
 
     if args.dry_run:
         for name, variant in RUNS:
-            print(f"[{name}] " + " ".join(build_cmd(name, variant, python)))
+            print(f"[{name}] " + " ".join(build_cmd(name, variant, python or requested)))
         return 0
 
-    if not Path(python).exists():
+    if python is None:
         print(
-            f"[ERROR] Isaac Sim interpreter not found: {python}\n"
-            "        Set ISAAC_PYTHON to Isaac Sim's python.sh, or run this script with "
-            "the Python environment Isaac Sim is pip-installed into.",
+            f"[ERROR] Isaac Sim interpreter not found or not executable: {requested}\n"
+            "        Set ISAAC_PYTHON to Isaac Sim's python.sh or to the Python that Isaac Sim "
+            "is pip-installed into (a path, or a command on PATH such as `python`).",
             file=sys.stderr,
         )
         return 1

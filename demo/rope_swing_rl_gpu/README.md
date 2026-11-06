@@ -9,6 +9,7 @@ rope solver, so 512 to 2048 of them train in parallel.
 |---|---|---|
 | Robot, mount, home pose | UR5e at z = 1.7 m, −90° about X; DeformX home | same |
 | Stick, wire | rigid 0.65 m stick; 1 m wire, 20 segments, 12.7 mm, 700 kg/m³ | same |
+| Wire attachment | `FixedJoint` at the stick tip (k 1500 N/m, kt 10 N·m/rad: rigid next to the wire's EI/l of 5e-3 N·m/rad) | root clamped in position and orientation, the first segment along the stick (`fix_root_orientation`) |
 | Target, success | (0, 2.0, 1.5) m in the env frame; tip within 5 cm in the Y-Z plane | same |
 | Actions | shoulder lift, elbow, wrist 1; positive position-target deltas, 90°/s × 3 | same, per 60 Hz control step |
 | Observation (18) | active joint pos/vel, tip, tip velocity, stick tip, target | same |
@@ -47,12 +48,15 @@ python demo/rope_swing_rl_gpu/swing_contact_compare.py --headless --contact 0 --
 where the solver, not the task, dictates a value. `visualization.py` draws the target sphere,
 the rope and the stick in the viewport.
 
-The exported `.npz` holds one row per step (`episode`, `actions`, `joint_targets`, `rope`
-positions `[V, 3]`, `dist`) plus per-episode `success` and `min_dist`; the joint targets are the
-60 Hz sequence a real arm would execute open-loop.
+The exported `.npz` holds one row per step of each finished env-0 episode (`episode`, `actions`,
+`joint_targets`, `rope` positions `[V, 3]`, `dist`; the last row is the terminal step, not the
+reset) plus per-episode `success` and `min_dist`; the joint targets are the 60 Hz sequence a real
+arm would execute open-loop.
 
 Notes: the reset shape is the rope settled on the floor, computed once at construction
 (`from_positions(..., straight_rest=True)`, so the folded rope still wants to be straight).
+Checkpoints trained before the root was clamped (`fix_root_orientation = False`, a free pivot)
+saw different rope dynamics; retrain them, or set the flag to False to evaluate them as trained.
 One Isaac Sim instance per process; set `PYTHONUNBUFFERED=1` when redirecting output, since
 Kit drops buffered stdout at exit. The UR5e USD comes from a local Isaac assets tree or
 NVIDIA's public mirror (`ROPE_UR5E_USD` overrides it).

@@ -97,8 +97,8 @@ while [[ $# -gt 0 ]]; do
   esac
 done
 
-if [[ ! -x "${PYTHON_SH}" ]]; then
-  echo "Error: Isaac Sim launcher not executable: ${PYTHON_SH}" >&2
+if ! command -v "${PYTHON_SH}" >/dev/null 2>&1; then   # a path or a command on PATH such as `python`
+  echo "Error: Isaac Sim interpreter not found or not executable: ${PYTHON_SH}" >&2
   exit 1
 fi
 if [[ ! -f "${REPLAY_SCRIPT}" ]]; then

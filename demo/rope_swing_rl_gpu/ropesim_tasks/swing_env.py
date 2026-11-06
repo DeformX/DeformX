@@ -24,8 +24,9 @@ What differs comes from the solver, not the task:
 
 Wiring: PhysX at 60 Hz, decimation 1; one-way coupling with second-order root driving (after
 each PhysX step the rope root follows a quadratic from the measured end-effector point
-velocity to the frame-end pose); rope state lives only in the solver, observations are
-zero-copy views.
+velocity to the frame-end pose, and its frame SLERPs to the frame-end stick orientation: the
+root is clamped like the CPU task's fixed joint); rope state lives only in the solver,
+observations are zero-copy views.
 """
 from __future__ import annotations
 
@@ -42,7 +43,7 @@ from isaaclab.envs import DirectRLEnv, DirectRLEnvCfg
 from isaaclab.scene import InteractiveSceneCfg
 from isaaclab.sim import SimulationCfg
 from isaaclab.utils import configclass
-from isaaclab.utils.math import quat_apply, quat_mul
+from isaaclab.utils.math import quat_apply, quat_conjugate, quat_mul
 
 import ropesim
 
@@ -117,6 +118,10 @@ class RopeSwingEnvCfg(DirectRLEnvCfg):
     ee_body_name = "wrist_3_link"
     tube_offset = (0.0, 0.0, 0.65)   # the rigid stick: rope root in the end-effector frame
     tube_dir_local = (0.0, 0.0, 1.0)
+    # the stick clamps the rope root in position AND orientation (its first segment stays along
+    # the stick), like the CPU task's FixedJoint: kt = 10 N m/rad there is ~2000x the rope's
+    # per-segment bending stiffness EI/l = 5.1e-3 N m/rad, i.e. rigid. False = a free pivot.
+    fix_root_orientation = True
 
     # rope (units: rho [kg/m], EA [N], EI [N m^2])
     rope_num_verts = 21              # 20 segments x 5 cm = 1.0 m
@@ -136,7 +141,8 @@ class RopeSwingEnvCfg(DirectRLEnvCfg):
     floor_mu_k = 0.5
     contact_v_slip = 1e-3
     contact_kappa = 2.0
-    settle_seconds = 1.0             # settle the folded rope on the floor at construction
+    settle_seconds = 3.0             # settle the folded rope on the floor at construction (with the
+                                     # clamped root, 1 s leaves ~6 cm of creep after each reset)
 
     # task (CPU task values)
     target_local = (0.0, 2.0, 1.5)   # [m] in the env frame (floor level under the base)
@@ -222,13 +228,27 @@ class RopeSwingEnv(DirectRLEnv):
         # the rope: hanging from the stick tip, folded onto the floor and settled there; that
         # settled shape is the construction state, i.e. what every reset restores
         root_pos, _, root_q = self._compute_root_state()
-        rest = self._settled_shape(root_pos)
+        rest = self._settled_shape(root_pos, root_q)
         pin = np.zeros((N, self.cfg.rope_num_verts), bool)
         pin[:, 0] = True
         self.rope = ropesim.RopeBatch.from_positions(
             rest, self.cfg.rope_density, self.cfg.rope_ea, self.cfg.rope_ei,
-            self.physics_dt / self.cfg.rope_substeps, self.cfg.rope_num_itr, pinned=pin, straight_rest=True)
+            self.physics_dt / self.cfg.rope_substeps, self.cfg.rope_num_itr,
+            fix_root_orientation=self.cfg.fix_root_orientation, pinned=pin, straight_rest=True)
         self._configure_rope(self.rope)
+        if self.cfg.fix_root_orientation:
+            # from_positions builds frames from the geometry alone, so each rope's root frame has an
+            # arbitrary roll about the stick axis. Adopt that roll into the stick frame: the clamp
+            # then agrees with the state every reset restores (no twist jump on the first step).
+            q_rope = torch.as_tensor(self.rope.quaternions())[:, 0]
+            q_rope = torch.cat([q_rope[:, 3:4], q_rope[:, 0:3]], dim=-1)          # xyzw -> wxyz
+            q_stick = torch.cat([root_q[:, 3:4], root_q[:, 0:3]], dim=-1)
+            rel = quat_mul(quat_conjugate(q_stick), q_rope)                      # rope root in the stick frame
+            twist = torch.zeros_like(rel)
+            twist[:, 0:2] = rel[:, 0:2]                                          # its roll about the stick axis
+            twist = twist / twist.norm(dim=-1, keepdim=True).clamp(min=1e-12)
+            self._q_align = quat_mul(self._q_align, twist).contiguous()          # per env from here on
+            root_pos, _, root_q = self._compute_root_state()
         self._rope_pos = torch.as_tensor(self.rope.positions())      # zero-copy views
         self._rope_vel = torch.as_tensor(self.rope.velocities())
         self._init_root_pos = root_pos.clone()
@@ -262,10 +282,11 @@ class RopeSwingEnv(DirectRLEnv):
                             mu_s=self.cfg.floor_mu_s, mu_k=self.cfg.floor_mu_k,
                             v_slip=self.cfg.contact_v_slip, kappa=self.cfg.contact_kappa)
 
-    def _settled_shape(self, root_pos: torch.Tensor) -> np.ndarray:
+    def _settled_shape(self, root_pos: torch.Tensor, root_q: torch.Tensor) -> np.ndarray:
         """[N, V, 3] float32: the rope hanging from the stick tip. Without floor contact it hangs
-        straight down. With it, the part that would be below the floor is folded along +Y on
-        the floor and the shape is settled for cfg.settle_seconds in a throwaway solver."""
+        straight down; with it, the part that would be below the floor is folded along +Y on the
+        floor. The shape is then settled for cfg.settle_seconds in a throwaway solver, always when
+        the root is clamped (a vertical first segment is not at rest under a tilted stick)."""
         cfg = self.cfg
         N, V, L = self.num_envs, cfg.rope_num_verts, cfg.rope_seg_len
         root = root_pos.detach().cpu().numpy().astype(np.float64)
@@ -274,27 +295,28 @@ class RopeSwingEnv(DirectRLEnv):
         pos[:, :, 0] = root[:, None, 0]
         pos[:, :, 1] = root[:, None, 1]
         pos[:, :, 2] = root[:, None, 2] - s[None, :]
-        if not cfg.floor_contact:
-            return pos.astype(np.float32)
-        z0 = cfg.rope_radius + 0.002                                   # resting height of the centreline
-        drop = np.clip(root[:, 2] - z0, 0.0, None)                     # vertical run per env
-        on_floor = s[None, :] > drop[:, None]
-        pos[:, :, 1] = np.where(on_floor, root[:, None, 1] + (s[None, :] - drop[:, None]), root[:, None, 1])
-        pos[:, :, 2] = np.where(on_floor, z0, root[:, None, 2] - s[None, :])
-        pos[:, :, 0] += 1e-3 * s[None, :]                              # a hair of tilt: no exactly vertical column
+        if cfg.floor_contact:
+            z0 = cfg.rope_radius + 0.002                               # resting height of the centreline
+            drop = np.clip(root[:, 2] - z0, 0.0, None)                 # vertical run per env
+            on_floor = s[None, :] > drop[:, None]
+            pos[:, :, 1] = np.where(on_floor, root[:, None, 1] + (s[None, :] - drop[:, None]), root[:, None, 1])
+            pos[:, :, 2] = np.where(on_floor, z0, root[:, None, 2] - s[None, :])
+            pos[:, :, 0] += 1e-3 * s[None, :]                          # a hair of tilt: no exactly vertical column
         pos = pos.astype(np.float32)
-        if cfg.settle_seconds <= 0:
+        if not (cfg.floor_contact or cfg.fix_root_orientation) or cfg.settle_seconds <= 0:
             return pos
         pin = np.zeros((N, V), bool)
         pin[:, 0] = True
         tmp = ropesim.RopeBatch.from_positions(pos, cfg.rope_density, cfg.rope_ea, cfg.rope_ei,
                                                self.physics_dt / cfg.rope_substeps, max(cfg.rope_num_itr, 16),
+                                               fix_root_orientation=cfg.fix_root_orientation,
                                                pinned=pin, straight_rest=True)       # extra iterations: a converged fold
         self._configure_rope(tmp)
         tmp.drag = 3.0                                                  # heavy air drag: settle fast
         zero = torch.zeros_like(root_pos)
+        q = root_q if cfg.fix_root_orientation else None
         for _ in range(int(round(cfg.settle_seconds / self.physics_dt))):
-            tmp.step(root_pos, zero, dt=self.physics_dt, substeps=cfg.rope_substeps)
+            tmp.step(root_pos, zero, dt=self.physics_dt, substeps=cfg.rope_substeps, root_q=q)
         settled = torch.as_tensor(tmp.positions()).cpu().numpy().astype(np.float32)
         del tmp
         return settled
@@ -325,8 +347,10 @@ class RopeSwingEnv(DirectRLEnv):
     def _step_rope(self):
         """Drive every rope root over the PhysX step that just ran, then refresh the tip metrics."""
         root_pos, root_vel, root_q = self._compute_root_state()
+        # clamped root: its frame SLERPs from the frame-start to the frame-end stick orientation
+        q0, q1 = (self._prev_root_q, root_q) if self.cfg.fix_root_orientation else (None, None)
         self.rope.step(self._prev_root_pos, self._prev_root_vel, dt=self.physics_dt,
-                       substeps=self.cfg.rope_substeps, root_pos_end=root_pos)
+                       substeps=self.cfg.rope_substeps, root_q=q0, root_pos_end=root_pos, root_q_end=q1)
         self._prev_root_pos, self._prev_root_vel, self._prev_root_q = root_pos, root_vel, root_q
         tip = self._rope_pos[:, -1, :]
         self._tip_vel = torch.nan_to_num((tip - self._prev_tip) / self.physics_dt, nan=0.0, posinf=0.0, neginf=0.0)

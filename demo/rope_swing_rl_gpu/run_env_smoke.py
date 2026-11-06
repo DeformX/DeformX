@@ -60,6 +60,11 @@ def main():
             print(f"  step {k:4d}: root tracking err {err:.2e} m | "
                   f"tip[0] = {tip[0].tolist()}")
             assert err < 1e-3, "rope root lost the end-effector"
+            if env.cfg.fix_root_orientation:   # and its first frame is clamped to the stick frame
+                _, _, root_q = env._compute_root_state()
+                q_rope = torch.as_tensor(env.rope.quaternions())[:, 0]
+                ang = torch.rad2deg(2 * torch.acos((q_rope * root_q).sum(-1).abs().clamp(max=1))).max()
+                assert ang < 0.5, f"rope root frame {ang:.2f} deg off the stick frame"
     wall = time.perf_counter() - t0
     print(f"\n  {args.steps} steps x {N} envs in {wall:.2f} s "
           f"-> {args.steps/wall:.1f} env-steps/s/env, "
@@ -75,6 +80,11 @@ def main():
     print(f"  reset: ropes moved {moved:.3f} m back; "
           f"root-vs-init err {init_err:.2e} m")
     assert init_err < 1e-5
+    if env.cfg.fix_root_orientation:   # the restored root frame agrees with the clamp (no twist jump)
+        q_rope = torch.as_tensor(env.rope.quaternions())[:, 0]
+        ang = torch.rad2deg(2 * torch.acos((q_rope * env._init_root_q).sum(-1).abs().clamp(max=1))).max()
+        print(f"  reset: root frame vs stick frame {ang:.2f} deg")
+        assert ang < 2.0, "reset root frame disagrees with the clamped stick frame"
     assert torch.isfinite(after).all()
 
     # the reset shape: the rope hangs from the stick tip and lies on the floor, settled
