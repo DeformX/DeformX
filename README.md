@@ -35,6 +35,14 @@ python -m demo.examples braid --help
 | [![Moving endpoints](demo/basics/media/endpoints-preview.jpg)](demo/basics/media/endpoints.mp4) | [![Self-contact](demo/basics/media/self-contact-preview.jpg)](demo/basics/media/self-contact.mp4) | [![Tip target](demo/basics/media/tip-target-preview.jpg)](demo/basics/media/tip-target.mp4) |
 | <code>python -m demo.examples endpoints --out runs/endpoints</code> | <code>python -m demo.examples self-contact --out runs/self-contact</code> | <code>python -m demo.examples tip-target --out runs/tip-target</code> |
 
+**[Dense cable cascade](demo/cable_cascade/README.md)** — 48 cables falling onto a sphere and the floor, with cable–cable contact.
+
+[![Dense cable cascade](demo/cable_cascade/media/preview.gif)](demo/cable_cascade/media/cable-cascade.mp4)
+
+```bash
+python -m demo.examples cascade --out runs/cascade
+```
+
 [Basic examples and task API](demo/basics/README.md) · [Performance](demo/contact_arena/README.md#interpret-timing-and-contact) · [Validation and limitations](docs/GPU_VALIDATION.md)
 
 ### Robot cable extraction
