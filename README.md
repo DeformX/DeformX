@@ -1,6 +1,13 @@
-# DeformX: Deformable Linear Objects Simulation
+<h1 align="center">DeformX</h1>
+<p align="center"><strong>Deformable Linear Objects Simulation</strong></p>
 
-### [🌐 Project Page](https://deformx.github.io/) | [📄 Paper](https://arxiv.org/abs/2606.22116) | [🤗 WireSeg-36k Dataset](https://huggingface.co/datasets/DeformX/WireSeg-36K) | [🤗 Render Assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) | [🎥 Video](https://www.youtube.com/watch?v=CQvS8lQYSS8)
+<p align="center">
+  <a href="https://deformx.github.io/">🌐 Project Page</a> ·
+  <a href="https://arxiv.org/abs/2606.22116">📄 Paper</a> ·
+  <a href="https://huggingface.co/datasets/DeformX/WireSeg-36K">🤗 WireSeg-36k</a> ·
+  <a href="https://huggingface.co/datasets/DeformX/DeformX-Assets">🤗 Render Assets</a> ·
+  <a href="https://www.youtube.com/watch?v=CQvS8lQYSS8">🎥 Video</a>
+</p>
 
 DeformX is a co-simulation framework for deformable linear objects (DLOs) such as wires, cables, and ropes. It couples a dedicated **Cosserat rod physics engine** with **NVIDIA Isaac Sim** to deliver DLO simulation that is **physically faithful** and **visually realistic** at the same time, while remaining directly compatible with scalable synthetic data generation and robot-learning pipelines.
 
@@ -15,9 +22,15 @@ DeformX is a co-simulation framework for deformable linear objects (DLOs) such a
 
 ## Demos
 
-[![DeformX GPU examples](demo/media/gpu-showcase-2col-3row-3b64275a.gif)](demo/media/gpu-showcase-2col-3row-410592ff.mp4)
-
-[Watch the full demos](demo/SHOWCASE.md) · [Run the examples](demo/EXAMPLES.md)
+<p align="center">
+  <a href="demo/media/gpu-showcase-2col-3row-410592ff.mp4">
+    <img src="demo/media/gpu-showcase-2col-3row-3b64275a.gif" alt="Six DeformX GPU demonstrations" width="720">
+  </a>
+</p>
+<p align="center">
+  <a href="demo/SHOWCASE.md">Watch the full demos</a> ·
+  <a href="demo/EXAMPLES.md">Run the examples</a>
+</p>
 
 ### Standalone CUDA examples
 
@@ -29,15 +42,21 @@ python -m demo.examples braid --help
 ```
 
 | Gravity and supports | Contact | Materials and control |
-|---|---|---|
+|:---:|:---:|:---:|
 | [![Hanging rod](demo/basics/media/hanging-preview.jpg)](demo/basics/media/hanging.mp4) | [![Obstacle contact](demo/basics/media/obstacle-preview.jpg)](demo/basics/media/obstacle.mp4) | [![Bending stiffness](demo/basics/media/materials-preview.jpg)](demo/basics/media/materials.mp4) |
 | <code>python -m demo.examples hanging --out runs/hanging</code> | <code>python -m demo.examples obstacle --out runs/obstacle</code> | <code>python -m demo.examples materials --out runs/materials</code> |
 | [![Moving endpoints](demo/basics/media/endpoints-preview.jpg)](demo/basics/media/endpoints.mp4) | [![Self-contact](demo/basics/media/self-contact-preview.jpg)](demo/basics/media/self-contact.mp4) | [![Tip target](demo/basics/media/tip-target-preview.jpg)](demo/basics/media/tip-target.mp4) |
 | <code>python -m demo.examples endpoints --out runs/endpoints</code> | <code>python -m demo.examples self-contact --out runs/self-contact</code> | <code>python -m demo.examples tip-target --out runs/tip-target</code> |
 
-**[Dense cable cascade](demo/cable_cascade/README.md)** — 48 cables falling onto a sphere and the floor, with cable–cable contact.
-
-[![Dense cable cascade](demo/cable_cascade/media/preview.gif)](demo/cable_cascade/media/cable-cascade.mp4)
+<p align="center">
+  <strong><a href="demo/cable_cascade/README.md">Dense cable cascade</a></strong><br>
+  48 cables falling onto a sphere and the floor, with cable–cable contact.
+</p>
+<p align="center">
+  <a href="demo/cable_cascade/media/cable-cascade.mp4">
+    <img src="demo/cable_cascade/media/preview.gif" alt="Dense cable cascade" width="720">
+  </a>
+</p>
 
 ```bash
 python -m demo.examples cascade --out runs/cascade
