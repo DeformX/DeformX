@@ -1,0 +1,1421 @@
+{
+  "method": "Native replay under Isaac Sim 5.1. Identical accepted geometry, robot poses, authored lights, camera path and 30 Hz source timestamps. RGB generation only.",
+  "causal_finding": "At a fixed pose, camera and light state, resetting the DLSS reconstruction alone restored the native flicker. Resetting context accumulation alone did not. The PNG fluctuations were present before video encoding.",
+  "selected_fix": "Actual DLAA mode 4 with fixed exposure. Reset once before 36 discarded warm-up ticks at the start, and again only before nonconsecutive preview cuts. Consecutive full-capture frames keep history. Each captured source frame retains the original lighting, timing and camera pose.",
+  "superseded_media": {
+    "video_sha256": "603dc4f205a465bea6c9d289ea76598857e897267724f055ab8c7d2f0ba1a432",
+    "native_report_sha256": "1402f5af619a52fab12b6e396e7c675eb9f721b739f95c6ee5362f87fa6055f5",
+    "renderer_source_sha256": "6195f7fadcae40008c5fd8c97a2005ce56eecbece4d6ddd112c938f8b8590e12",
+    "aa_actual": 3,
+    "raw_capture": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/full-05",
+    "video_path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/media-05/cable-extraction.mp4"
+  },
+  "delivered_media": {
+    "capture": {
+      "native": {
+        "host": "ps",
+        "complete": true,
+        "errors": [],
+        "capture_mode": "full",
+        "source_frames": 1122,
+        "accepted_audit": true,
+        "max_capture_clock_delta_s": 0.0,
+        "max_replay_matrix_error": 1.7562667986833787e-09,
+        "render_source_sha256": "2ef8a91e8d054b1a4273f23003da87e3bcb1bd836b578e1b047ccb0430a4086f",
+        "audit_sha256": "1a254e15049f0c75245e0a067af0055aa1017aa03805d52fda03358a61a43c34",
+        "panda_base_world_bounds_m": [
+          [
+            -0.1540856003593145,
+            -0.06959595396620877,
+            1.0030000060796738
+          ],
+          [
+            0.07154428217833608,
+            0.11956205228856831,
+            1.1430001078546024
+          ]
+        ],
+        "panda_base_table_xy_support_margin_m": 0.07430405304329746,
+        "frames": 1122,
+        "fps": 30,
+        "rate": 1.0,
+        "renderer": "RaytracedLighting",
+        "source_trajectory_sha256": "6fe97407456317f58c23c235dee34ba954d34e105e28245855721bfe82516788",
+        "physics_enabled": false,
+        "recorded_cable_radius_m": 0.0033,
+        "overlay": false,
+        "camera_eye_m": [
+          1.88,
+          0.26,
+          2.55
+        ],
+        "camera_target_m": [
+          0.34,
+          0.23,
+          1.23
+        ],
+        "camera_focal_length": 20.2,
+        "rtx_disabled_effects": {
+          "/rtx/reflections/enabled": false,
+          "/rtx/indirectDiffuse/enabled": false,
+          "/rtx/post/motionblur/enabled": false
+        },
+        "antialiasing_mode": 4,
+        "renderer_runtime_states": [
+          [
+            4,
+            false
+          ]
+        ],
+        "renderer_history_reset": "First sample and nonconsecutive preview cuts only, followed by discarded warm-up",
+        "renderer_history_reset_source_frames": [
+          0
+        ],
+        "discarded_warmup_ticks_per_cut": 36,
+        "max_replay_curve_error_m": 0.0,
+        "authored_light_states_sha256": [
+          "c2e84dfd88956a1e110c29e47a509c7151b8b564196c59bd71b59f3192dabd6c"
+        ],
+        "tail_pullback": {
+          "timing_s": [
+            28.0,
+            34.5
+          ],
+          "eye_m": [
+            2.05,
+            0.11000000000000001,
+            2.5799999999999996
+          ],
+          "target_m": [
+            0.34,
+            0.08000000000000002,
+            1.2449999999999999
+          ],
+          "focal_length": 19.3
+        },
+        "app_close_invoked": true
+      },
+      "native_report_sha256": "595ae66b7be9256ee480c1f8afc8c7bcfefbd8729fa9fce58238bc5ce7e8e35a",
+      "encode_source_sha256": "4b3f41b8f66cff5b159070da1d3a821f2001f546bb27328982c5456d12a1b242",
+      "verified_frames_manifest_sha256": "2ba24fe4ddfe3df18a486cb48fec6fa54d9f53e7571192e249901697d1ed08b1",
+      "full_decode_passed": true,
+      "video": {
+        "codec_name": "h264",
+        "width": 1280,
+        "height": 720,
+        "pix_fmt": "yuv420p",
+        "avg_frame_rate": "30/1",
+        "duration": "37.400000",
+        "nb_read_frames": "1122"
+      },
+      "video_sha256": "1016deefc3d6f940439c1d62e911714e896cd431d6dc8b83a7336208872439c3",
+      "poster_frame": 1121,
+      "poster_simulated_t_s": 37.400000000000006,
+      "poster_source_frame_sha256": "8bb8d4a263c8117f6747ffd626bb05ae38ed9ff4d41367bfb1698815e68f9964",
+      "poster_sha256": "ecaf33e5d1ee62b2c16aa6bd7448656033e034f33aecb355f4ca285838677765"
+    },
+    "raw_capture": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-render-stability/full-dlaa",
+    "encoded_path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-render-stability/media-dlaa"
+  },
+  "identical_replay_configuration": {
+    "source_trajectory_sha256": "6fe97407456317f58c23c235dee34ba954d34e105e28245855721bfe82516788",
+    "audit_sha256": "1a254e15049f0c75245e0a067af0055aa1017aa03805d52fda03358a61a43c34",
+    "source_frames": 1122,
+    "frames": 1122,
+    "fps": 30,
+    "rate": 1.0,
+    "recorded_cable_radius_m": 0.0033,
+    "physics_enabled": false,
+    "overlay": false,
+    "camera_eye_m": [
+      1.88,
+      0.26,
+      2.55
+    ],
+    "camera_target_m": [
+      0.34,
+      0.23,
+      1.23
+    ],
+    "camera_focal_length": 20.2,
+    "tail_pullback": {
+      "timing_s": [
+        28.0,
+        34.5
+      ],
+      "eye_m": [
+        2.05,
+        0.11000000000000001,
+        2.5799999999999996
+      ],
+      "target_m": [
+        0.34,
+        0.08000000000000002,
+        1.2449999999999999
+      ],
+      "focal_length": 19.3
+    },
+    "renderer": "RaytracedLighting",
+    "rtx_disabled_effects": {
+      "/rtx/reflections/enabled": false,
+      "/rtx/indirectDiffuse/enabled": false,
+      "/rtx/post/motionblur/enabled": false
+    }
+  },
+  "physical_sources_verified_identical_to_nominal_and_control_sha256": {
+    "__init__.py": "3c57929ac9b326ff0e576e53f28b978fdbccc904f3f40dac5e27ed96e8b3bc7b",
+    "blender_tab.py": "d2c583cc3c5125b7a8dd6f34693a5d88be53559cbc59055224634edc8ffeb503",
+    "coupling.py": "6a906c6921908cb1f5e264feca83f26d1cce3dba822c7925dda4b4092a703314",
+    "model.py": "a8d3b7053803c351f31911073abe07b5bad52ab84b32b85ca4282ed809df6389",
+    "run.py": "4ece2a49506f4284d5db064ef7295e981b4677dc88bece0efa33a8ebeb3e59e0"
+  },
+  "accepted_nominal_recording": {
+    "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-05",
+    "run_report_sha256": "db5945933bb2db4bc9eea4ca7b934ec28f9050f36228a5476adab5e703d9224d",
+    "scene_sha256": "8f3e182411cd758b8fcb53446bbba7ee58dedd757eb9324a16d04b7f012594fa",
+    "audit_sha256": "1a254e15049f0c75245e0a067af0055aa1017aa03805d52fda03358a61a43c34"
+  },
+  "matched_control_recording": {
+    "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/control-05",
+    "run_report_sha256": "4c4b773add93f1159aab9e78bd9460fc098724d7dbab162a7107232feb497082",
+    "trajectory_sha256": "eca843c686fe423fa252565c2c312cce1f2f5b13c2345d808d13c1fc1e497429"
+  },
+  "fixed_pose_ablation": {
+    "source_frame": 185,
+    "t_s": 6.2,
+    "scope": "48 repeated captures per setting. Native RGB and fully decoded H.264. Full-image Rec.709 luma weights applied to stored RGB code values.",
+    "actual_settings_after_capture": {
+      "/rtx/post/aa/op": {
+        "3": 48
+      },
+      "/rtx/post/dlss/execMode": {
+        "0": 48
+      },
+      "/rtx/post/dlss/enabled": {
+        "None": 48
+      },
+      "/rtx-transient/post/dlss/forceParamReset": {
+        "False": 48
+      },
+      "/rtx-transient/post/dlss/supported": {
+        "True": 48
+      },
+      "/rtx/post/histogram/enabled": {
+        "False": 48
+      },
+      "/rtx/post/histogram/tau": {
+        "3.5": 48
+      },
+      "/rtx/post/histogram/useExposureClamping": {
+        "True": 48
+      },
+      "/rtx/post/tonemap/op": {
+        "6": 48
+      },
+      "/rtx/post/tonemap/filmIso": {
+        "100.0": 48
+      },
+      "/rtx/post/tonemap/exposureTime": {
+        "0.019999999552965164": 48
+      },
+      "/rtx/post/tonemap/fNumber": {
+        "5.0": 48
+      },
+      "/rtx/post/tonemap/cameraAperture": {
+        "None": 48
+      },
+      "/rtx/post/tvNoise/enableFilmGrain": {
+        "True": 48
+      },
+      "/rtx/post/motionblur/enabled": {
+        "False": 48
+      },
+      "/rtx/reflections/enabled": {
+        "False": 48
+      },
+      "/rtx/indirectDiffuse/enabled": {
+        "False": 48
+      },
+      "/rtx/rendermode": {
+        "RaytracedLighting": 48
+      },
+      "/rtx-transient/rendermode": {
+        "None": 48
+      },
+      "/rtx/rt/rtpt/enabled": {
+        "None": 48
+      }
+    },
+    "histories": {
+      "static-cold": {
+        "configuration": {
+          "history": "cold",
+          "subframes": 8,
+          "lock_exposure": false,
+          "freeze_pose": true,
+          "fixed_camera_t": null
+        },
+        "distinct_input_poses": 1,
+        "distinct_input_curves": 1,
+        "distinct_camera_matrices": 1,
+        "distinct_camera_intrinsics": 1,
+        "distinct_light_states": 1,
+        "distinct_timeline_values": 1,
+        "force_param_reset_before": {
+          "True": 48
+        },
+        "raw": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.861931526660919,
+            1.8993396759033203,
+            1.9620128393173217,
+            1.9998200678825377,
+            2.0050570964813232
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.14676345486111111,
+            0.15161566840277776,
+            0.16050499131944443,
+            0.16426471354166666,
+            0.164755859375
+          ]
+        },
+        "decoded": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.5482109189033508,
+            1.5907349586486816,
+            1.6597848415374756,
+            1.676034426689148,
+            1.6773954629898071
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.1121298828125,
+            0.11730577256944444,
+            0.1235869140625,
+            0.12472319878472223,
+            0.12536458333333333
+          ]
+        }
+      },
+      "static-dlss": {
+        "configuration": {
+          "history": "dlss-only",
+          "subframes": 8,
+          "lock_exposure": false,
+          "freeze_pose": true,
+          "fixed_camera_t": null
+        },
+        "distinct_input_poses": 1,
+        "distinct_input_curves": 1,
+        "distinct_camera_matrices": 1,
+        "distinct_camera_intrinsics": 1,
+        "distinct_light_states": 1,
+        "distinct_timeline_values": 1,
+        "force_param_reset_before": {
+          "True": 48
+        },
+        "raw": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.860411322116852,
+            1.9080740213394165,
+            1.9483888506889344,
+            1.9669551014900208,
+            1.9724658727645874
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.1463669704861111,
+            0.15233723958333334,
+            0.15815852864583335,
+            0.1606777560763889,
+            0.16112847222222224
+          ]
+        },
+        "decoded": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.5578870058059693,
+            1.5989753007888794,
+            1.6456074118614197,
+            1.6674746036529542,
+            1.670373797416687
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.11222471788194444,
+            0.11739691840277777,
+            0.12311263020833332,
+            0.12387204861111112,
+            0.12410264756944445
+          ]
+        }
+      },
+      "static-context": {
+        "configuration": {
+          "history": "context-only",
+          "subframes": 8,
+          "lock_exposure": false,
+          "freeze_pose": true,
+          "fixed_camera_t": null
+        },
+        "distinct_input_poses": 1,
+        "distinct_input_curves": 1,
+        "distinct_camera_matrices": 1,
+        "distinct_camera_intrinsics": 1,
+        "distinct_light_states": 1,
+        "distinct_timeline_values": 1,
+        "force_param_reset_before": {
+          "False": 48
+        },
+        "raw": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.3538807541131973,
+            0.36239880323410034,
+            0.39435872435569763,
+            0.46386512100696553,
+            0.5073397159576416
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0013886718750000001,
+            0.001570095486111111,
+            0.003422526041666664,
+            0.007726953124999995,
+            0.010249565972222222
+          ]
+        },
+        "decoded": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.027225656434893608,
+            0.06646345555782318,
+            0.47689476013183585,
+            0.539025342464447,
+            0.5631722211837769
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            7.953559027777779e-05,
+            0.0005707465277777778,
+            0.012470811631944443,
+            0.013499674479166666,
+            0.013621961805555555
+          ]
+        }
+      },
+      "static-continuous": {
+        "configuration": {
+          "history": "continuous",
+          "subframes": 8,
+          "lock_exposure": false,
+          "freeze_pose": true,
+          "fixed_camera_t": null
+        },
+        "distinct_input_poses": 1,
+        "distinct_input_curves": 1,
+        "distinct_camera_matrices": 1,
+        "distinct_camera_intrinsics": 1,
+        "distinct_light_states": 1,
+        "distinct_timeline_values": 1,
+        "force_param_reset_before": {
+          "False": 48
+        },
+        "raw": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.35143342316150666,
+            0.3617628514766693,
+            0.3912012994289398,
+            0.45554836034774776,
+            0.48873817920684814
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0013696831597222222,
+            0.0015516493055555555,
+            0.0031842447916666642,
+            0.006840256076388885,
+            0.008755425347222222
+          ]
+        },
+        "decoded": {
+          "frames": 48,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.025661137886345387,
+            0.0632070004940033,
+            0.4850561141967772,
+            0.5277438449859618,
+            0.5465900301933289
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.00010546875,
+            0.0005479600694444444,
+            0.012636935763888888,
+            0.013199913194444444,
+            0.013212890625
+          ]
+        }
+      }
+    }
+  },
+  "short_exact_policy": {
+    "startup": {
+      "source_index_range_inclusive": [
+        0,
+        29
+      ],
+      "frame_count": 30,
+      "roi_bounds_xyxy": {
+        "empty_table": [
+          620,
+          280,
+          800,
+          410
+        ],
+        "fixed_backdrop": [
+          980,
+          15,
+          1240,
+          110
+        ]
+      },
+      "raw_replay_invariants": {
+        "native_report_sha256": "aa491a922a34ede291da2cafbd3cf8f90d676c10d7f0e6fa5f9e9a1c73e6565e",
+        "max_capture_clock_delta_s": 0.0,
+        "max_replay_curve_error_m": 0.0,
+        "max_replay_matrix_error": 1.7562667986833787e-09,
+        "renderer_runtime_states": [
+          [
+            4,
+            false
+          ]
+        ],
+        "authored_light_state_hashes": [
+          "c2e84dfd88956a1e110c29e47a509c7151b8b564196c59bd71b59f3192dabd6c"
+        ],
+        "history_reset_source_frames": [
+          0
+        ],
+        "distinct_camera_matrices": 1,
+        "camera_focal_range": [
+          20.200000762939453,
+          20.200000762939453
+        ]
+      },
+      "old_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 2.695516844680224,
+          "pixel_temporal_luma_std_mean": 2.2848914534662,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.4912328243255617,
+            2.672092914581299,
+            3.00268874168396,
+            3.0367966365814207,
+            3.0489981174468994
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.3125982905982906,
+            0.3457264957264957,
+            0.40136752136752135,
+            0.40585982905982904,
+            0.407008547008547
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.6388441343012696,
+          "pixel_temporal_luma_std_mean": 1.4399595721142573,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.4744972944259644,
+            1.639819860458374,
+            1.8172889947891235,
+            1.891206212043762,
+            1.9197431802749634
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.10654251012145749,
+            0.12364372469635627,
+            0.15007287449392712,
+            0.16812631578947365,
+            0.17380566801619432
+          ]
+        }
+      },
+      "old_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 2.379709769525493,
+          "pixel_temporal_luma_std_mean": 2.1224290612011845,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.1741075038909914,
+            2.3764121532440186,
+            2.6348820686340333,
+            2.6547021484375,
+            2.660940408706665
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.2422136752136752,
+            0.2747863247863248,
+            0.32365811965811964,
+            0.3290974358974359,
+            0.33064102564102565
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.3759263347759316,
+          "pixel_temporal_luma_std_mean": 1.3424959221182393,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.2426769733428955,
+            1.3685740232467651,
+            1.607478618621826,
+            1.6633516597747802,
+            1.6643190383911133
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.07363562753036437,
+            0.0848582995951417,
+            0.11460728744939268,
+            0.12391902834008096,
+            0.12522267206477733
+          ]
+        }
+      },
+      "candidate_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.942063533451223,
+          "pixel_temporal_luma_std_mean": 1.6086502581218156,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.896586275100708,
+            0.9200630784034729,
+            1.1247107028961179,
+            1.3346203899383542,
+            1.3965401649475098
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.01064957264957265,
+            0.013418803418803419,
+            0.03436752136752134,
+            0.06822393162393159,
+            0.07901709401709402
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.42188428200474665,
+          "pixel_temporal_luma_std_mean": 0.5353552903732361,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.3853063941001892,
+            0.42002496123313904,
+            0.46557031869888305,
+            0.4695852780342102,
+            0.4701172411441803
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0008987854251012147,
+            0.0016599190283400809,
+            0.0030526315789473676,
+            0.0031983805668016193,
+            0.0031983805668016193
+          ]
+        }
+      },
+      "candidate_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.33074479811376406,
+          "pixel_temporal_luma_std_mean": 1.377958973908862,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.11161320209503174,
+            0.21155224740505219,
+            0.8303861737251279,
+            0.9572646212577819,
+            0.9908064603805542
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0007264957264957265,
+            0.002777777777777778,
+            0.031333333333333296,
+            0.04580170940170939,
+            0.04888888888888889
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.11914909283819632,
+          "pixel_temporal_luma_std_mean": 0.3147203109541685,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.0784681499004364,
+            0.11044536530971527,
+            0.18424310684204093,
+            0.24333415269851677,
+            0.2604932487010956
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            1.6194331983805675e-05,
+            0.00036437246963562755,
+            0.002072874493927124,
+            0.0027854251012145743,
+            0.0029554655870445345
+          ]
+        }
+      }
+    },
+    "moving_camera_reprojected": {
+      "source_index_range_inclusive": [
+        915,
+        1004
+      ],
+      "reference_source_frame": 960,
+      "reference_pixel_patch_xyxy_and_world_z_m": {
+        "tabletop": [
+          670,
+          320,
+          830,
+          424,
+          1.0
+        ],
+        "floor": [
+          970,
+          32,
+          1202,
+          112,
+          0.0
+        ]
+      },
+      "samples": "Bilinear evaluation of the same stationary world planes, using the unchanged camera path",
+      "median_adjacent_luma_mae": {
+        "published": {
+          "tabletop": {
+            "pixel": 2.2019665241241455,
+            "local_8px_mean": 1.3212312459945679
+          },
+          "floor": {
+            "pixel": 1.4445390701293945,
+            "local_8px_mean": 1.129470944404602
+          }
+        },
+        "warm_dlaa": {
+          "tabletop": {
+            "pixel": 2.019304037094116,
+            "local_8px_mean": 0.28750893473625183
+          },
+          "floor": {
+            "pixel": 0.43432360887527466,
+            "local_8px_mean": 0.28370025753974915
+          }
+        }
+      }
+    },
+    "terminal": {
+      "source_index_range_inclusive": [
+        1035,
+        1121
+      ],
+      "frame_count": 87,
+      "roi_bounds_xyxy": {
+        "empty_table": [
+          620,
+          280,
+          800,
+          410
+        ],
+        "fixed_backdrop": [
+          980,
+          15,
+          1240,
+          110
+        ]
+      },
+      "raw_replay_invariants": {
+        "native_report_sha256": "461817fb484a5d301883dcdbbef9c429b565b6f0a5a2e3c0a044aaa5adf1af57",
+        "max_capture_clock_delta_s": 0.0,
+        "max_replay_curve_error_m": 0.0,
+        "max_replay_matrix_error": 1.7562667986833787e-09,
+        "renderer_runtime_states": [
+          [
+            4,
+            false
+          ]
+        ],
+        "authored_light_state_hashes": [
+          "c2e84dfd88956a1e110c29e47a509c7151b8b564196c59bd71b59f3192dabd6c"
+        ],
+        "history_reset_source_frames": [
+          1032
+        ],
+        "distinct_camera_matrices": 1,
+        "camera_focal_range": [
+          19.299999237060547,
+          19.299999237060547
+        ]
+      },
+      "old_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 3.034289303716956,
+          "pixel_temporal_luma_std_mean": 2.623560150478583,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.709977447986603,
+            3.0244632959365845,
+            3.3698753118515015,
+            3.5041092276573194,
+            3.6769886016845703
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.3286965811965812,
+            0.3742948717948718,
+            0.437008547008547,
+            0.45507905982906,
+            0.47974358974358977
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.9647649579135689,
+          "pixel_temporal_luma_std_mean": 1.7579113183365567,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.8164471685886383,
+            1.9540585279464722,
+            2.1506488919258118,
+            2.2145292639732364,
+            2.2332167625427246
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.1468522267206478,
+            0.17317813765182186,
+            0.20493927125506073,
+            0.22225101214574905,
+            0.23064777327935224
+          ]
+        }
+      },
+      "old_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 2.6250683683164375,
+          "pixel_temporal_luma_std_mean": 2.432248265817341,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.29718017578125,
+            2.6135770082473755,
+            2.9744867086410522,
+            3.1335792541503915,
+            3.270254373550415
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.24514957264957266,
+            0.2981837606837607,
+            0.3641559829059829,
+            0.3873824786324787,
+            0.40282051282051284
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.7285084319743909,
+          "pixel_temporal_luma_std_mean": 1.6960350205613552,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.550694227218628,
+            1.7255958318710327,
+            1.937116652727127,
+            2.012196791172028,
+            2.0782315731048584
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.10432186234817814,
+            0.12831983805668015,
+            0.1570242914979757,
+            0.18353846153846162,
+            0.19647773279352226
+          ]
+        }
+      },
+      "candidate_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.5900786637845359,
+          "pixel_temporal_luma_std_mean": 1.7061902647269582,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.5050027072429657,
+            0.5198068022727966,
+            0.9145769327878952,
+            1.0473512291908265,
+            1.0497634410858154
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0005235042735042735,
+            0.0009401709401709402,
+            0.01670940170940171,
+            0.028850427350427355,
+            0.02935897435897436
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.4614762907447516,
+          "pixel_temporal_luma_std_mean": 0.6424161557551562,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.43175359815359116,
+            0.45590169727802277,
+            0.48168088495731354,
+            0.6548904240131388,
+            0.7995356917381287
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0027935222672064775,
+            0.00402834008097166,
+            0.00548582995951417,
+            0.007732793522267266,
+            0.016680161943319838
+          ]
+        }
+      },
+      "candidate_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.24340140558537068,
+          "pixel_temporal_luma_std_mean": 1.7025733812101227,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.06952791102230549,
+            0.15424609929323196,
+            0.7063308954238892,
+            0.9148474782705323,
+            1.1440858840942383
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0008867521367521367,
+            0.002735042735042735,
+            0.025288461538461537,
+            0.04010897435897454,
+            0.06760683760683761
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.15737597928631966,
+          "pixel_temporal_luma_std_mean": 0.5841549315040072,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.08109311573207378,
+            0.13737094402313232,
+            0.2571962997317314,
+            0.4263271242380143,
+            0.4349549412727356
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.00012145748987854252,
+            0.000708502024291498,
+            0.002186234817813765,
+            0.003000000000000012,
+            0.004858299595141701
+          ]
+        }
+      }
+    },
+    "terminal_cyan_outside_projection": {
+      "published_aggregate_outside_fraction": 0.009757262956811076,
+      "published_p95_outside_cyan_pixels": 40.0,
+      "published_last_outside_cyan_pixels": 29,
+      "probe_aggregate_outside_fraction": 0.009683401352940579,
+      "probe_p95_outside_cyan_pixels": 38.0,
+      "probe_last_outside_cyan_pixels": 23
+    }
+  },
+  "delivered_checks": {
+    "startup_all_30_frames": {
+      "source_index_range_inclusive": [
+        0,
+        29
+      ],
+      "frame_count": 30,
+      "roi_bounds_xyxy": {
+        "empty_table": [
+          620,
+          280,
+          800,
+          410
+        ],
+        "fixed_backdrop": [
+          980,
+          15,
+          1240,
+          110
+        ]
+      },
+      "raw_replay_invariants": {
+        "native_report_sha256": "595ae66b7be9256ee480c1f8afc8c7bcfefbd8729fa9fce58238bc5ce7e8e35a",
+        "max_capture_clock_delta_s": 0.0,
+        "max_replay_curve_error_m": 0.0,
+        "max_replay_matrix_error": 1.7562667986833787e-09,
+        "renderer_runtime_states": [
+          [
+            4,
+            false
+          ]
+        ],
+        "authored_light_state_hashes": [
+          "c2e84dfd88956a1e110c29e47a509c7151b8b564196c59bd71b59f3192dabd6c"
+        ],
+        "history_reset_source_frames": [
+          0
+        ],
+        "distinct_camera_matrices": 1,
+        "camera_focal_range": [
+          20.200000762939453,
+          20.200000762939453
+        ]
+      },
+      "old_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 2.695516844680224,
+          "pixel_temporal_luma_std_mean": 2.2848914534662,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.4912328243255617,
+            2.672092914581299,
+            3.00268874168396,
+            3.0367966365814207,
+            3.0489981174468994
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.3125982905982906,
+            0.3457264957264957,
+            0.40136752136752135,
+            0.40585982905982904,
+            0.407008547008547
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.6388441343012696,
+          "pixel_temporal_luma_std_mean": 1.4399595721142573,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.4744972944259644,
+            1.639819860458374,
+            1.8172889947891235,
+            1.891206212043762,
+            1.9197431802749634
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.10654251012145749,
+            0.12364372469635627,
+            0.15007287449392712,
+            0.16812631578947365,
+            0.17380566801619432
+          ]
+        }
+      },
+      "old_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 2.379709769525493,
+          "pixel_temporal_luma_std_mean": 2.1224290612011845,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.1741075038909914,
+            2.3764121532440186,
+            2.6348820686340333,
+            2.6547021484375,
+            2.660940408706665
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.2422136752136752,
+            0.2747863247863248,
+            0.32365811965811964,
+            0.3290974358974359,
+            0.33064102564102565
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.3759263347759316,
+          "pixel_temporal_luma_std_mean": 1.3424959221182393,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.2426769733428955,
+            1.3685740232467651,
+            1.607478618621826,
+            1.6633516597747802,
+            1.6643190383911133
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.07363562753036437,
+            0.0848582995951417,
+            0.11460728744939268,
+            0.12391902834008096,
+            0.12522267206477733
+          ]
+        }
+      },
+      "candidate_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.9413940822281165,
+          "pixel_temporal_luma_std_mean": 1.5997827495820502,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.8807312369346618,
+            0.9169982075691223,
+            1.1341799497604366,
+            1.3372346353530882,
+            1.391186237335205
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.010034188034188034,
+            0.012905982905982907,
+            0.03571794871794868,
+            0.06709230769230766,
+            0.07628205128205129
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.4216276713667457,
+          "pixel_temporal_luma_std_mean": 0.5346755610144516,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.38916552662849424,
+            0.41797366738319397,
+            0.46014084815979,
+            0.4672768211364746,
+            0.46926748752593994
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0008178137651821863,
+            0.0014574898785425102,
+            0.002825910931174088,
+            0.003444534412955465,
+            0.003603238866396761
+          ]
+        }
+      },
+      "candidate_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.3452165782493371,
+          "pixel_temporal_luma_std_mean": 1.384676657186247,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.12311364263296128,
+            0.22411727905273438,
+            0.8220998764038083,
+            0.8911935758590698,
+            0.8981842398643494
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0008717948717948718,
+            0.004316239316239316,
+            0.034341880341880335,
+            0.04153504273504273,
+            0.04376068376068376
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.15558697305598215,
+          "pixel_temporal_luma_std_mean": 0.3805666630732543,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.09065932333469391,
+            0.14925405383110046,
+            0.22874686717987058,
+            0.2633621311187744,
+            0.27493220567703247
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            8.097165991902834e-05,
+            0.0012145748987854252,
+            0.004631578947368418,
+            0.0056777327935222666,
+            0.005870445344129555
+          ]
+        }
+      }
+    },
+    "terminal_fixed_view": {
+      "source_index_range_inclusive": [
+        1035,
+        1121
+      ],
+      "frame_count": 87,
+      "roi_bounds_xyxy": {
+        "empty_table": [
+          620,
+          280,
+          800,
+          410
+        ],
+        "fixed_backdrop": [
+          980,
+          15,
+          1240,
+          110
+        ]
+      },
+      "raw_replay_invariants": {
+        "native_report_sha256": "595ae66b7be9256ee480c1f8afc8c7bcfefbd8729fa9fce58238bc5ce7e8e35a",
+        "max_capture_clock_delta_s": 0.0,
+        "max_replay_curve_error_m": 0.0,
+        "max_replay_matrix_error": 1.7562667986833787e-09,
+        "renderer_runtime_states": [
+          [
+            4,
+            false
+          ]
+        ],
+        "authored_light_state_hashes": [
+          "c2e84dfd88956a1e110c29e47a509c7151b8b564196c59bd71b59f3192dabd6c"
+        ],
+        "history_reset_source_frames": [
+          0
+        ],
+        "distinct_camera_matrices": 1,
+        "camera_focal_range": [
+          19.299999237060547,
+          19.299999237060547
+        ]
+      },
+      "old_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 3.034289303716956,
+          "pixel_temporal_luma_std_mean": 2.623560150478583,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.709977447986603,
+            3.0244632959365845,
+            3.3698753118515015,
+            3.5041092276573194,
+            3.6769886016845703
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.3286965811965812,
+            0.3742948717948718,
+            0.437008547008547,
+            0.45507905982906,
+            0.47974358974358977
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.9647649579135689,
+          "pixel_temporal_luma_std_mean": 1.7579113183365567,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.8164471685886383,
+            1.9540585279464722,
+            2.1506488919258118,
+            2.2145292639732364,
+            2.2332167625427246
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.1468522267206478,
+            0.17317813765182186,
+            0.20493927125506073,
+            0.22225101214574905,
+            0.23064777327935224
+          ]
+        }
+      },
+      "old_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 2.6250683683164375,
+          "pixel_temporal_luma_std_mean": 2.432248265817341,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            2.29718017578125,
+            2.6135770082473755,
+            2.9744867086410522,
+            3.1335792541503915,
+            3.270254373550415
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.24514957264957266,
+            0.2981837606837607,
+            0.3641559829059829,
+            0.3873824786324787,
+            0.40282051282051284
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 1.7285084319743909,
+          "pixel_temporal_luma_std_mean": 1.6960350205613552,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            1.550694227218628,
+            1.7255958318710327,
+            1.937116652727127,
+            2.012196791172028,
+            2.0782315731048584
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.10432186234817814,
+            0.12831983805668015,
+            0.1570242914979757,
+            0.18353846153846162,
+            0.19647773279352226
+          ]
+        }
+      },
+      "candidate_native": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.839189372192407,
+          "pixel_temporal_luma_std_mean": 1.4250795964125975,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.7938370704650879,
+            0.836943507194519,
+            0.9045593440532684,
+            0.9233616322278977,
+            0.9376780986785889
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.007200854700854701,
+            0.010106837606837608,
+            0.015224358974358974,
+            0.01778632478632479,
+            0.018076923076923077
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.5009294079653523,
+          "pixel_temporal_luma_std_mean": 0.6155702264179874,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.4742922857403755,
+            0.5015115737915039,
+            0.527202770113945,
+            0.5393620133399963,
+            0.5406123995780945
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.004412955465587044,
+            0.00548582995951417,
+            0.006993927125506073,
+            0.007694331983805669,
+            0.007935222672064778
+          ]
+        }
+      },
+      "candidate_decoded": {
+        "empty_table": {
+          "adjacent_luma_mae_mean": 0.22707632041343676,
+          "pixel_temporal_luma_std_mean": 1.2299079132694442,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.0771878007799387,
+            0.19747505336999893,
+            0.4228150174021721,
+            0.5937122285366071,
+            0.7825236916542053
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0009722222222222222,
+            0.0032264957264957267,
+            0.0106517094017094,
+            0.021829059829059905,
+            0.03316239316239316
+          ]
+        },
+        "fixed_backdrop": {
+          "adjacent_luma_mae_mean": 0.20458912286978637,
+          "pixel_temporal_luma_std_mean": 0.5924705505534192,
+          "adjacent_mean_abs_luma_q05_50_95_99_max": [
+            0.12363674119114876,
+            0.21120710670948029,
+            0.27216508984565735,
+            0.30782909393310576,
+            0.3486134707927704
+          ],
+          "adjacent_fraction_above_3_luma_q05_50_95_99_max": [
+            0.0003744939271255061,
+            0.0010728744939271255,
+            0.0020647773279352227,
+            0.0026032388663967615,
+            0.002672064777327935
+          ]
+        }
+      }
+    },
+    "moving_camera_world_plane": {
+      "source_index_range_inclusive": [
+        915,
+        1004
+      ],
+      "reference_source_frame": 960,
+      "reference_pixel_patch_xyxy_and_world_z_m": {
+        "tabletop": [
+          670,
+          320,
+          830,
+          424,
+          1.0
+        ],
+        "floor": [
+          970,
+          32,
+          1202,
+          112,
+          0.0
+        ]
+      },
+      "samples": "Bilinear evaluation of the same stationary world planes, using the unchanged camera path",
+      "median_adjacent_luma_mae": {
+        "published": {
+          "tabletop": {
+            "pixel": 2.2019665241241455,
+            "local_8px_mean": 1.3212312459945679
+          },
+          "floor": {
+            "pixel": 1.4445390701293945,
+            "local_8px_mean": 1.129470944404602
+          }
+        },
+        "warm_dlaa": {
+          "tabletop": {
+            "pixel": 2.0632810592651367,
+            "local_8px_mean": 0.2887852191925049
+          },
+          "floor": {
+            "pixel": 0.4312989413738251,
+            "local_8px_mean": 0.2825814187526703
+          }
+        }
+      }
+    },
+    "terminal_cyan_outside_projection": {
+      "published_aggregate_outside_fraction": 0.009757262956811076,
+      "published_p95_outside_cyan_pixels": 40.0,
+      "published_last_outside_cyan_pixels": 29,
+      "probe_aggregate_outside_fraction": 0.00968879901867299,
+      "probe_p95_outside_cyan_pixels": 38.0,
+      "probe_last_outside_cyan_pixels": 22
+    },
+    "terminal_cyan_method": "Cyan chroma outside a 16 pixel band around the exact simulated target projection in the terminal ROI x=85\u2013569, y=170\u2013649. This comparative proxy includes unrelated cyan in the ROI and uses the same chroma thresholds for both renders.",
+    "thresholds": {
+      "fixed_empty_table_raw_adjacent_luma_mae_ratio_max": 0.75,
+      "fixed_empty_table_encoded_adjacent_luma_mae_ratio_max": 0.5,
+      "terminal_outside_cyan_fraction_increase_max": 0.0005,
+      "terminal_outside_cyan_p95_pixel_increase_max": 5
+    }
+  },
+  "representative_frames": [
+    {
+      "source_frame": 0,
+      "t_s": 0.03333333333333333,
+      "old_frame_sha256": "ca1cc99bb6934a862065880c766c8ea38ff49814b63afea3c1b9016799ebd0e3",
+      "new_frame_sha256": "dd7fd92ded1f10b48179da9d5f3560b6625e269deb4a69fabf0cb9a051c5d048",
+      "camera_matrix_sha256": "72c1b4fa1deb5fba4a641625ab671560c2934afd10f6e8eb9983f0592cf741ef"
+    },
+    {
+      "source_frame": 185,
+      "t_s": 6.2,
+      "old_frame_sha256": "4bd027e5d42a2a91f1ffef354709371fe8debc67e260612a8196fc351e32c372",
+      "new_frame_sha256": "b3a4c6d033b4decbfd099d6ee5d637b9b988dd698ca3a91dd7762f36db13d9fe",
+      "camera_matrix_sha256": "72c1b4fa1deb5fba4a641625ab671560c2934afd10f6e8eb9983f0592cf741ef"
+    },
+    {
+      "source_frame": 960,
+      "t_s": 32.03333333333334,
+      "old_frame_sha256": "88bc0e661e6c61b3950284472adfbcddf4e4fbd3d3474227a14bea27e5664e44",
+      "new_frame_sha256": "56f9d3015266386c8fb5000b759d560c0f7cf703888cd2bdd7135cfd3fdd617a",
+      "camera_matrix_sha256": "cf3d41b8a0d353c854c20ff51f905beb16fd0e09fa10a612f7a644699a1ce21f"
+    },
+    {
+      "source_frame": 1076,
+      "t_s": 35.900000000000006,
+      "old_frame_sha256": "56b5355fff81d17822296db4b7ff91e4b79e038c942fca146346a68a21a198e8",
+      "new_frame_sha256": "427e057c7c66cf9943df20533c325818a42bee1f48a806f7423e0fed0cf9cb1e",
+      "camera_matrix_sha256": "450040d5bedeb4930ddbcf58f4d0be44d3df1a2abac107c41202b5fc06e33fdc"
+    },
+    {
+      "source_frame": 1121,
+      "t_s": 37.400000000000006,
+      "old_frame_sha256": "82a2a1df5c4f8e72f6af5d7d1e5b55a0da83976089c0ddef1971f2a900cd4031",
+      "new_frame_sha256": "8bb8d4a263c8117f6747ffd626bb05ae38ed9ff4d41367bfb1698815e68f9964",
+      "camera_matrix_sha256": "450040d5bedeb4930ddbcf58f4d0be44d3df1a2abac107c41202b5fc06e33fdc"
+    }
+  ],
+  "reproducibility": {
+    "experiment_root": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-render-stability",
+    "native_review_still_contact_sheet": "full-stability-review.jpg",
+    "raw_diagnostics_sha256": {
+      "static-comparison.json": "9378f0d76fe55a068411f3f2f1e17d9f0dd853da73d34ec21f2a01af188164c0",
+      "candidate-start-measure.json": "8fb740d9832622614bea5e7fa644d1f087e55cfea1fc49bc5bf28b9396d73e3b",
+      "candidate-tail-measure-ghost.json": "0cfae806cc81be17e385d50b8dcbd5fe703d1bd7e30779461e7aa14e3741a1ba",
+      "candidate-camera-reprojected.json": "22afb494cddb42d719bc149f81395025fb4934eb4843ff7833867ec60d5837be",
+      "full-start-measure.json": "376d56aacf5ddcfee0f82953f2754c7a38526a3e55b0e7e1f84e7f0fdc47ba77",
+      "full-tail-measure.json": "8108ce8cfe499295ce78c1e9b7e1f872fd7ac7e7c95b0b88255c5cd1b273ea1c",
+      "full-tail-measure-ghost.json": "542e7c1c3b94f7673ae4c24aa53cf9743d1faef5c687e919ad947c9c3c31d5be",
+      "full-camera-reprojected.json": "ef98add26c4c98520f8c73cbcd5bb5fc4aa5255e18c2b57b60754361b85018a9"
+    },
+    "analysis_script_sha256": {
+      "measure_probe.py": "323745874dc627f6a2683aad433f6ac22dd534be9132e97708b6a694cd562369",
+      "measure_stability.py": "dc3525df7504b073663c2fb1e8a43ab678b00e509f22890147aaddf81319fb12",
+      "measure_moving.py": "ff3a2a3cc6d65a7b0f88d9fc21dccf73cb7da836ba65560b9268db485a76b39f",
+      "measure_reprojected.py": "d56956886fb8b1a952733c361fc1ee61f8e330fb200ead3f9fe661ee09f58e39",
+      "collect_stability.py": "69f89c14a5d35f8f90f3db685bbf9b4bacd07e4ab35800419d89a54a578121ac"
+    }
+  }
+}

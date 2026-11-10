@@ -1,0 +1,1260 @@
+{
+  "host": "ps",
+  "native_capture": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/arena-pullback-20261109/full/capture",
+  "video_path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/arena-pullback-20261109/full/delivery/contact-arena-pullback.mp4",
+  "video": {
+    "codec": "h264",
+    "dimensions": [
+      1280,
+      720
+    ],
+    "fps": 30,
+    "duration_s": 24,
+    "frames": 720,
+    "pix_fmt": "yuv420p",
+    "all_presentation_times_verified": true,
+    "sha256": "5660e2a332fded66037628b30d91ced0aa28a2d6fa28111879b9a35f59588f19",
+    "full_decode": true,
+    "paired_raster_frame_mae": {
+      "median": 0.7817,
+      "p95": 1.26078,
+      "p99": 1.36972,
+      "max": 1.46122
+    },
+    "paired_visible_patch_luma_abs_error": {
+      "median": 1.082,
+      "p95": 4.235,
+      "p99": 7.011,
+      "max": 32.804
+    }
+  },
+  "native_exit": 0,
+  "native_report_sha256": "7c5f67e93ae33802808d693f7a901c626faae2fd39045d8ab413f284abde4a3a",
+  "capture_clock_delta_max_s": 0,
+  "displayed_worlds": 64,
+  "simulated_worlds": 1024,
+  "all_png_and_source_state_hashes_verified": true,
+  "all_source_times_verified": true,
+  "non_renderer_source_hashes_match_archive": true,
+  "asset_hash_metadata_matches_archive": true,
+  "trajectory_sha256": "aae257f82615bcbcbe780e2a8f0b576a40a322628a3465f23d27afcfd62f5c9a",
+  "run_report_sha256": "7c9a2efa2df359ec5b84242c95cf2e4531c953da0c2000e01872c1e69f37a223",
+  "renderer_source_sha256": "27118f7b7391e6857280c9734f5a6927694ccd85536ad62081f2f8587ad80ee7",
+  "capture_render_settings": {
+    "anti_aliasing_mode": 3,
+    "automatic_exposure": false,
+    "lighting": "Original Blender HDR environment selected explicitly; original distant key and materials unchanged"
+  },
+  "appearance": {
+    "all_staged_source_hashes_verified": true,
+    "referenced_asset_hashes_verified": true,
+    "nested_environment_hdr": "/home/ps/yy_workspace/runs/usable-examples-20261107/arena-assets/textures/color_121212.hdr",
+    "nested_environment_hdr_sha256": "c4c6bc7a125abb414d9336a2b03c698f9db650c7917b69068beaedb569cb2291",
+    "archived_pose_rgb_mae": 1.03939,
+    "appearance_baseline_sha256": "847f80fa4c4e25b99df1b88cf5cc2ac2dabd08fd588505079b134eefecf84319"
+  },
+  "actual_source_time_range_s": [
+    2.0083333333333333,
+    25.974999999999998
+  ],
+  "camera": {
+    "lens_mm": 23,
+    "aperture_mm": [
+      20.954999923706055,
+      11.787187576293945
+    ],
+    "phase_lengths_frames": {
+      "near": 45,
+      "pullback": 120,
+      "whole": 555
+    },
+    "transition": "quintic smootherstep: zero endpoint velocity and acceleration",
+    "max_eye_path_error_m": 1.7763568394002505e-14,
+    "max_target_path_error_m": 4.853918916108979e-15,
+    "camera_distance_range_m": [
+      3.17819,
+      15.81752
+    ],
+    "max_eye_step_m": 0.17289,
+    "max_camera_turn_deg": 0.33177,
+    "box_m": [
+      [
+        -5.574999999999999,
+        -2.845,
+        -0.0725
+      ],
+      [
+        5.574999999999999,
+        2.845,
+        0.6718461270332337
+      ]
+    ],
+    "whole_grid_box_max_abs_ndc": 0.90964,
+    "ndc_limit": 0.92,
+    "minimum_frame_edge_margin_pct": 4.51822,
+    "whole_frames_bounds_checked": 555,
+    "source_guide_center_extents_m": [
+      [
+        -5.059999445080757,
+        -2.52,
+        0.36000001430511475
+      ],
+      [
+        5.059999445080757,
+        2.52,
+        0.36000001430511475
+      ]
+    ],
+    "eye_steps_m_at_transition_edges": {
+      "44->45": 0.0,
+      "45->46": 6.324643214803896e-05,
+      "164->165": 6.324643216655197e-05,
+      "165->166": 0.0
+    }
+  },
+  "units": "8-bit luma code values, Y' = 0.299 R' + 0.587 G' + 0.114 B'.",
+  "method": "Track 7\u00d77 samples in fixed 5.6 cm square floor-plate patches via each recorded camera pose. Require the same projected patch to fit in every adjacent pair or residual triple. Near uses the first three rows; other phases use all qualifying plates. Compute the signed median luma change per patch and take one median vote per plate. Local temporal residual is the center sample minus the average of its neighbors. This reduces smooth illumination drift but retains sharp local shadows/reflections.",
+  "scope": "These measurements cover only projected floor-plate patches. They do not prove flicker absence over the full image, and patches can include transient occlusions, shadow edges or reflections.",
+  "patch_offsets_m": [
+    [
+      -0.4,
+      -0.24
+    ],
+    [
+      0.4,
+      -0.24
+    ],
+    [
+      -0.4,
+      0.24
+    ],
+    [
+      0.4,
+      0.24
+    ]
+  ],
+  "native": {
+    "near": {
+      "frames": [
+        0,
+        44
+      ],
+      "adjacent": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.057,
+          "p99": 0.22429,
+          "max": 0.3505
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.0,
+          "p95": 5.61495,
+          "p99": 15.32967,
+          "max": 45.799
+        },
+        "local_sample_abs": {
+          "median": 0.413,
+          "p95": 15.3695,
+          "p99": 96.92943,
+          "max": 232.50499
+        },
+        "largest_coherent": [
+          {
+            "frame": 11,
+            "signed_luma": 0.3505
+          },
+          {
+            "frame": 34,
+            "signed_luma": 0.057
+          },
+          {
+            "frame": 28,
+            "signed_luma": 0.057
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 39,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": -45.799
+          },
+          {
+            "frame": 23,
+            "plate": 10,
+            "patch": 1,
+            "signed_luma": 30.804
+          },
+          {
+            "frame": 26,
+            "plate": 11,
+            "patch": 2,
+            "signed_luma": -27.12899
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.03738,
+          "p99": 0.10271,
+          "max": 0.13038
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.057,
+          "p95": 1.94838,
+          "p99": 6.99363,
+          "max": 32.56499
+        },
+        "local_sample_abs": {
+          "median": 0.2935,
+          "p95": 11.05618,
+          "p99": 69.2678,
+          "max": 182.82851
+        },
+        "largest_coherent": [
+          {
+            "frame": 28,
+            "signed_luma": 0.13038
+          },
+          {
+            "frame": 20,
+            "signed_luma": -0.0645
+          },
+          {
+            "frame": 40,
+            "signed_luma": 0.03738
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 39,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": -32.56499
+          },
+          {
+            "frame": 12,
+            "plate": 20,
+            "patch": 0,
+            "signed_luma": -22.732
+          },
+          {
+            "frame": 38,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": 19.123
+          }
+        ]
+      }
+    },
+    "pullback": {
+      "frames": [
+        45,
+        164
+      ],
+      "adjacent": {
+        "min_visible_plates": 32,
+        "max_visible_plates": 64,
+        "min_visible_patches": 97,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.11577,
+          "p99": 0.2065,
+          "max": 0.2065
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.701,
+          "p95": 7.99999,
+          "p99": 23.00684,
+          "max": 116.336
+        },
+        "local_sample_abs": {
+          "median": 1.0,
+          "p95": 21.7736,
+          "p99": 74.47284,
+          "max": 235.158
+        },
+        "largest_coherent": [
+          {
+            "frame": 97,
+            "signed_luma": -0.2065
+          },
+          {
+            "frame": 98,
+            "signed_luma": -0.2065
+          },
+          {
+            "frame": 107,
+            "signed_luma": -0.2065
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 64,
+            "plate": 42,
+            "patch": 2,
+            "signed_luma": -116.336
+          },
+          {
+            "frame": 65,
+            "plate": 27,
+            "patch": 0,
+            "signed_luma": -101.882
+          },
+          {
+            "frame": 89,
+            "plate": 57,
+            "patch": 0,
+            "signed_luma": -97.08801
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 32,
+        "max_visible_plates": 64,
+        "min_visible_patches": 97,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0285,
+          "p95": 0.11761,
+          "p99": 0.17639,
+          "max": 0.25
+        },
+        "coherent_signed_median": -0.02175,
+        "local_patch_abs": {
+          "median": 0.3505,
+          "p95": 4.0515,
+          "p99": 12.93346,
+          "max": 104.698
+        },
+        "local_sample_abs": {
+          "median": 0.6495,
+          "p95": 13.56749,
+          "p99": 50.38236,
+          "max": 221.679
+        },
+        "largest_coherent": [
+          {
+            "frame": 65,
+            "signed_luma": -0.25
+          },
+          {
+            "frame": 76,
+            "signed_luma": -0.17663
+          },
+          {
+            "frame": 73,
+            "signed_luma": -0.17525
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 63,
+            "plate": 42,
+            "patch": 2,
+            "signed_luma": 104.698
+          },
+          {
+            "frame": 67,
+            "plate": 27,
+            "patch": 0,
+            "signed_luma": 68.82401
+          },
+          {
+            "frame": 66,
+            "plate": 27,
+            "patch": 0,
+            "signed_luma": -64.613
+          }
+        ]
+      }
+    },
+    "whole": {
+      "frames": [
+        165,
+        719
+      ],
+      "adjacent": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.057,
+          "p99": 0.057,
+          "max": 0.072
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.527,
+          "p95": 6.142,
+          "p99": 13.61808,
+          "max": 100.722
+        },
+        "local_sample_abs": {
+          "median": 0.701,
+          "p95": 13.103,
+          "p99": 36.90751,
+          "max": 193.27699
+        },
+        "largest_coherent": [
+          {
+            "frame": 494,
+            "signed_luma": -0.072
+          },
+          {
+            "frame": 350,
+            "signed_luma": -0.057
+          },
+          {
+            "frame": 400,
+            "signed_luma": -0.057
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 555,
+            "plate": 8,
+            "patch": 3,
+            "signed_luma": -100.722
+          },
+          {
+            "frame": 341,
+            "plate": 0,
+            "patch": 1,
+            "signed_luma": -77.701
+          },
+          {
+            "frame": 513,
+            "plate": 0,
+            "patch": 1,
+            "signed_luma": -75.40199
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0075,
+          "p95": 0.06722,
+          "p99": 0.08762,
+          "max": 0.125
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.2935,
+          "p95": 2.9375,
+          "p99": 7.1085,
+          "max": 58.2165
+        },
+        "local_sample_abs": {
+          "median": 0.4945,
+          "p95": 6.64949,
+          "p99": 17.82235,
+          "max": 156.386
+        },
+        "largest_coherent": [
+          {
+            "frame": 344,
+            "signed_luma": -0.125
+          },
+          {
+            "frame": 558,
+            "signed_luma": -0.1005
+          },
+          {
+            "frame": 686,
+            "signed_luma": -0.0965
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 555,
+            "plate": 8,
+            "patch": 3,
+            "signed_luma": -58.2165
+          },
+          {
+            "frame": 554,
+            "plate": 8,
+            "patch": 3,
+            "signed_luma": 51.763
+          },
+          {
+            "frame": 341,
+            "plate": 0,
+            "patch": 1,
+            "signed_luma": -41.263
+          }
+        ]
+      }
+    },
+    "near_to_pullback": {
+      "frames": [
+        44,
+        45
+      ],
+      "adjacent": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.057,
+          "p95": 7.1462,
+          "p99": 22.52127,
+          "max": 28.313
+        },
+        "local_sample_abs": {
+          "median": 0.41299,
+          "p95": 16.3652,
+          "p99": 115.0171,
+          "max": 173.68401
+        },
+        "largest_coherent": [
+          {
+            "frame": 45,
+            "signed_luma": 0.0
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 45,
+            "plate": 20,
+            "patch": 0,
+            "signed_luma": -28.313
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.057,
+          "p95": 5.59685,
+          "p99": 25.54154,
+          "max": 31.112
+        },
+        "local_sample_abs": {
+          "median": 0.2935,
+          "p95": 31.35362,
+          "p99": 86.82533,
+          "max": 172.97749
+        },
+        "largest_coherent": [
+          {
+            "frame": 44,
+            "signed_luma": 0.0
+          },
+          {
+            "frame": 45,
+            "signed_luma": 0.0
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 45,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": 31.112
+          },
+          {
+            "frame": 44,
+            "plate": 20,
+            "patch": 0,
+            "signed_luma": 22.27
+          }
+        ]
+      }
+    },
+    "pullback_to_whole": {
+      "frames": [
+        164,
+        165
+      ],
+      "adjacent": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.413,
+          "p95": 6.371,
+          "p99": 12.1266,
+          "max": 15.103
+        },
+        "local_sample_abs": {
+          "median": 0.701,
+          "p95": 12.7282,
+          "p99": 37.27851,
+          "max": 111.423
+        },
+        "largest_coherent": [
+          {
+            "frame": 165,
+            "signed_luma": 0.0
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 165,
+            "plate": 25,
+            "patch": 3,
+            "signed_luma": -15.103
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.02206,
+          "p95": 0.02786,
+          "p99": 0.02837,
+          "max": 0.0285
+        },
+        "coherent_signed_median": -0.02206,
+        "local_patch_abs": {
+          "median": 0.2365,
+          "p95": 3.04269,
+          "p99": 6.42166,
+          "max": 11.02149
+        },
+        "local_sample_abs": {
+          "median": 0.443,
+          "p95": 6.83095,
+          "p99": 18.63016,
+          "max": 78.9325
+        },
+        "largest_coherent": [
+          {
+            "frame": 164,
+            "signed_luma": -0.0285
+          },
+          {
+            "frame": 165,
+            "signed_luma": -0.01562
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 164,
+            "plate": 1,
+            "patch": 1,
+            "signed_luma": -11.02149
+          },
+          {
+            "frame": 165,
+            "plate": 31,
+            "patch": 3,
+            "signed_luma": 9.1085
+          }
+        ]
+      }
+    }
+  },
+  "encoded": {
+    "near": {
+      "frames": [
+        0,
+        44
+      ],
+      "adjacent": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.13387,
+          "p99": 0.25861,
+          "max": 0.2785
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.0,
+          "p95": 5.68035,
+          "p99": 15.03999,
+          "max": 44.57299
+        },
+        "local_sample_abs": {
+          "median": 0.185,
+          "p95": 15.28105,
+          "p99": 95.93728,
+          "max": 229.86401
+        },
+        "largest_coherent": [
+          {
+            "frame": 30,
+            "signed_luma": 0.2785
+          },
+          {
+            "frame": 14,
+            "signed_luma": 0.23225
+          },
+          {
+            "frame": 11,
+            "signed_luma": 0.1575
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 39,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": -44.57299
+          },
+          {
+            "frame": 23,
+            "plate": 10,
+            "patch": 1,
+            "signed_luma": 29.505
+          },
+          {
+            "frame": 26,
+            "plate": 11,
+            "patch": 2,
+            "signed_luma": -27.043
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.02219,
+          "p99": 0.03285,
+          "max": 0.036
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.0,
+          "p95": 2.17325,
+          "p99": 6.99775,
+          "max": 28.69749
+        },
+        "local_sample_abs": {
+          "median": 0.299,
+          "p95": 11.07564,
+          "p99": 67.95594,
+          "max": 177.57301
+        },
+        "largest_coherent": [
+          {
+            "frame": 28,
+            "signed_luma": 0.036
+          },
+          {
+            "frame": 38,
+            "signed_luma": 0.0285
+          },
+          {
+            "frame": 2,
+            "signed_luma": 0.0245
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 39,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": -28.69749
+          },
+          {
+            "frame": 12,
+            "plate": 20,
+            "patch": 0,
+            "signed_luma": -25.764
+          },
+          {
+            "frame": 38,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": 19.58
+          }
+        ]
+      }
+    },
+    "pullback": {
+      "frames": [
+        45,
+        164
+      ],
+      "adjacent": {
+        "min_visible_plates": 32,
+        "max_visible_plates": 64,
+        "min_visible_patches": 97,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.057,
+          "p95": 0.265,
+          "p99": 0.30683,
+          "max": 0.337
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.641,
+          "p95": 8.0,
+          "p99": 23.2206,
+          "max": 119.08
+        },
+        "local_sample_abs": {
+          "median": 1.0,
+          "p95": 21.402,
+          "p99": 73.512,
+          "max": 235.071
+        },
+        "largest_coherent": [
+          {
+            "frame": 140,
+            "signed_luma": 0.337
+          },
+          {
+            "frame": 119,
+            "signed_luma": -0.30975
+          },
+          {
+            "frame": 139,
+            "signed_luma": -0.2935
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 64,
+            "plate": 42,
+            "patch": 2,
+            "signed_luma": -119.08
+          },
+          {
+            "frame": 89,
+            "plate": 57,
+            "patch": 0,
+            "signed_luma": -102.366
+          },
+          {
+            "frame": 65,
+            "plate": 27,
+            "patch": 0,
+            "signed_luma": -99.96799
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 32,
+        "max_visible_plates": 64,
+        "min_visible_patches": 97,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.12156,
+          "p95": 0.24766,
+          "p99": 0.28825,
+          "max": 0.39813
+        },
+        "coherent_signed_median": -0.04006,
+        "local_patch_abs": {
+          "median": 0.4075,
+          "p95": 4.0548,
+          "p99": 12.61763,
+          "max": 106.2175
+        },
+        "local_sample_abs": {
+          "median": 0.7365,
+          "p95": 13.1355,
+          "p99": 49.66307,
+          "max": 221.0295
+        },
+        "largest_coherent": [
+          {
+            "frame": 151,
+            "signed_luma": -0.39813
+          },
+          {
+            "frame": 61,
+            "signed_luma": -0.29138
+          },
+          {
+            "frame": 143,
+            "signed_luma": -0.273
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 63,
+            "plate": 42,
+            "patch": 2,
+            "signed_luma": 106.2175
+          },
+          {
+            "frame": 67,
+            "plate": 27,
+            "patch": 0,
+            "signed_luma": 72.94449
+          },
+          {
+            "frame": 52,
+            "plate": 33,
+            "patch": 3,
+            "signed_luma": 64.5695
+          }
+        ]
+      }
+    },
+    "whole": {
+      "frames": [
+        165,
+        719
+      ],
+      "adjacent": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.114,
+          "p99": 0.17654,
+          "max": 0.21725
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.299,
+          "p95": 6.0,
+          "p99": 13.26508,
+          "max": 97.434
+        },
+        "local_sample_abs": {
+          "median": 0.701,
+          "p95": 12.516,
+          "p99": 35.854,
+          "max": 194.00002
+        },
+        "largest_coherent": [
+          {
+            "frame": 431,
+            "signed_luma": 0.21725
+          },
+          {
+            "frame": 629,
+            "signed_luma": 0.2065
+          },
+          {
+            "frame": 513,
+            "signed_luma": 0.19575
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 555,
+            "plate": 8,
+            "patch": 3,
+            "signed_luma": -97.434
+          },
+          {
+            "frame": 341,
+            "plate": 0,
+            "patch": 1,
+            "signed_luma": -76.712
+          },
+          {
+            "frame": 513,
+            "plate": 0,
+            "patch": 1,
+            "signed_luma": -73.434
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.08687,
+          "p95": 0.17718,
+          "p99": 0.2391,
+          "max": 0.25275
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.2065,
+          "p95": 2.5785,
+          "p99": 6.59931,
+          "max": 54.30399
+        },
+        "local_sample_abs": {
+          "median": 0.4485,
+          "p95": 6.114,
+          "p99": 17.07551,
+          "max": 158.56551
+        },
+        "largest_coherent": [
+          {
+            "frame": 600,
+            "signed_luma": -0.25275
+          },
+          {
+            "frame": 258,
+            "signed_luma": -0.25138
+          },
+          {
+            "frame": 494,
+            "signed_luma": -0.25137
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 555,
+            "plate": 8,
+            "patch": 3,
+            "signed_luma": -54.30399
+          },
+          {
+            "frame": 554,
+            "plate": 8,
+            "patch": 3,
+            "signed_luma": 48.39649
+          },
+          {
+            "frame": 341,
+            "plate": 0,
+            "patch": 1,
+            "signed_luma": -42.459
+          }
+        ]
+      }
+    },
+    "near_to_pullback": {
+      "frames": [
+        44,
+        45
+      ],
+      "adjacent": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.0,
+          "p95": 6.7453,
+          "p99": 23.87122,
+          "max": 30.455
+        },
+        "local_sample_abs": {
+          "median": 0.288,
+          "p95": 17.433,
+          "p99": 113.61945,
+          "max": 165.659
+        },
+        "largest_coherent": [
+          {
+            "frame": 45,
+            "signed_luma": 0.0
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 45,
+            "plate": 20,
+            "patch": 0,
+            "signed_luma": -30.455
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 10,
+        "max_visible_plates": 10,
+        "min_visible_patches": 32,
+        "max_visible_patches": 32,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.0,
+          "p95": 7.0663,
+          "p99": 29.24291,
+          "max": 34.05801
+        },
+        "local_sample_abs": {
+          "median": 0.299,
+          "p95": 31.327,
+          "p99": 86.06243,
+          "max": 165.45801
+        },
+        "largest_coherent": [
+          {
+            "frame": 44,
+            "signed_luma": 0.0
+          },
+          {
+            "frame": 45,
+            "signed_luma": 0.0
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 45,
+            "plate": 18,
+            "patch": 2,
+            "signed_luma": 34.05801
+          },
+          {
+            "frame": 44,
+            "plate": 20,
+            "patch": 0,
+            "signed_luma": 26.415
+          }
+        ]
+      }
+    },
+    "pullback_to_whole": {
+      "frames": [
+        164,
+        165
+      ],
+      "adjacent": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "coherent_signed_median": 0.0,
+        "local_patch_abs": {
+          "median": 0.258,
+          "p95": 5.20599,
+          "p99": 11.95485,
+          "max": 16.402
+        },
+        "local_sample_abs": {
+          "median": 0.587,
+          "p95": 11.464,
+          "p99": 35.9539,
+          "max": 104.273
+        },
+        "largest_coherent": [
+          {
+            "frame": 165,
+            "signed_luma": 0.0
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 165,
+            "plate": 33,
+            "patch": 1,
+            "signed_luma": -16.402
+          }
+        ]
+      },
+      "temporal_residual": {
+        "min_visible_plates": 64,
+        "max_visible_plates": 64,
+        "min_visible_patches": 256,
+        "max_visible_patches": 256,
+        "coherent_abs": {
+          "median": 0.01762,
+          "p95": 0.02066,
+          "p99": 0.02093,
+          "max": 0.021
+        },
+        "coherent_signed_median": 0.00337,
+        "local_patch_abs": {
+          "median": 0.1495,
+          "p95": 2.94198,
+          "p99": 5.89182,
+          "max": 10.5
+        },
+        "local_sample_abs": {
+          "median": 0.4075,
+          "p95": 6.269,
+          "p99": 17.39415,
+          "max": 73.34851
+        },
+        "largest_coherent": [
+          {
+            "frame": 164,
+            "signed_luma": 0.021
+          },
+          {
+            "frame": 165,
+            "signed_luma": -0.01425
+          }
+        ],
+        "largest_local": [
+          {
+            "frame": 165,
+            "plate": 31,
+            "patch": 3,
+            "signed_luma": 10.5
+          },
+          {
+            "frame": 164,
+            "plate": 1,
+            "patch": 1,
+            "signed_luma": -10.2255
+          }
+        ]
+      }
+    }
+  }
+}

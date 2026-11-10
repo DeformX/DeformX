@@ -1,0 +1,111 @@
+{
+  "host": "ps",
+  "date": "2026-11-09",
+  "scope": "Six scenes in the combined preview; cascade/basic scene videos were not newly audited in this review",
+  "physics_recomputed": false,
+  "new_text_overlays": false,
+  "cases": {
+    "cable_extraction": {
+      "decision": "Prior DLAA fix retained; presentation retimed to 2x, original 1x capture retained",
+      "video": "demo/cable_extraction/media/cable-extraction.mp4",
+      "video_sha256": "849f864a2029608e542e170fab6b011a27c6ff4d3c37097e02e33d45d84ad8e9",
+      "evidence": "demo/cable_extraction/render-stability.json",
+      "evidence_sha256": "dcc8170a961a9c1c96dfe61ad14c90348ce9739c797dd47631c6e659017ed5c4",
+      "hero_physical_playback_multiplier": 2,
+      "hero_repeat_period_s": 8,
+      "hero_duration_s": 21
+    },
+    "rack_insertion": {
+      "decision": "Re-rendered native DLAA; original motion, camera and lighting retained",
+      "video": "demo/rack_insertion/media/rack-insertion.mp4",
+      "video_sha256": "731127811c33ddae443a54d0d1b26587c7ddd58bf627a01b36a35be1b369663f",
+      "evidence": "demo/rack_insertion/evidence/render-stability.json",
+      "evidence_sha256": "507b985db9b7bebe2b55385087a91163e3e1e8a1f0a96353074effb6af8a67f6",
+      "hero_physical_playback_multiplier": 1,
+      "hero_repeat_period_s": 8,
+      "hero_duration_s": 21
+    },
+    "humanoid_guitar": {
+      "decision": "Existing native/encoded video and fixed-pose probes acceptable; retained byte-for-byte",
+      "video": "demo/humanoid_guitar/media/humanoid-guitar-fullbody-long.mp4",
+      "video_sha256": "6776de6c8623cd4c9cae3d9aefb6b7d8d870ff8328a55112e1db10f6867723b5",
+      "evidence": "demo/humanoid_guitar/render-stability.json",
+      "evidence_sha256": "60f5560a558d6ecd5357a02fcc85a1e7fda7cc5139fbc4deb91451ec6b22b40b",
+      "full_video_playback": "4x slow opening followed by normal speed; full recording retained byte-for-byte",
+      "hero_physical_playback": [
+        {
+          "composition_start_frame": 0,
+          "composition_end_frame_exclusive": 92,
+          "simulation_time_multiplier": 0.5
+        },
+        {
+          "composition_start_frame": 92,
+          "composition_end_frame_exclusive": 240,
+          "simulation_time_multiplier": 1
+        },
+        {
+          "composition_start_frame": 240,
+          "composition_end_frame_exclusive": 332,
+          "simulation_time_multiplier": 0.5
+        },
+        {
+          "composition_start_frame": 332,
+          "composition_end_frame_exclusive": 480,
+          "simulation_time_multiplier": 1
+        },
+        {
+          "composition_start_frame": 480,
+          "composition_end_frame_exclusive": 572,
+          "simulation_time_multiplier": 0.5
+        },
+        {
+          "composition_start_frame": 572,
+          "composition_end_frame_exclusive": 630,
+          "simulation_time_multiplier": 1
+        }
+      ],
+      "hero_preview_evidence": "demo/humanoid_guitar/presentation.json",
+      "hero_preview_evidence_sha256": "c32123bfcea0a9fb1754ae2c37f3b2210681aeae332344db189580ec75f3bc11",
+      "hero_repeat_period_s": 8,
+      "hero_duration_s": 21
+    },
+    "braiding_machine": {
+      "decision": "Raise the five-second detail view by 0.70 m to show the strands converging and forming the braid. Keep the studio dome and render settings from the previous replay.",
+      "video": "demo/braiding_machine/media/braiding-process-hold.mp4",
+      "video_sha256": "854cb279d1eadfc3258bbb631a6db5d470208269bf650683ecf13d0a31a8541d",
+      "evidence": "demo/braiding_machine/render-stability-hold.json",
+      "evidence_sha256": "5b45b7c29a480c1649ee01fac351817dc6d7821fbf5c76ecbd926925111829ec",
+      "hero_physical_playback_multiplier": 1,
+      "hero_repeat_period_s": null,
+      "hero_duration_s": 21,
+      "presentation_evidence": "demo/braiding_machine/presentation.json",
+      "presentation_evidence_sha256": "3733f58d059212960b0971e6f2cd75b7e64ccd60e1dcab778c143fcc635fa656"
+    },
+    "winch_tension": {
+      "decision": "Validated native DLAA capture replaces media; general startup reproducibility unresolved, portable renderer unchanged",
+      "video": "demo/winch_tension/media/winch-tension-long.mp4",
+      "video_sha256": "fb264788078b369f9adab8a2af37535e08db792c1a0caa0f1b090ee0f32270f0",
+      "evidence": "demo/winch_tension/render-stability.json",
+      "evidence_sha256": "e9afc4480ed2ec917ac177213ff58f1d5179f86bfe6d533eeeaf7517c0a92641",
+      "hero_physical_playback_multiplier": 1,
+      "hero_repeat_period_s": 8,
+      "hero_duration_s": 21
+    },
+    "contact_arena": {
+      "decision": "Original 720 saved states replayed on ps with near-to-wide camera; explicit Blender HDR selection and archived-pose appearance gate. Full frame/state/cadence and camera-aware plate-patch checks recorded.",
+      "video": "demo/contact_arena/media/contact-arena-pullback.mp4",
+      "video_sha256": "5660e2a332fded66037628b30d91ced0aa28a2d6fa28111879b9a35f59588f19",
+      "evidence": "demo/contact_arena/render-stability-pullback.json",
+      "evidence_sha256": "137dcfa2bba0a2e55b21da873497a65ace5453dabb69353a88453ad10154b5b3",
+      "hero_physical_playback_multiplier": 1,
+      "hero_repeat_period_s": 8,
+      "hero_duration_s": 21,
+      "presentation_evidence": "demo/contact_arena/presentation.json",
+      "presentation_evidence_sha256": "84e8c8c23ac2a96d41bbdea8955a6e06a058f20e3ccd73567e676031b0b73d66"
+    }
+  },
+  "extraction_presentation_evidence": "demo/cable_extraction/presentation.json",
+  "extraction_presentation_evidence_sha256": "3f760fd7db92e8aca9693a0026b8648e0a81defa9a8662d3aede9172aba715d6",
+  "portable_simulation_and_render_sources": "All 42 files in the prior release-check source manifest unchanged",
+  "limitations": "Winch captured output passed all native-state, appearance, timing and decode checks; initialization-order sensitivity in its experimental DLAA replay remains unresolved, so no general portable renderer patch is claimed."
+}

@@ -1,0 +1,49 @@
+{
+  "name": "cascade",
+  "status": "PASS",
+  "completed": true,
+  "stop_reason": null,
+  "requested_duration_s": 6.0,
+  "recorded_duration_s": 6.0,
+  "frames": 181,
+  "trajectory_sha256": "00d84e03ec8a7a5d9ae72c9e3f4b71c923185706fa894ec26ad4011b53ae3c19",
+  "settings": {
+    "dt": 0.008333333333333333,
+    "substeps": 200,
+    "iterations": 24,
+    "ropes": 48,
+    "vertices_per_rope": 33,
+    "rope_contact": true,
+    "contact_group_size": 48,
+    "diagnostic_hz": 10,
+    "contact_barrier_wall_m": 0.01143
+  },
+  "metrics": {
+    "max_strain": 0.00883877101284447,
+    "pin_error_m": 0.0,
+    "finite": true,
+    "flags": [],
+    "min_nonlocal_segment_distance_m": 0.011880817096752084,
+    "minimum_sampled_surface_gap_m": -0.0005241069784052473,
+    "object_proximity_counts": [
+      57,
+      59
+    ],
+    "object_min_vertex_gap_m": [
+      -2.874138206243257e-06,
+      -1.47670137106478e-05
+    ]
+  },
+  "timing": {
+    "samples": 705,
+    "warmup_frames": 15,
+    "mean_ms": 141.0217211078014,
+    "median_ms": 141.46993899999998,
+    "p95_ms": 142.4282432,
+    "per_world_rtf": 0.05909255161453514,
+    "world_steps_per_second": 7.091106193744216,
+    "worlds": 1,
+    "control_dt_s": 0.008333333333333333,
+    "scope": "drive commands + CUDA solve + synchronization; excludes diagnostics, recording and rendering"
+  }
+}

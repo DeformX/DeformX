@@ -10,3 +10,7 @@ __pycache__/
 test/
 output/
 asset_wireseg36k/
+.venv-gpu/
+.rack-authoring/
+.deps/
+runs/

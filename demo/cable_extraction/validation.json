@@ -1,0 +1,1868 @@
+{
+  "host": "ps",
+  "gpu": "NVIDIA GeForce RTX 5090",
+  "cuda_backend_revision": "96b8514",
+  "environment": {
+    "isaacsim": "5.1.0.0",
+    "isaaclab": "2.3.2.post1",
+    "torch": "2.7.0+cu128",
+    "warp_lang": "1.14.0",
+    "blender": "4.5.9",
+    "driver": "580.178.04"
+  },
+  "tab_blender_manifest": {
+    "blender": "4.5.9 LTS",
+    "dimensions_m": [
+      0.018,
+      0.046,
+      0.024
+    ],
+    "exit_offset_m": [
+      0.0,
+      0.023,
+      0.0
+    ],
+    "source_sha256": "d2c583cc3c5125b7a8dd6f34693a5d88be53559cbc59055224634edc8ffeb503",
+    "usd_sha256": "2d7820fa0616eceaaea0544c009ac0d04ef86a80fae2109c01b89db2967fc15b"
+  },
+  "nominal": {
+    "id": "long-05",
+    "absolute_raw_record_location": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-05",
+    "exit_code": 0,
+    "complete": true,
+    "report_sha256": "db5945933bb2db4bc9eea4ca7b934ec28f9050f36228a5476adab5e703d9224d",
+    "source_sha256": {
+      "__init__.py": "3c57929ac9b326ff0e576e53f28b978fdbccc904f3f40dac5e27ed96e8b3bc7b",
+      "audit.py": "e658c5d021b6b2accb9baebf7958448c707c08e343004874a0738635a84a98f0",
+      "blender_tab.py": "d2c583cc3c5125b7a8dd6f34693a5d88be53559cbc59055224634edc8ffeb503",
+      "encode.py": "ad71b306e10ea43c10fb12bd7c5eb3b8f6add5d87007f6233f4984f4fa5daa36",
+      "coupling.py": "6a906c6921908cb1f5e264feca83f26d1cce3dba822c7925dda4b4092a703314",
+      "run.py": "4ece2a49506f4284d5db064ef7295e981b4677dc88bece0efa33a8ebeb3e59e0",
+      "model.py": "a8d3b7053803c351f31911073abe07b5bad52ab84b32b85ca4282ed809df6389",
+      "render_native.py": "298c21b617258668a51c45bfa6d1a4d49dac1c325bc3e093a2695d73a00cfe25"
+    },
+    "asset_sha256": {
+      "robot": "7f5a0c0aa6760cfbd348e08bc464d4b94341f027f51c2d9e42406ceefcc7787f",
+      "table": "479ed8fd374d8eafdedf3ca3b9d0d5981ffc6d5c5016929347f748be93d5df17",
+      "tab": "2d7820fa0616eceaaea0544c009ac0d04ef86a80fae2109c01b89db2967fc15b"
+    },
+    "initial_cables_sha256": "41d4010a56ef4e2163d69cb43d438cfbf80f274e22700d0aa0df0c5ef97b2de9",
+    "scene_sha256": "8f3e182411cd758b8fcb53446bbba7ee58dedd757eb9324a16d04b7f012594fa",
+    "trajectory_sha256": "6fe97407456317f58c23c235dee34ba954d34e105e28245855721bfe82516788",
+    "settle": {
+      "simulated_s": 2.5,
+      "wall_s": 26.60429823998129,
+      "maximum_final_vertex_speed_m_s": 0.015571311116218567,
+      "rms_final_vertex_speed_m_s": 0.0012140845647081733,
+      "final_tab_position_m": [
+        0.3804561495780945,
+        0.5651547908782959,
+        1.0119904279708862
+      ],
+      "final_tab_speed_m_s": 2.898720049415715e-05
+    },
+    "loop_wall_seconds": 452.72563729295507,
+    "minimum_sampled_finger_separation_m": -2.9362192890403094e-06,
+    "metrics": {
+      "actual_peak_finger_pair_loads_N": [
+        10.071313858032227,
+        9.969198226928711
+      ],
+      "actual_final_finger_pair_loads_N": [
+        9.984454154968262,
+        9.910982131958008
+      ],
+      "maximum_sampled_abs_robot_rod_mesh_load_N": 0.0,
+      "maximum_sampled_rod_table_load_during_lift_pull_N": 2.4495956897735596,
+      "actual_capture_simulated_seconds": 37.400000000000006,
+      "actual_tab_initial_m": [
+        0.3804560899734497,
+        0.5651547908782959,
+        1.0119904279708862
+      ],
+      "actual_tab_final_m": [
+        0.19528377056121826,
+        -0.5304543972015381,
+        1.6386945247650146
+      ],
+      "actual_final_tcp_m": [
+        0.19557157158851624,
+        -0.5305032730102539,
+        1.643629550933838
+      ],
+      "commanded_final_tcp_m": [
+        0.18,
+        -0.55,
+        1.655
+      ],
+      "final_tcp_tracking_error_m": 0.027420490823746556,
+      "final_joint_state": {
+        "panda_joint1": 1.801967978477478,
+        "panda_joint2": -0.5182905197143555,
+        "panda_joint3": -2.897292137145996,
+        "panda_joint4": -0.466813862323761,
+        "panda_joint5": -0.1116328090429306,
+        "panda_joint6": 0.9840062856674194,
+        "panda_joint7": -2.023451328277588,
+        "panda_finger_joint1": 0.00858088955283165,
+        "panda_finger_joint2": 0.009417369961738586
+      }
+    },
+    "audit": {
+      "trajectory_sha256": "6fe97407456317f58c23c235dee34ba954d34e105e28245855721bfe82516788",
+      "initial_cables_sha256": "41d4010a56ef4e2163d69cb43d438cfbf80f274e22700d0aa0df0c5ef97b2de9",
+      "run_report_sha256": "db5945933bb2db4bc9eea4ca7b934ec28f9050f36228a5476adab5e703d9224d",
+      "model_source_sha256": "a8d3b7053803c351f31911073abe07b5bad52ab84b32b85ca4282ed809df6389",
+      "audit_source_sha256": "d01c2778ae2842399000c63260ff01236a899a1cd42294af7df55b0dce822ebc",
+      "task": {
+        "bilateral_grasp_samples": 10,
+        "bilateral_pull_fraction": 1.0,
+        "tab_displacement_m": 1.2756983041763306,
+        "minimum_target_neighbor_centerline_m": 0.006551345516209877,
+        "target_free_tip_displacement_m": 1.4202654361724854,
+        "target_centerline_centroid_displacement_m": 1.229692816734314,
+        "final_target_neighbor_centerline_m": 0.720893994590678,
+        "near_contact_pairs_per_frame_peak": 4,
+        "near_contact_samples_during_pull": 819,
+        "max_neighbor_vertex_displacements_m": [
+          0.0037441342137753963,
+          0.40437793731689453,
+          0.10430008172988892,
+          0.5020254850387573
+        ],
+        "neighbor_displacement_during_pull_m": [
+          0.0036669413093477488,
+          0.3993149697780609,
+          0.10443384200334549,
+          0.5044891834259033
+        ],
+        "neighbor_displacement_while_target_near_m": 0.5044891834259033,
+        "final_hold_clearance_min_m": 0.720342219555118,
+        "passed": true
+      },
+      "geometry": {
+        "minimum_rod_pair_centerline_m": 0.006551345516209877,
+        "min_pair_centerlines_m": {
+          "0-1": 0.006581262352422681,
+          "0-2": 0.006561530832777139,
+          "0-3": 0.006562773859270054,
+          "0-4": 0.006551345516209877,
+          "1-2": 0.006571303825889315,
+          "1-3": 0.006565846078478388,
+          "1-4": 0.00658115198291584,
+          "2-3": 0.006569261212398734,
+          "2-4": 0.006561809402156067,
+          "3-4": 0.00657144524334344
+        },
+        "minimum_rod_surface_gap_m": -4.865448379012295e-05,
+        "minimum_gap_above_rope_barrier_wall_m": 0.000611345516209877,
+        "sampled_rod_table_surface_gap_m": -0.0017530210316181183,
+        "conservative_sampled_neighbor_rod_to_tab_gap_m": 0.04242264577381667,
+        "initial_vertex_speed_rms_m_s": 0.0012314802734181285,
+        "maximum_ready_drift_m": 0.004783187992870808,
+        "held_final_second_fraction": 1.0,
+        "max_segment_strain": 0.0015064477920532227,
+        "vertices_per_cable": 193,
+        "rest_lengths_m": [
+          1.2489674091339111,
+          1.753071665763855,
+          1.7719005346298218,
+          1.7591688632965088,
+          1.67936372756958
+        ],
+        "initial_settled_overlap": {
+          "projected_crossings": 83,
+          "stacked_crossings": 83,
+          "target_projected": 30,
+          "target_over": 23,
+          "target_under": 7,
+          "maximum_height_gap_m": 0.04,
+          "pairs": [
+            {
+              "pair": [
+                0,
+                1
+              ],
+              "projected": 9,
+              "stacked": 9,
+              "first_over": 9,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                0,
+                2
+              ],
+              "projected": 4,
+              "stacked": 4,
+              "first_over": 4,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                0,
+                3
+              ],
+              "projected": 10,
+              "stacked": 10,
+              "first_over": 10,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                0,
+                4
+              ],
+              "projected": 7,
+              "stacked": 7,
+              "first_over": 0,
+              "first_under": 7
+            },
+            {
+              "pair": [
+                1,
+                2
+              ],
+              "projected": 8,
+              "stacked": 8,
+              "first_over": 0,
+              "first_under": 8
+            },
+            {
+              "pair": [
+                1,
+                3
+              ],
+              "projected": 10,
+              "stacked": 10,
+              "first_over": 0,
+              "first_under": 10
+            },
+            {
+              "pair": [
+                1,
+                4
+              ],
+              "projected": 8,
+              "stacked": 8,
+              "first_over": 0,
+              "first_under": 8
+            },
+            {
+              "pair": [
+                2,
+                3
+              ],
+              "projected": 11,
+              "stacked": 11,
+              "first_over": 11,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                2,
+                4
+              ],
+              "projected": 6,
+              "stacked": 6,
+              "first_over": 0,
+              "first_under": 6
+            },
+            {
+              "pair": [
+                3,
+                4
+              ],
+              "projected": 10,
+              "stacked": 10,
+              "first_over": 0,
+              "first_under": 10
+            }
+          ]
+        },
+        "initial_segment_mean_m": [
+          0.006505044177174568,
+          0.009130566380918026,
+          0.009228759445250034,
+          0.00916233379393816,
+          0.008746645413339138
+        ],
+        "initial_segment_max_m": [
+          0.006683973595499992,
+          0.00913277268409729,
+          0.00923122838139534,
+          0.009165325202047825,
+          0.008748679421842098
+        ],
+        "initial_segment_turn_mean_deg": [
+          3.330505132675171,
+          4.194178581237793,
+          4.354767799377441,
+          4.609013080596924,
+          4.091021537780762
+        ],
+        "initial_segment_turn_max_deg": [
+          13.306709289550781,
+          9.469463348388672,
+          8.206740379333496,
+          13.126524925231934,
+          8.448919296264648
+        ],
+        "initial_cable_table_xy_margin_m": 0.06711425632238388,
+        "settled_cable_table_xy_margin_m": 0.06831362098455429,
+        "long_dense_layout_passed": true,
+        "numerical_geometry_passed": true,
+        "geometry_passed": true
+      },
+      "accepted": true
+    },
+    "settings": {
+      "out": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-05",
+      "cache": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/cache",
+      "robot_usd": "/home/ps/yy_workspace/assets/isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd",
+      "table_usd": "/home/ps/yy_workspace/assets/isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/table_instanceable.usd",
+      "tab_usd": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/../cable-extraction/tab-v2/pull-tab.usdc",
+      "seconds": 37.4,
+      "settle": 2.5,
+      "exchange_hz": 1200,
+      "iterations": 24,
+      "grip_z": 0.005,
+      "open_gripper": false,
+      "no_rod_contact": false,
+      "headless": true,
+      "livestream": -1,
+      "enable_cameras": false,
+      "xr": false,
+      "device": "cuda:0",
+      "cpu": false,
+      "verbose": false,
+      "info": false,
+      "experience": "",
+      "rendering_mode": null,
+      "kit_args": "",
+      "anim_recording_enabled": false,
+      "anim_recording_start_time": 0,
+      "anim_recording_stop_time": 10
+    },
+    "errors": [],
+    "attachment_joints": 0,
+    "post_reset_tab_pose_writes": 0,
+    "cable": {
+      "extension_sha256": "652156b9af5a4b249dc6a1ed007894e415b438322ad771e5a14ad18efbbc4f85",
+      "extension_file": "_ropesim.cpython-311-x86_64-linux-gnu.so",
+      "internal_hz": 4800,
+      "substeps": 4,
+      "iterations": 24,
+      "all_vertices_free": true,
+      "cables": 5,
+      "vertices_per_cable": 193,
+      "natural_rest_shape": "precurved initial geometry",
+      "rest_lengths_m": [
+        1.2489674091339111,
+        1.753071665763855,
+        1.7719005346298218,
+        1.7591688632965088,
+        1.67936372756958
+      ],
+      "linear_density_kg_m": 0.04,
+      "EA_N": 900.0,
+      "EI_Nm2": 0.001,
+      "radius_m": 0.0033,
+      "gravity_m_s2": [
+        0,
+        0,
+        -9.81
+      ],
+      "linear_drag": 0.1,
+      "material_damping": 0.0,
+      "mesh_mu_static_kinetic": [
+        0.48,
+        0.36
+      ],
+      "rope_rope": {
+        "enabled": true,
+        "same_workcell_group": 5,
+        "radius_m": 0.00297,
+        "barrier_m": 0.00066,
+        "k_collision": 0.025,
+        "mu": 0.32,
+        "k_friction": 10000.0,
+        "detection_scaler": 1.25
+      },
+      "termination": {
+        "stiffness_N_m": 220.0,
+        "damping_N_s_m": 0.025,
+        "model": "paired central spring and radial damping at tab exit and free rod vertex",
+        "max_allowed_gap_m": 0.008
+      },
+      "colliders": [
+        {
+          "path": "/World/envs/env_0/Robot/panda_link0",
+          "spacing_m": 0.006,
+          "dimensions": [
+            46,
+            40,
+            32
+          ],
+          "triangle_count": 200,
+          "mesh_key": "99dce4d0d652216064720f5522a03db55617f515f0af08bb2ac85af4562d528c",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link1",
+          "spacing_m": 0.006,
+          "dimensions": [
+            27,
+            39,
+            49
+          ],
+          "triangle_count": 300,
+          "mesh_key": "25124198dd41f6abda49ae75b57ebb5c797a2cad2e3d83dcdf1d3f70c77f2a59",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link2",
+          "spacing_m": 0.006,
+          "dimensions": [
+            27,
+            50,
+            39
+          ],
+          "triangle_count": 300,
+          "mesh_key": "6406b4a7322dd9ca4dca8eb2cf4a60b48aad42888d3af2948de161a7d15cf3d2",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link3",
+          "spacing_m": 0.006,
+          "dimensions": [
+            40,
+            36,
+            38
+          ],
+          "triangle_count": 300,
+          "mesh_key": "9c5e8ad2d763135b6837587c566e432c926122ae325bf250629a97d468d770bb",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link4",
+          "spacing_m": 0.006,
+          "dimensions": [
+            40,
+            38,
+            36
+          ],
+          "triangle_count": 300,
+          "mesh_key": "df098ded68e5314665c305dee8255e294fb5254b3b2ee41d8b9b73c7a98d2819",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link5",
+          "spacing_m": 0.006,
+          "dimensions": [
+            27,
+            39,
+            61
+          ],
+          "triangle_count": 300,
+          "mesh_key": "7175478f4cb1a6a316988775c777eae0b970f564988af5b21842ed9137acc022",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link6",
+          "spacing_m": 0.006,
+          "dimensions": [
+            38,
+            30,
+            25
+          ],
+          "triangle_count": 200,
+          "mesh_key": "f1dca2044da40481b17ddbded23b5c1e27768c438e0fce122e651f9cd52e52ea",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link7",
+          "spacing_m": 0.006,
+          "dimensions": [
+            29,
+            29,
+            17
+          ],
+          "triangle_count": 200,
+          "mesh_key": "4b375bd2284753fbb0f98b2009e1c20da7af4c6583e7b74bee04649960241e77",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_hand",
+          "spacing_m": 0.006,
+          "dimensions": [
+            19,
+            42,
+            23
+          ],
+          "triangle_count": 200,
+          "mesh_key": "502551a08e724064aa5e4000283423dc8837eab02976eb3fbb3cc55fc9f7155e",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_leftfinger",
+          "spacing_m": 0.002,
+          "dimensions": [
+            32,
+            35,
+            48
+          ],
+          "triangle_count": 32,
+          "mesh_key": "0fbcd13a41e2af1b67cde1d7558ecc7cd9d1cd2a7a667523e9cb838137a39afd",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_rightfinger",
+          "spacing_m": 0.002,
+          "dimensions": [
+            32,
+            35,
+            48
+          ],
+          "triangle_count": 32,
+          "mesh_key": "9a6a1d2b2f37fe45781dd8aab859c6d92c0c2b8536014f4162ad1006094dd29d",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Table",
+          "spacing_m": 0.008,
+          "dimensions": [
+            120,
+            166,
+            132
+          ],
+          "triangle_count": 12,
+          "mesh_key": "ffc5f2c303f926c7620d3111bf0c3a651023a02e648e8b60e557e7c364ba30a8",
+          "closed": true
+        }
+      ],
+      "mesh_loads": "solver surface force estimates, not integrated impulses",
+      "max_termination_gap_m": 0.0018710203003138304,
+      "max_segment_strain": 0.0015064477920532227,
+      "max_termination_force_N": 0.4148709774017334,
+      "mesh_force_peak_by_cable_and_collider_N": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.5569143891334534
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          12.525224685668945
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          2.791114568710327
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          6.534010887145996
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.7662556171417236
+        ]
+      ]
+    }
+  },
+  "open_gripper_control": {
+    "id": "control-05",
+    "absolute_raw_record_location": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/control-05",
+    "exit_code": 0,
+    "complete": true,
+    "report_sha256": "4c4b773add93f1159aab9e78bd9460fc098724d7dbab162a7107232feb497082",
+    "source_sha256": {
+      "__init__.py": "3c57929ac9b326ff0e576e53f28b978fdbccc904f3f40dac5e27ed96e8b3bc7b",
+      "audit.py": "d01c2778ae2842399000c63260ff01236a899a1cd42294af7df55b0dce822ebc",
+      "blender_tab.py": "d2c583cc3c5125b7a8dd6f34693a5d88be53559cbc59055224634edc8ffeb503",
+      "encode.py": "4b3f41b8f66cff5b159070da1d3a821f2001f546bb27328982c5456d12a1b242",
+      "coupling.py": "6a906c6921908cb1f5e264feca83f26d1cce3dba822c7925dda4b4092a703314",
+      "run.py": "4ece2a49506f4284d5db064ef7295e981b4677dc88bece0efa33a8ebeb3e59e0",
+      "model.py": "a8d3b7053803c351f31911073abe07b5bad52ab84b32b85ca4282ed809df6389",
+      "render_native.py": "6195f7fadcae40008c5fd8c97a2005ce56eecbece4d6ddd112c938f8b8590e12"
+    },
+    "asset_sha256": {
+      "robot": "7f5a0c0aa6760cfbd348e08bc464d4b94341f027f51c2d9e42406ceefcc7787f",
+      "table": "479ed8fd374d8eafdedf3ca3b9d0d5981ffc6d5c5016929347f748be93d5df17",
+      "tab": "2d7820fa0616eceaaea0544c009ac0d04ef86a80fae2109c01b89db2967fc15b"
+    },
+    "initial_cables_sha256": "41d4010a56ef4e2163d69cb43d438cfbf80f274e22700d0aa0df0c5ef97b2de9",
+    "scene_sha256": "8f3e182411cd758b8fcb53446bbba7ee58dedd757eb9324a16d04b7f012594fa",
+    "trajectory_sha256": "eca843c686fe423fa252565c2c312cce1f2f5b13c2345d808d13c1fc1e497429",
+    "settle": {
+      "simulated_s": 2.5,
+      "wall_s": 27.066991486004554,
+      "maximum_final_vertex_speed_m_s": 0.015571311116218567,
+      "rms_final_vertex_speed_m_s": 0.0012140845647081733,
+      "final_tab_position_m": [
+        0.3804561495780945,
+        0.5651547908782959,
+        1.0119904279708862
+      ],
+      "final_tab_speed_m_s": 2.898720049415715e-05
+    },
+    "loop_wall_seconds": 413.56017451599473,
+    "minimum_sampled_finger_separation_m": 0.0,
+    "metrics": {
+      "actual_peak_finger_pair_loads_N": [
+        0.0,
+        0.0
+      ],
+      "actual_final_finger_pair_loads_N": [
+        0.0,
+        0.0
+      ],
+      "maximum_sampled_abs_robot_rod_mesh_load_N": 0.0,
+      "maximum_sampled_rod_table_load_during_lift_pull_N": 2.450853109359741,
+      "actual_capture_simulated_seconds": 37.400000000000006,
+      "actual_tab_initial_m": [
+        0.3804560899734497,
+        0.5651547908782959,
+        1.0119904279708862
+      ],
+      "actual_tab_final_m": [
+        0.3804560899734497,
+        0.5651547908782959,
+        1.0119904279708862
+      ],
+      "actual_final_tcp_m": [
+        0.19555988907814026,
+        -0.5304221510887146,
+        1.6438535451889038
+      ],
+      "commanded_final_tcp_m": [
+        0.18,
+        -0.55,
+        1.655
+      ],
+      "final_tcp_tracking_error_m": 0.02737965980382078,
+      "final_joint_state": {
+        "panda_joint1": 1.8019464015960693,
+        "panda_joint2": -0.5179327726364136,
+        "panda_joint3": -2.8972373008728027,
+        "panda_joint4": -0.4668125510215759,
+        "panda_joint5": -0.111649289727211,
+        "panda_joint6": 0.9841487407684326,
+        "panda_joint7": -2.023306369781494,
+        "panda_finger_joint1": 0.03999999538064003,
+        "panda_finger_joint2": 0.03999999165534973
+      }
+    },
+    "audit": {
+      "trajectory_sha256": "eca843c686fe423fa252565c2c312cce1f2f5b13c2345d808d13c1fc1e497429",
+      "initial_cables_sha256": "41d4010a56ef4e2163d69cb43d438cfbf80f274e22700d0aa0df0c5ef97b2de9",
+      "run_report_sha256": "4c4b773add93f1159aab9e78bd9460fc098724d7dbab162a7107232feb497082",
+      "model_source_sha256": "a8d3b7053803c351f31911073abe07b5bad52ab84b32b85ca4282ed809df6389",
+      "audit_source_sha256": "d01c2778ae2842399000c63260ff01236a899a1cd42294af7df55b0dce822ebc",
+      "task": {
+        "bilateral_grasp_samples": 0,
+        "bilateral_pull_fraction": 0.0,
+        "tab_displacement_m": 0.0,
+        "minimum_target_neighbor_centerline_m": 0.00657418098606159,
+        "target_free_tip_displacement_m": 0.01616341434419155,
+        "target_centerline_centroid_displacement_m": 0.014792559668421745,
+        "final_target_neighbor_centerline_m": 0.006580271860873435,
+        "near_contact_pairs_per_frame_peak": 4,
+        "near_contact_samples_during_pull": 852,
+        "max_neighbor_vertex_displacements_m": [
+          0.002045207656919956,
+          0.023592917248606682,
+          0.010766575112938881,
+          0.05557434633374214
+        ],
+        "neighbor_displacement_during_pull_m": [
+          0.0015466209733858705,
+          0.017654867842793465,
+          0.008446522057056427,
+          0.04785039275884628
+        ],
+        "neighbor_displacement_while_target_near_m": 0.04785039275884628,
+        "final_hold_clearance_min_m": 0.006574445626092613,
+        "passed": false
+      },
+      "geometry": {
+        "minimum_rod_pair_centerline_m": 0.006568953751118381,
+        "min_pair_centerlines_m": {
+          "0-1": 0.0065812055206931,
+          "0-2": 0.00657418098606159,
+          "0-3": 0.0065797273645480684,
+          "0-4": 0.006580545540817343,
+          "1-2": 0.006574780703542965,
+          "1-3": 0.006568953751118381,
+          "1-4": 0.007096858437911764,
+          "2-3": 0.006569918634167766,
+          "2-4": 0.006579166049312211,
+          "3-4": 0.006584252938089307
+        },
+        "minimum_rod_surface_gap_m": -3.104624888161916e-05,
+        "minimum_gap_above_rope_barrier_wall_m": 0.0006289537511183808,
+        "sampled_rod_table_surface_gap_m": -5.889683961868286e-06,
+        "conservative_sampled_neighbor_rod_to_tab_gap_m": 0.04422686747735223,
+        "initial_vertex_speed_rms_m_s": 0.0012314802734181285,
+        "maximum_ready_drift_m": 0.004783187992870808,
+        "held_final_second_fraction": 0.0,
+        "max_segment_strain": 0.00020939111709594727,
+        "vertices_per_cable": 193,
+        "rest_lengths_m": [
+          1.2489674091339111,
+          1.753071665763855,
+          1.7719005346298218,
+          1.7591688632965088,
+          1.67936372756958
+        ],
+        "initial_settled_overlap": {
+          "projected_crossings": 83,
+          "stacked_crossings": 83,
+          "target_projected": 30,
+          "target_over": 23,
+          "target_under": 7,
+          "maximum_height_gap_m": 0.04,
+          "pairs": [
+            {
+              "pair": [
+                0,
+                1
+              ],
+              "projected": 9,
+              "stacked": 9,
+              "first_over": 9,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                0,
+                2
+              ],
+              "projected": 4,
+              "stacked": 4,
+              "first_over": 4,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                0,
+                3
+              ],
+              "projected": 10,
+              "stacked": 10,
+              "first_over": 10,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                0,
+                4
+              ],
+              "projected": 7,
+              "stacked": 7,
+              "first_over": 0,
+              "first_under": 7
+            },
+            {
+              "pair": [
+                1,
+                2
+              ],
+              "projected": 8,
+              "stacked": 8,
+              "first_over": 0,
+              "first_under": 8
+            },
+            {
+              "pair": [
+                1,
+                3
+              ],
+              "projected": 10,
+              "stacked": 10,
+              "first_over": 0,
+              "first_under": 10
+            },
+            {
+              "pair": [
+                1,
+                4
+              ],
+              "projected": 8,
+              "stacked": 8,
+              "first_over": 0,
+              "first_under": 8
+            },
+            {
+              "pair": [
+                2,
+                3
+              ],
+              "projected": 11,
+              "stacked": 11,
+              "first_over": 11,
+              "first_under": 0
+            },
+            {
+              "pair": [
+                2,
+                4
+              ],
+              "projected": 6,
+              "stacked": 6,
+              "first_over": 0,
+              "first_under": 6
+            },
+            {
+              "pair": [
+                3,
+                4
+              ],
+              "projected": 10,
+              "stacked": 10,
+              "first_over": 0,
+              "first_under": 10
+            }
+          ]
+        },
+        "initial_segment_mean_m": [
+          0.006505044177174568,
+          0.009130566380918026,
+          0.009228759445250034,
+          0.00916233379393816,
+          0.008746645413339138
+        ],
+        "initial_segment_max_m": [
+          0.006683973595499992,
+          0.00913277268409729,
+          0.00923122838139534,
+          0.009165325202047825,
+          0.008748679421842098
+        ],
+        "initial_segment_turn_mean_deg": [
+          3.330505132675171,
+          4.194178581237793,
+          4.354767799377441,
+          4.609013080596924,
+          4.091021537780762
+        ],
+        "initial_segment_turn_max_deg": [
+          13.306709289550781,
+          9.469463348388672,
+          8.206740379333496,
+          13.126524925231934,
+          8.448919296264648
+        ],
+        "initial_cable_table_xy_margin_m": 0.06711425632238388,
+        "settled_cable_table_xy_margin_m": 0.06831362098455429,
+        "long_dense_layout_passed": true,
+        "numerical_geometry_passed": true,
+        "geometry_passed": false
+      },
+      "accepted": false
+    },
+    "settings": {
+      "out": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/control-05",
+      "cache": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/cache",
+      "robot_usd": "/home/ps/yy_workspace/assets/isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd",
+      "table_usd": "/home/ps/yy_workspace/assets/isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/table_instanceable.usd",
+      "tab_usd": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/../cable-extraction/tab-v2/pull-tab.usdc",
+      "seconds": 37.4,
+      "settle": 2.5,
+      "exchange_hz": 1200,
+      "iterations": 24,
+      "grip_z": 0.005,
+      "open_gripper": true,
+      "no_rod_contact": false,
+      "headless": true,
+      "livestream": -1,
+      "enable_cameras": false,
+      "xr": false,
+      "device": "cuda:0",
+      "cpu": false,
+      "verbose": false,
+      "info": false,
+      "experience": "",
+      "rendering_mode": null,
+      "kit_args": "",
+      "anim_recording_enabled": false,
+      "anim_recording_start_time": 0,
+      "anim_recording_stop_time": 10
+    },
+    "errors": [],
+    "attachment_joints": 0,
+    "post_reset_tab_pose_writes": 0,
+    "cable": {
+      "extension_sha256": "652156b9af5a4b249dc6a1ed007894e415b438322ad771e5a14ad18efbbc4f85",
+      "extension_file": "_ropesim.cpython-311-x86_64-linux-gnu.so",
+      "internal_hz": 4800,
+      "substeps": 4,
+      "iterations": 24,
+      "all_vertices_free": true,
+      "cables": 5,
+      "vertices_per_cable": 193,
+      "natural_rest_shape": "precurved initial geometry",
+      "rest_lengths_m": [
+        1.2489674091339111,
+        1.753071665763855,
+        1.7719005346298218,
+        1.7591688632965088,
+        1.67936372756958
+      ],
+      "linear_density_kg_m": 0.04,
+      "EA_N": 900.0,
+      "EI_Nm2": 0.001,
+      "radius_m": 0.0033,
+      "gravity_m_s2": [
+        0,
+        0,
+        -9.81
+      ],
+      "linear_drag": 0.1,
+      "material_damping": 0.0,
+      "mesh_mu_static_kinetic": [
+        0.48,
+        0.36
+      ],
+      "rope_rope": {
+        "enabled": true,
+        "same_workcell_group": 5,
+        "radius_m": 0.00297,
+        "barrier_m": 0.00066,
+        "k_collision": 0.025,
+        "mu": 0.32,
+        "k_friction": 10000.0,
+        "detection_scaler": 1.25
+      },
+      "termination": {
+        "stiffness_N_m": 220.0,
+        "damping_N_s_m": 0.025,
+        "model": "paired central spring and radial damping at tab exit and free rod vertex",
+        "max_allowed_gap_m": 0.008
+      },
+      "colliders": [
+        {
+          "path": "/World/envs/env_0/Robot/panda_link0",
+          "spacing_m": 0.006,
+          "dimensions": [
+            46,
+            40,
+            32
+          ],
+          "triangle_count": 200,
+          "mesh_key": "99dce4d0d652216064720f5522a03db55617f515f0af08bb2ac85af4562d528c",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link1",
+          "spacing_m": 0.006,
+          "dimensions": [
+            27,
+            39,
+            49
+          ],
+          "triangle_count": 300,
+          "mesh_key": "25124198dd41f6abda49ae75b57ebb5c797a2cad2e3d83dcdf1d3f70c77f2a59",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link2",
+          "spacing_m": 0.006,
+          "dimensions": [
+            27,
+            50,
+            39
+          ],
+          "triangle_count": 300,
+          "mesh_key": "6406b4a7322dd9ca4dca8eb2cf4a60b48aad42888d3af2948de161a7d15cf3d2",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link3",
+          "spacing_m": 0.006,
+          "dimensions": [
+            40,
+            36,
+            38
+          ],
+          "triangle_count": 300,
+          "mesh_key": "9c5e8ad2d763135b6837587c566e432c926122ae325bf250629a97d468d770bb",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link4",
+          "spacing_m": 0.006,
+          "dimensions": [
+            40,
+            38,
+            36
+          ],
+          "triangle_count": 300,
+          "mesh_key": "df098ded68e5314665c305dee8255e294fb5254b3b2ee41d8b9b73c7a98d2819",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link5",
+          "spacing_m": 0.006,
+          "dimensions": [
+            27,
+            39,
+            61
+          ],
+          "triangle_count": 300,
+          "mesh_key": "7175478f4cb1a6a316988775c777eae0b970f564988af5b21842ed9137acc022",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link6",
+          "spacing_m": 0.006,
+          "dimensions": [
+            38,
+            30,
+            25
+          ],
+          "triangle_count": 200,
+          "mesh_key": "f1dca2044da40481b17ddbded23b5c1e27768c438e0fce122e651f9cd52e52ea",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_link7",
+          "spacing_m": 0.006,
+          "dimensions": [
+            29,
+            29,
+            17
+          ],
+          "triangle_count": 200,
+          "mesh_key": "4b375bd2284753fbb0f98b2009e1c20da7af4c6583e7b74bee04649960241e77",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_hand",
+          "spacing_m": 0.006,
+          "dimensions": [
+            19,
+            42,
+            23
+          ],
+          "triangle_count": 200,
+          "mesh_key": "502551a08e724064aa5e4000283423dc8837eab02976eb3fbb3cc55fc9f7155e",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_leftfinger",
+          "spacing_m": 0.002,
+          "dimensions": [
+            32,
+            35,
+            48
+          ],
+          "triangle_count": 32,
+          "mesh_key": "0fbcd13a41e2af1b67cde1d7558ecc7cd9d1cd2a7a667523e9cb838137a39afd",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Robot/panda_rightfinger",
+          "spacing_m": 0.002,
+          "dimensions": [
+            32,
+            35,
+            48
+          ],
+          "triangle_count": 32,
+          "mesh_key": "9a6a1d2b2f37fe45781dd8aab859c6d92c0c2b8536014f4162ad1006094dd29d",
+          "closed": true
+        },
+        {
+          "path": "/World/envs/env_0/Table",
+          "spacing_m": 0.008,
+          "dimensions": [
+            120,
+            166,
+            132
+          ],
+          "triangle_count": 12,
+          "mesh_key": "ffc5f2c303f926c7620d3111bf0c3a651023a02e648e8b60e557e7c364ba30a8",
+          "closed": true
+        }
+      ],
+      "mesh_loads": "solver surface force estimates, not integrated impulses",
+      "max_termination_gap_m": 0.00022357805573847145,
+      "max_segment_strain": 0.00020939111709594727,
+      "max_termination_force_N": 0.050216540694236755,
+      "mesh_force_peak_by_cable_and_collider_N": [
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          12.52523136138916
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          2.791114568710327
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          6.534010887145996
+        ],
+        [
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.0,
+          0.22140982747077942
+        ]
+      ]
+    }
+  },
+  "matched_control": {
+    "max_initial_cable_vertex_difference_m": 0.0,
+    "max_arm_target_difference_m": 0.0,
+    "active_neighbor_displacement_while_target_near_m": 0.5044891834259033,
+    "open_gripper_neighbor_displacement_while_target_near_m": 0.04785039275884628
+  },
+  "failed_route_trials": [
+    {
+      "id": "long-01",
+      "absolute_raw_record_location": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-01",
+      "report_sha256": "97fc252410e843fb26d93f467e27554ea00e8c63e68216e36b3a49da290ae43d",
+      "trajectory_sha256": "1878a99d89870507b7cb4ddbb1a8d5dfc7006c12dbb87e6091e4980da2cb8131",
+      "errors": [],
+      "metrics": {
+        "bilateral_grasp_samples": 10,
+        "bilateral_pull_fraction": 1.0,
+        "tab_displacement_m": 0.6143919825553894,
+        "minimum_target_neighbor_centerline_m": 0.006570721249569083,
+        "target_free_tip_displacement_m": 0.2552580237388611,
+        "target_centerline_centroid_displacement_m": 0.3151205778121948,
+        "final_target_neighbor_centerline_m": 0.006578521523478244,
+        "near_contact_pairs_per_frame_peak": 4,
+        "near_contact_samples_during_pull": 594,
+        "max_neighbor_vertex_displacements_m": [
+          0.006033455953001976,
+          0.21966762840747833,
+          0.16856835782527924,
+          0.19509388506412506
+        ],
+        "neighbor_displacement_during_pull_m": [
+          0.005172069184482098,
+          0.2159007489681244,
+          0.16779372096061707,
+          0.18794085085391998
+        ],
+        "neighbor_displacement_while_target_near_m": 0.2159007489681244,
+        "final_hold_clearance_min_m": 0.006578521523478244,
+        "passed": false
+      },
+      "layout_passed": false,
+      "solver_vertices_per_cable": 145,
+      "rest_lengths_m": [
+        1.2484166622161865,
+        1.752715826034546,
+        1.7715169191360474,
+        1.758715271949768,
+        1.6790400743484497
+      ],
+      "peak_termination_gap_m": 0.0017562014982104301,
+      "stiffness_N_m": 220.0,
+      "exchange_hz": 1200
+    },
+    {
+      "id": "long-02",
+      "absolute_raw_record_location": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-02",
+      "report_sha256": "e2528bda87f9eff9d04a555381ec3127673aef67a26c0e19e843eb5df00d0893",
+      "trajectory_sha256": "7af802f6e091541bef3f62e5c7df1bd9df91d829a111e693585fa689a6541e9a",
+      "errors": [],
+      "metrics": {
+        "bilateral_grasp_samples": 10,
+        "bilateral_pull_fraction": 1.0,
+        "tab_displacement_m": 0.9300364255905151,
+        "minimum_target_neighbor_centerline_m": 0.006556481155971152,
+        "target_free_tip_displacement_m": 0.4255177974700928,
+        "target_centerline_centroid_displacement_m": 0.6413520574569702,
+        "final_target_neighbor_centerline_m": 0.006562426943999799,
+        "near_contact_pairs_per_frame_peak": 4,
+        "near_contact_samples_during_pull": 642,
+        "max_neighbor_vertex_displacements_m": [
+          0.004336279816925526,
+          0.1899200826883316,
+          0.12656530737876892,
+          0.21598351001739502
+        ],
+        "neighbor_displacement_during_pull_m": [
+          0.004260511137545109,
+          0.16331662237644196,
+          0.12554502487182617,
+          0.20988187193870544
+        ],
+        "neighbor_displacement_while_target_near_m": 0.20988187193870544,
+        "final_hold_clearance_min_m": 0.006561603541206181,
+        "passed": false
+      },
+      "layout_passed": true,
+      "solver_vertices_per_cable": 193,
+      "rest_lengths_m": [
+        1.2489672899246216,
+        1.753071665763855,
+        1.7719005346298218,
+        1.7591688632965088,
+        1.67936372756958
+      ],
+      "peak_termination_gap_m": 0.0012133092386648059,
+      "stiffness_N_m": 220.0,
+      "exchange_hz": 1200
+    },
+    {
+      "id": "long-04",
+      "absolute_raw_record_location": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-04",
+      "report_sha256": "7247b4e78736b027a6ec314b323287c16cb53722924caf68d317d40e389ab815",
+      "trajectory_sha256": "e92e911151088e2e2df9bd78d0891b28ed50e7139e5d3f22e9eaa4de142be146",
+      "errors": [],
+      "metrics": {
+        "bilateral_grasp_samples": 10,
+        "bilateral_pull_fraction": 1.0,
+        "tab_displacement_m": 1.2038428783416748,
+        "minimum_target_neighbor_centerline_m": 0.006551345516209877,
+        "target_free_tip_displacement_m": 0.5297906398773193,
+        "target_centerline_centroid_displacement_m": 0.9605473279953003,
+        "final_target_neighbor_centerline_m": 0.006580627879495907,
+        "near_contact_pairs_per_frame_peak": 4,
+        "near_contact_samples_during_pull": 732,
+        "max_neighbor_vertex_displacements_m": [
+          0.0037441342137753963,
+          0.40234696865081787,
+          0.10430008172988892,
+          0.4766666293144226
+        ],
+        "neighbor_displacement_during_pull_m": [
+          0.0036669413093477488,
+          0.39307644963264465,
+          0.10443384200334549,
+          0.4713291525840759
+        ],
+        "neighbor_displacement_while_target_near_m": 0.4713291525840759,
+        "final_hold_clearance_min_m": 0.006580627879495907,
+        "passed": false
+      },
+      "layout_passed": true,
+      "solver_vertices_per_cable": 193,
+      "rest_lengths_m": [
+        1.2489674091339111,
+        1.753071665763855,
+        1.7719005346298218,
+        1.7591688632965088,
+        1.67936372756958
+      ],
+      "peak_termination_gap_m": 0.001291284803301096,
+      "stiffness_N_m": 220.0,
+      "exchange_hz": 1200
+    }
+  ],
+  "superseded_setup_trials": [
+    {
+      "id": "long-03",
+      "outcome": "superseded_before_pickup",
+      "log_sha256": "fbbb4b75d3640e1585e39ccd82fc9be061b6a34fda7ef8462ef95f75edb4f74a",
+      "explanation": "Superseded before pickup by the extended longitudinal reach profile long-04."
+    }
+  ],
+  "comparison_to_73_vertex_original": {
+    "original": {
+      "recording": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/../cable-extraction/pilot-07",
+      "trajectory_sha256": "bf2ac1db376d4c0d9d824c8a5a6444cdd5abc9fb3f1b19a8ef44463ee13dc640",
+      "solver_vertices_per_strand": 73,
+      "rest_lengths_m": [
+        0.5609588623046875,
+        1.089444875717163,
+        0.9976526498794556,
+        0.9613614082336426,
+        0.9269930124282837
+      ],
+      "initial_segment_mean_m": [
+        0.007791116833686829,
+        0.015131158754229546,
+        0.013856342993676662,
+        0.013352273032069206,
+        0.012874903157353401
+      ],
+      "initial_segment_max_m": [
+        0.008114270865917206,
+        0.01514438632875681,
+        0.013868654146790504,
+        0.013366849161684513,
+        0.012888616882264614
+      ],
+      "initial_segment_turn_mean_deg": [
+        4.789662837982178,
+        7.003848075866699,
+        6.97796630859375,
+        7.595512390136719,
+        6.952538967132568
+      ],
+      "initial_segment_turn_max_deg": [
+        19.246917724609375,
+        21.625375747680664,
+        23.632986068725586,
+        20.260730743408203,
+        33.88972091674805
+      ],
+      "overlap": {
+        "projected_crossings": 47,
+        "stacked_crossings": 47,
+        "target_projected": 13,
+        "target_over": 10,
+        "target_under": 3,
+        "maximum_height_gap_m": 0.04,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "projected": 4,
+            "stacked": 4,
+            "first_over": 4,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              0,
+              2
+            ],
+            "projected": 3,
+            "stacked": 3,
+            "first_over": 3,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              0,
+              3
+            ],
+            "projected": 3,
+            "stacked": 3,
+            "first_over": 3,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              0,
+              4
+            ],
+            "projected": 3,
+            "stacked": 3,
+            "first_over": 0,
+            "first_under": 3
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "projected": 7,
+            "stacked": 7,
+            "first_over": 0,
+            "first_under": 7
+          },
+          {
+            "pair": [
+              1,
+              3
+            ],
+            "projected": 4,
+            "stacked": 4,
+            "first_over": 0,
+            "first_under": 4
+          },
+          {
+            "pair": [
+              1,
+              4
+            ],
+            "projected": 6,
+            "stacked": 6,
+            "first_over": 0,
+            "first_under": 6
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "projected": 7,
+            "stacked": 7,
+            "first_over": 7,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              2,
+              4
+            ],
+            "projected": 6,
+            "stacked": 6,
+            "first_over": 0,
+            "first_under": 6
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "projected": 4,
+            "stacked": 4,
+            "first_over": 0,
+            "first_under": 4
+          }
+        ]
+      }
+    },
+    "longer": {
+      "recording": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/cable-extraction-long/long-05",
+      "trajectory_sha256": "6fe97407456317f58c23c235dee34ba954d34e105e28245855721bfe82516788",
+      "solver_vertices_per_strand": 193,
+      "rest_lengths_m": [
+        1.2489674091339111,
+        1.753071665763855,
+        1.7719005346298218,
+        1.7591688632965088,
+        1.67936372756958
+      ],
+      "initial_segment_mean_m": [
+        0.006505044177174568,
+        0.009130566380918026,
+        0.009228759445250034,
+        0.00916233379393816,
+        0.008746645413339138
+      ],
+      "initial_segment_max_m": [
+        0.006683973595499992,
+        0.00913277268409729,
+        0.00923122838139534,
+        0.009165325202047825,
+        0.008748679421842098
+      ],
+      "initial_segment_turn_mean_deg": [
+        3.330505132675171,
+        4.194178581237793,
+        4.354767799377441,
+        4.609013080596924,
+        4.091021537780762
+      ],
+      "initial_segment_turn_max_deg": [
+        13.306709289550781,
+        9.469463348388672,
+        8.206740379333496,
+        13.126524925231934,
+        8.448919296264648
+      ],
+      "overlap": {
+        "projected_crossings": 83,
+        "stacked_crossings": 83,
+        "target_projected": 30,
+        "target_over": 23,
+        "target_under": 7,
+        "maximum_height_gap_m": 0.04,
+        "pairs": [
+          {
+            "pair": [
+              0,
+              1
+            ],
+            "projected": 9,
+            "stacked": 9,
+            "first_over": 9,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              0,
+              2
+            ],
+            "projected": 4,
+            "stacked": 4,
+            "first_over": 4,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              0,
+              3
+            ],
+            "projected": 10,
+            "stacked": 10,
+            "first_over": 10,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              0,
+              4
+            ],
+            "projected": 7,
+            "stacked": 7,
+            "first_over": 0,
+            "first_under": 7
+          },
+          {
+            "pair": [
+              1,
+              2
+            ],
+            "projected": 8,
+            "stacked": 8,
+            "first_over": 0,
+            "first_under": 8
+          },
+          {
+            "pair": [
+              1,
+              3
+            ],
+            "projected": 10,
+            "stacked": 10,
+            "first_over": 0,
+            "first_under": 10
+          },
+          {
+            "pair": [
+              1,
+              4
+            ],
+            "projected": 8,
+            "stacked": 8,
+            "first_over": 0,
+            "first_under": 8
+          },
+          {
+            "pair": [
+              2,
+              3
+            ],
+            "projected": 11,
+            "stacked": 11,
+            "first_over": 11,
+            "first_under": 0
+          },
+          {
+            "pair": [
+              2,
+              4
+            ],
+            "projected": 6,
+            "stacked": 6,
+            "first_over": 0,
+            "first_under": 6
+          },
+          {
+            "pair": [
+              3,
+              4
+            ],
+            "projected": 10,
+            "stacked": 10,
+            "first_over": 0,
+            "first_under": 10
+          }
+        ]
+      }
+    },
+    "target_rest_length_multiplier": 2.2264866339798166,
+    "target_segment_max_reduction_fraction": 0.1762693523610317,
+    "projected_crossings_added": 36
+  },
+  "media": {
+    "native": {
+      "host": "ps",
+      "complete": true,
+      "errors": [],
+      "capture_mode": "full",
+      "source_frames": 1122,
+      "accepted_audit": true,
+      "max_capture_clock_delta_s": 0.0,
+      "max_replay_matrix_error": 1.7562667986833787e-09,
+      "render_source_sha256": "2ef8a91e8d054b1a4273f23003da87e3bcb1bd836b578e1b047ccb0430a4086f",
+      "audit_sha256": "1a254e15049f0c75245e0a067af0055aa1017aa03805d52fda03358a61a43c34",
+      "panda_base_world_bounds_m": [
+        [
+          -0.1540856003593145,
+          -0.06959595396620877,
+          1.0030000060796738
+        ],
+        [
+          0.07154428217833608,
+          0.11956205228856831,
+          1.1430001078546024
+        ]
+      ],
+      "panda_base_table_xy_support_margin_m": 0.07430405304329746,
+      "frames": 1122,
+      "fps": 30,
+      "rate": 1.0,
+      "renderer": "RaytracedLighting",
+      "source_trajectory_sha256": "6fe97407456317f58c23c235dee34ba954d34e105e28245855721bfe82516788",
+      "physics_enabled": false,
+      "recorded_cable_radius_m": 0.0033,
+      "overlay": false,
+      "camera_eye_m": [
+        1.88,
+        0.26,
+        2.55
+      ],
+      "camera_target_m": [
+        0.34,
+        0.23,
+        1.23
+      ],
+      "camera_focal_length": 20.2,
+      "rtx_disabled_effects": {
+        "/rtx/reflections/enabled": false,
+        "/rtx/indirectDiffuse/enabled": false,
+        "/rtx/post/motionblur/enabled": false
+      },
+      "antialiasing_mode": 4,
+      "renderer_runtime_states": [
+        [
+          4,
+          false
+        ]
+      ],
+      "renderer_history_reset": "First sample and nonconsecutive preview cuts only, followed by discarded warm-up",
+      "renderer_history_reset_source_frames": [
+        0
+      ],
+      "discarded_warmup_ticks_per_cut": 36,
+      "max_replay_curve_error_m": 0.0,
+      "authored_light_states_sha256": [
+        "c2e84dfd88956a1e110c29e47a509c7151b8b564196c59bd71b59f3192dabd6c"
+      ],
+      "tail_pullback": {
+        "timing_s": [
+          28.0,
+          34.5
+        ],
+        "eye_m": [
+          2.05,
+          0.11000000000000001,
+          2.5799999999999996
+        ],
+        "target_m": [
+          0.34,
+          0.08000000000000002,
+          1.2449999999999999
+        ],
+        "focal_length": 19.3
+      },
+      "app_close_invoked": true
+    },
+    "native_report_sha256": "595ae66b7be9256ee480c1f8afc8c7bcfefbd8729fa9fce58238bc5ce7e8e35a",
+    "encode_source_sha256": "4b3f41b8f66cff5b159070da1d3a821f2001f546bb27328982c5456d12a1b242",
+    "verified_frames_manifest_sha256": "2ba24fe4ddfe3df18a486cb48fec6fa54d9f53e7571192e249901697d1ed08b1",
+    "full_decode_passed": true,
+    "video": {
+      "codec_name": "h264",
+      "width": 1280,
+      "height": 720,
+      "pix_fmt": "yuv420p",
+      "avg_frame_rate": "30/1",
+      "duration": "37.400000",
+      "nb_read_frames": "1122"
+    },
+    "video_sha256": "1016deefc3d6f940439c1d62e911714e896cd431d6dc8b83a7336208872439c3",
+    "poster_frame": 1121,
+    "poster_simulated_t_s": 37.400000000000006,
+    "poster_source_frame_sha256": "8bb8d4a263c8117f6747ffd626bb05ae38ed9ff4d41367bfb1698815e68f9964",
+    "poster_sha256": "ecaf33e5d1ee62b2c16aa6bd7448656033e034f33aecb355f4ca285838677765"
+  },
+  "render_history_diagnostic": {
+    "trajectory_frame": 1121,
+    "actual_t_s": 37.4,
+    "roi_xyxy": [
+      85,
+      170,
+      400,
+      650
+    ],
+    "method": "Mean cyan excess versus isolated fresh-app native frame over pixels where old direct preview exceeds isolated by 5 levels and isolated chroma is below 10.",
+    "mask_pixels": 3513,
+    "frame_sha256": {
+      "preview-05-direct": "78b05cd7c5d5e95da0af54399e3ebcd31ac368551218e04b2dce2781a1586fa0",
+      "preview-05-force": "eb74c8db2b5dbf7ae24562ab5815d92decfde4d584290a425860ac7b44bc2fbe",
+      "preview-05-isolated-last": "ea7c0768621b87af3784bb4f1491e72af04f93e38b24e27aab4f83d17a6803fd",
+      "full-05": "82a2a1df5c4f8e72f6af5d7d1e5b55a0da83976089c0ddef1971f2a900cd4031"
+    },
+    "mean_cyan_excess_rgb_levels": {
+      "preview-05-direct": 20.27853686307999,
+      "preview-05-force": 0.049387987475092515,
+      "preview-05-isolated-last": 0.0,
+      "full-05": 0.04810703102761173
+    },
+    "scope": "Historical sparse-preview ghost test for superseded reset-every-frame capture; it did not test temporal brightness stability.",
+    "superseded_by": "render-stability.json"
+  },
+  "terminal_sweep_gain": {
+    "prior_trajectory_sha256": "e92e911151088e2e2df9bd78d0891b28ed50e7139e5d3f22e9eaa4de142be146",
+    "reference": "fixed recorded start vertex of the nearest neighbor segment at prior final state",
+    "prior_contact_rods": [
+      0,
+      4
+    ],
+    "prior_contact_segments": [
+      185,
+      61
+    ],
+    "reference_point_m": [
+      0.39520618319511414,
+      0.41153082251548767,
+      1.0119024515151978
+    ],
+    "prior_final_exit_distance_m": 1.0526161193847656,
+    "nominal_final_exit_distance_m": 1.130474328994751,
+    "measured_exit_distance_gain_m": 0.07785820960998535,
+    "prior_final_exit_m": [
+      0.3703503906726837,
+      -0.46968382596969604,
+      1.587092638015747
+    ],
+    "nominal_final_exit_m": [
+      0.19420365989208221,
+      -0.5074799656867981,
+      1.6387912034988403
+    ]
+  },
+  "render_temporal_stability": {
+    "evidence_file": "render-stability.json",
+    "evidence_sha256": "dcc8170a961a9c1c96dfe61ad14c90348ce9739c797dd47631c6e659017ed5c4",
+    "superseded_video_sha256": "603dc4f205a465bea6c9d289ea76598857e897267724f055ab8c7d2f0ba1a432",
+    "current_video_sha256": "1016deefc3d6f940439c1d62e911714e896cd431d6dc8b83a7336208872439c3",
+    "physical_trajectory_unchanged": true,
+    "cause": "At a fixed pose, camera and light state, resetting the DLSS reconstruction alone restored the native flicker. Resetting context accumulation alone did not. The PNG fluctuations were present before video encoding.",
+    "fix": "Actual DLAA mode 4 with fixed exposure. Reset once before 36 discarded warm-up ticks at the start, and again only before nonconsecutive preview cuts. Consecutive full-capture frames keep history. Each captured source frame retains the original lighting, timing and camera pose."
+  },
+  "media_files": {
+    "native_video": "media/cable-extraction-1x.mp4",
+    "presentation_video": "media/cable-extraction.mp4"
+  },
+  "presentation": {
+    "source_video_sha256": "1016deefc3d6f940439c1d62e911714e896cd431d6dc8b83a7336208872439c3",
+    "source_capture_sha256": "ae19dda0c4eaa985c3fb84bb2910dedd5583aa4d18a73c0e36979fa35d75ee03",
+    "source_duration_s": 37.4,
+    "video": "cable-extraction.mp4",
+    "video_sha256": "849f864a2029608e542e170fab6b011a27c6ff4d3c37097e02e33d45d84ad8e9",
+    "duration_s": 18.7,
+    "frames": 1122,
+    "fps": 60,
+    "playback_multiplier": 2,
+    "dimensions": [
+      1280,
+      720
+    ],
+    "encoded_frame_payloads_identical": true,
+    "all_timestamps_halved": true,
+    "frame_dropping": false,
+    "frame_interpolation": false,
+    "full_decode": true,
+    "physics_recomputed": false,
+    "text_overlays": false,
+    "retime_source_sha256": "b8a082dd61877f6cf2049d752500b765749c5cf3275f392c3de90c91a441b114",
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+  }
+}

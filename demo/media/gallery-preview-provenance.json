@@ -1,0 +1,120 @@
+{
+  "renderer_sha256": "0616db4201d086ab17c0d5d38f4fd80fb684e3bad7c9fccccfd51f30e7938f74",
+  "dimensions": [
+    416,
+    234
+  ],
+  "nominal_fps": 10,
+  "caption_or_hud_added": false,
+  "cropped": false,
+  "playback_multiplier": 1,
+  "cases": {
+    "rack_insertion": {
+      "source": "demo/rack_insertion/media/rack-insertion.mp4",
+      "source_sha256": "731127811c33ddae443a54d0d1b26587c7ddd58bf627a01b36a35be1b369663f",
+      "source_trim_s": [
+        0,
+        14.8
+      ],
+      "source_fps": "30/1",
+      "video": "rack_insertion.gif",
+      "sha256": "e33176b30616e1e46fb6594378f97af7251be91c6ac453e1a5ae0e557e8dcfed",
+      "bytes": 3657535,
+      "frames": 148,
+      "duration_s": 14.8,
+      "full_decode": true,
+      "packaged_path": "demo/rack_insertion/media/preview.gif",
+      "renderer_sha256": "38ba02b87ab3ccca058bcf9399b54faa0caef9e0cf5f3dbddf2e8934ec73aae1"
+    },
+    "cable_cascade": {
+      "source": "demo/cable_cascade/media/cable-cascade.mp4",
+      "source_sha256": "c4f1723e5173a3f8ecc2da7fd4fbce7d641482560c14e0454600aece0b2e7461",
+      "source_trim_s": [
+        0,
+        6.033008
+      ],
+      "source_fps": "30/1",
+      "video": "cable_cascade.gif",
+      "sha256": "c7078e219bc2ee94ea3aa8c4ce6c66c8e7eb9b6342222d6bd839cc28a8ccd695",
+      "bytes": 1091204,
+      "frames": 60,
+      "duration_s": 6.0,
+      "full_decode": true,
+      "packaged_path": "demo/cable_cascade/media/preview.gif",
+      "renderer_sha256": "38ba02b87ab3ccca058bcf9399b54faa0caef9e0cf5f3dbddf2e8934ec73aae1"
+    },
+    "cable_extraction": {
+      "source": "demo/cable_extraction/media/cable-extraction.mp4",
+      "source_sha256": "849f864a2029608e542e170fab6b011a27c6ff4d3c37097e02e33d45d84ad8e9",
+      "source_trim_s": [
+        0,
+        18.7
+      ],
+      "source_fps": "60/1",
+      "video": "cable_extraction.gif",
+      "sha256": "67eea0972186018b3036c472a648781976dc7191a4954cb7ce33af4cb5e96864",
+      "bytes": 5156890,
+      "frames": 187,
+      "duration_s": 18.7,
+      "full_decode": true,
+      "recorded_playback_multiplier": 2,
+      "presentation_evidence_sha256": "3f760fd7db92e8aca9693a0026b8648e0a81defa9a8662d3aede9172aba715d6",
+      "packaged_path": "demo/cable_extraction/media/preview.gif",
+      "renderer_sha256": "38ba02b87ab3ccca058bcf9399b54faa0caef9e0cf5f3dbddf2e8934ec73aae1"
+    },
+    "braiding_machine": {
+      "source": "demo/braiding_machine/media/braiding-process-hold.mp4",
+      "source_sha256": "854cb279d1eadfc3258bbb631a6db5d470208269bf650683ecf13d0a31a8541d",
+      "source_trim_s": [
+        0,
+        21.0
+      ],
+      "source_fps": "30/1",
+      "video": "braiding_machine.gif",
+      "sha256": "b9c1a215a79488da52e0437a269711e4f3c9865230327509f30e0c06578dbc0f",
+      "bytes": 5467735,
+      "frames": 210,
+      "duration_s": 21.0,
+      "full_decode": true,
+      "exact_timestamps": true,
+      "packaged_path": "demo/braiding_machine/media/preview.gif",
+      "published_path": "demo/braiding_machine/media/braiding-process-hold-b9c1a215.gif",
+      "renderer_sha256": "0616db4201d086ab17c0d5d38f4fd80fb684e3bad7c9fccccfd51f30e7938f74"
+    },
+    "contact_arena": {
+      "source": "demo/contact_arena/media/contact-arena-pullback.mp4",
+      "source_sha256": "5660e2a332fded66037628b30d91ced0aa28a2d6fa28111879b9a35f59588f19",
+      "source_trim_s": [
+        0,
+        24.0
+      ],
+      "source_fps": "30/1",
+      "video": "contact_arena.gif",
+      "sha256": "2a5d8c74db69b6860134ab17cabe2a3d6d970cc8b385f1d29eb34863fe3c99bd",
+      "bytes": 7372610,
+      "frames": 240,
+      "duration_s": 24.0,
+      "full_decode": true,
+      "packaged_path": "demo/contact_arena/media/preview.gif",
+      "published_path": "demo/contact_arena/media/contact-arena-pullback-2a5d8c74.gif",
+      "renderer_sha256": "3d3db20882776f07c1b79960fbd2cedde8a507e783c81de35db0a0d65e570b3c"
+    },
+    "winch_tension": {
+      "source": "demo/winch_tension/media/winch-tension-long.mp4",
+      "source_sha256": "fb264788078b369f9adab8a2af37535e08db792c1a0caa0f1b090ee0f32270f0",
+      "source_trim_s": [
+        4,
+        12
+      ],
+      "source_fps": "30/1",
+      "video": "winch_tension.gif",
+      "sha256": "2f0a99e5f9203863e059b7d4b2e3d8e608e718ec984de4339d45de77e712e60a",
+      "bytes": 1903850,
+      "frames": 80,
+      "duration_s": 8.0,
+      "full_decode": true,
+      "packaged_path": "demo/winch_tension/media/preview.gif",
+      "renderer_sha256": "38ba02b87ab3ccca058bcf9399b54faa0caef9e0cf5f3dbddf2e8934ec73aae1"
+    }
+  }
+}

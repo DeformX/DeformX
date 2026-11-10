@@ -1,0 +1,410 @@
+{
+  "complete": true,
+  "errors": [],
+  "checks": {
+    "physics_process_exited_0": true,
+    "physical_audit_exited_0": true,
+    "archived_raw_state_audit_exited_0": true,
+    "render_process_exited_0": true,
+    "finite_complete_physics": true,
+    "physical_audit_passed": true,
+    "physical_audit_hash_matches": true,
+    "native_replay_passed": true,
+    "frozen_source_matches_delivered_modules": true
+  },
+  "host": "ps",
+  "status": {
+    "simulation": 0,
+    "audit": 0,
+    "render": 0
+  },
+  "runtime": {
+    "platform": "Linux-6.8.0-58-generic-x86_64-with-glibc2.35",
+    "python": "3.11.15",
+    "packages": {
+      "isaacsim": "5.1.0.0",
+      "isaaclab": "2.3.2.post1",
+      "numpy": "1.26.0",
+      "torch": "2.7.0+cu128",
+      "warp-lang": "1.14.0",
+      "trimesh": "4.5.1",
+      "scipy": "1.15.3",
+      "pillow": "11.3.0"
+    },
+    "warp_loaded_after_kit_startup": {
+      "version": "1.8.2",
+      "module": {
+        "path": "/home/ps/yy_workspace/envs/isaacsim/lib/python3.11/site-packages/isaacsim/extscache/omni.warp.core-1.8.2+lx64/warp/__init__.py",
+        "sha256": "40dd35433b0909d3034c5b47189a67423cd9773f14e2fa39f422e2c800ae00ec",
+        "bytes": 5583
+      }
+    },
+    "asset_authoring": {
+      "blender": "4.5.9 LTS",
+      "usd-core": "25.5.1"
+    },
+    "media": {
+      "ffmpeg": "9.0.2",
+      "ffprobe": "9.0.2"
+    },
+    "gpu": "NVIDIA GeForce RTX 5090",
+    "nvidia_driver": "580.178.04",
+    "cuda_toolkit": "12.8.93",
+    "cuda_backend_revision": "96b8514c7c55c724f1abba1fbf6ed6642b7db72b",
+    "extension_path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/backend/final-runtime/ropesim/_ropesim.cpython-311-x86_64-linux-gnu.so",
+    "extension_sha256": "652156b9af5a4b249dc6a1ed007894e415b438322ad771e5a14ad18efbbc4f85"
+  },
+  "historical_physics_revision": "4c8f2bdc2b1155f07b65354220a6db8f90d857e7",
+  "fresh_trajectory_byte_matches_historical": true,
+  "raw_asset_sources": {
+    "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/source/demo/rack_insertion/asset_sources.json",
+    "sha256": "7b7a86471a6ef31858d022059a76ad06cf51d500c83fbe753dc8c4d2d7cb0108",
+    "bytes": 13434
+  },
+  "raw_upstream_files_verified_on_ps": 42,
+  "prepared_profile": {
+    "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/profile.json",
+    "sha256": "4e403b18ec992047cad22619d9180b719804b96f987816df07ce24b050c0142a",
+    "bytes": 13042
+  },
+  "prepared_assets": {
+    "connector": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/connector/manifest.json",
+      "sha256": "ea82427e87518de7a5be13b78791d161052ea44f02654eec4ee0af3e95756a2c"
+    },
+    "plug": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/connector/plug.usda",
+      "sha256": "309c19ca83a472289ff141379ed78c0601e6071a54be31e7959353d6aafb4673"
+    },
+    "latch": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/connector/latch.usda",
+      "sha256": "519ac6747c904cef1359866017711018bd77a936e57c261099daa678a03729e8"
+    },
+    "socket": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/connector/socket.usda",
+      "sha256": "02dd24d6021961a2fac316f2504018165f3ee68daf57ef9f067dc93bc4e3b36e"
+    },
+    "panel": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/mounted/manifest.json",
+      "sha256": "71d42f61da640da5a5f1d3e501ce2684d814a8755267b444241595b8b5a8bf67"
+    },
+    "robot": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/downloaded/isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd",
+      "sha256": "7f5a0c0aa6760cfbd348e08bc464d4b94341f027f51c2d9e42406ceefcc7787f"
+    },
+    "table": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/downloaded/isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/table_instanceable.usd",
+      "sha256": "479ed8fd374d8eafdedf3ca3b9d0d5981ffc6d5c5016929347f748be93d5df17"
+    },
+    "termination_visual": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/termination/termination.usdc",
+      "sha256": "62f9d8c09ff1287378a05ed625e62c070e9c903105388f815479d7354a3aa28b"
+    }
+  },
+  "fresh_fixture_comparison": {
+    "reference_meshes": 41,
+    "fresh_meshes": 41,
+    "same_prim_paths": true,
+    "different_mesh_paths": []
+  },
+  "earlier_attempt": {
+    "trial": "nominal-01",
+    "complete": false,
+    "kit_process_exit": 0,
+    "audit_exit": 2,
+    "reason": "Importing ropesim before Kit loaded standalone Warp 1.14, incompatible with Isaac 5.1.",
+    "correction": "Defer the solver import until Kit starts and check the final worker report outside Kit.",
+    "report": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-01/report.json",
+      "sha256": "e60c2b091acc23404df6ad3a3276aec0aca81625dfd6c7ab64503e587c1be77b",
+      "bytes": 19764
+    },
+    "simulation_log": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/logs/nominal-01.log",
+      "sha256": "6e2cd17422c125bd3a6e09687a4549aeb0417d725a2304a7937e9f2d55f2913e",
+      "bytes": 53256
+    }
+  },
+  "commands": {
+    "download": "python -S -m demo.rack_insertion.assets --out ../portable-rack/downloaded",
+    "verify_on_ps": "/home/ps/yy_workspace/envs/isaacsim/bin/python -S -m demo.rack_insertion.assets --out /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/downloaded",
+    "prepare_on_ps": "/home/ps/yy_workspace/envs/isaacsim/bin/python -S -m demo.rack_insertion.prepare --sources /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/downloaded --blender /home/ps/yy_workspace/envs/blender-4.5.9-linux-x64/blender --out /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared",
+    "simulate_on_ps": "flock -o /home/ps/yy_workspace/runs/contact-task-20261105/gpu.lock /home/ps/yy_workspace/envs/isaacsim/bin/python -S -u -m demo.rack_insertion.run --profile /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/prepared/profile.json --out /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02",
+    "audit_on_ps": "/home/ps/yy_workspace/envs/isaacsim/bin/python -S -m demo.rack_insertion.audit --data /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02 --out /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02-audit.json",
+    "render_on_ps": "flock -o /home/ps/yy_workspace/runs/contact-task-20261105/gpu.lock /usr/bin/time -p /home/ps/yy_workspace/envs/isaacsim/bin/python -S -u -m demo.rack_insertion.render --data /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02 --out /home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/native-02"
+  },
+  "environment": {
+    "prep_pythonpath": "/home/ps/yy_workspace/runs/showcase-20261105/usd_tools:/home/ps/yy_workspace/envs/isaacsim/lib/python3.11/site-packages",
+    "execution_pythonpath": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/backend/final-runtime:/home/ps/yy_workspace/envs/isaacsim/lib/python3.11/site-packages",
+    "runtime_setup": "source /home/ps/yy_workspace/activate_render.sh",
+    "driver_library_alias": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/driver-libs/libcuda.so",
+    "runner_scripts": {
+      "validate-physics.sh": {
+        "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/validate-physics.sh",
+        "sha256": "d2f9396ce4be1f5ee712a9a3543ba4e15b0bb9fb16ae3223e9801dc3251bb894",
+        "bytes": 1048
+      },
+      "validate-output.sh": {
+        "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/validate-output.sh",
+        "sha256": "6d5981cd0582d4fb9cba084e12929e846ba9c126fc5bfddee3a1a3c343053e19",
+        "bytes": 1374
+      }
+    }
+  },
+  "timing_s": {
+    "prepare_wall_s": 5.619,
+    "physics_setup_wall_s": 134.5367266589892,
+    "initial_settling_wall_s": 21.38257822196465,
+    "simulation_loop_wall_s": 342.41077030595625,
+    "physics_wall_including_gpu_lock_wait_s": 522.17,
+    "audit_wall_s": 0.28,
+    "native_render_encode_and_verify_wall_s": 160.07
+  },
+  "physical_audit": {
+    "report_sha256": "0596a62093b07995f4a502f08ad94d99f2197e5cbcb57b9dcb0e2e930d0292b7",
+    "trajectory_sha256": "c0dabeec79346531a836c04413e173ca967d2573f53da8a9bb0d0e68f6c34095",
+    "frames": 602,
+    "duration_s": 20.066666666666666,
+    "phases": [
+      "approach",
+      "close",
+      "lift",
+      "hold",
+      "route",
+      "align",
+      "insert",
+      "release"
+    ],
+    "acquisition": {
+      "passed": true,
+      "lift_m": 0.18399810791015625,
+      "held_s": 0.7666666666666666,
+      "bilateral_samples": 405
+    },
+    "insertion": {
+      "passed": true,
+      "retained_after_release_s": 2.9333333333333336,
+      "retained_after_withdrawal_s": 1.2999999999999972,
+      "actual_retreat_m": 0.11993873119354248,
+      "final_withdrawal_m": 0.11993849277496338,
+      "withdrawal_threshold_m": 0.05,
+      "withdrawal_direction": "world +Z from release-entry measured TCP",
+      "final_depth_m": 0.009998150396346994,
+      "seated_depth_m": 0.010035013779997826,
+      "final_lateral_error_m": 0.00020079883068624353,
+      "final_axis_error_rad": 0.04376531672247361,
+      "final_socket_force_N": 0.2912522852420807,
+      "final_finger_force_N": 0.0
+    },
+    "checks": {
+      "acquisition": true,
+      "insertion_retention_after_withdrawal": true,
+      "routing_and_insertion": true,
+      "no_controller_failure": true,
+      "no_attachment_or_pose_writes": true,
+      "bounded_seating": true,
+      "aperture_and_web": true,
+      "separation_and_gap": true,
+      "matches_recorded_scores": true
+    },
+    "maximum_preload_target_m": 0.0003729166666666648,
+    "sampled_preload_max_rate_m_s": 0.0002500000000000134,
+    "minimum_sampled_contact_separation_m": -7.121243925212184e-06,
+    "peak_termination_gap_m": 0.0027123817708343267,
+    "peak_segment_strain": 0.0004179043139301841,
+    "peak_fixture_pair_force_N": 32.97568130493164,
+    "insert_release_peak_fixture_force_N": 0.0,
+    "simulation_loop_wall_s": 342.41077030595625,
+    "passed": true
+  },
+  "seating_observation": {
+    "t_s": 17.045833333333334,
+    "target_preload_m": 0.0003729166666666648,
+    "actual_depth_m": 0.010144658613204904,
+    "socket_force_N": 1.0148080587387085,
+    "actual_axial_tcp_offset_m": 0.00010011507496232586,
+    "contact_dwell_s": 0.10000000000000142,
+    "stop_reason": "stable measured socket contact"
+  },
+  "panel_grid": {
+    "index": 13,
+    "path": "/World/envs/env_0/Fixtures/PatchPanelPhysical",
+    "spacing": 0.0005,
+    "shape": [
+      1048,
+      93,
+      169
+    ],
+    "thickness_m": 0.0,
+    "geometry_sha256": "5182e613ce0fd49588b0486ec76b570a76a6a3713272e5cf595f30a94a50c544",
+    "triangles": 5482,
+    "dynamic": false,
+    "closed": true,
+    "aperture_grid_probe": {
+      "world_points_m": [
+        [
+          0.401,
+          0.538,
+          1.2475
+        ],
+        [
+          0.41000000000000003,
+          0.538,
+          1.2475
+        ],
+        [
+          0.401,
+          0.538,
+          1.25
+        ],
+        [
+          0.41100000000000003,
+          0.541,
+          1.2475
+        ],
+        [
+          0.401,
+          0.541,
+          1.2475
+        ]
+      ],
+      "phi_m": [
+        0.005700051118788071,
+        -0.0008999548932706858,
+        0.0041000239225054405,
+        -0.00034000714958762313,
+        0.006040868387193807
+      ],
+      "labels": [
+        "socket_axis_open",
+        "interport_web_solid",
+        "slot_center_open",
+        "carrier_side_solid",
+        "carrier_inner_void"
+      ],
+      "method": "actual native trilinear grid interpolation"
+    }
+  },
+  "native_render": {
+    "complete": true,
+    "native_exit": 0,
+    "frames_verified": 602,
+    "playback_rate": 1.0,
+    "app_close_invoked": true,
+    "capture_clock_delta_max_s": 0.0,
+    "physics_replay_disabled": true,
+    "replay_max_matrix_error": 1.7562667986833787e-09,
+    "antialiasing_mode": 4,
+    "histogram_enabled": false,
+    "renderer_history_reset_source_frames": [
+      0,
+      87,
+      180,
+      255,
+      330,
+      511,
+      556
+    ],
+    "video": {
+      "file": "rack-insertion.mp4",
+      "sha256": "b6323322ac5a14ff483f6e604fec0119e9d0e00dc678cb904929a709dd8affea",
+      "bytes": 5063444,
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "frames": 602,
+      "fps": 30,
+      "duration_s": 20.066666666666666,
+      "full_decode": true,
+      "max_relative_pts_error_s": 3.3333333604446125e-07
+    }
+  },
+  "tests_on_ps": {
+    "portable_cli": "11 passed in 0.59s",
+    "portable_cli_test_sha256": "4774d2eb405e7c1cbd8b1d365bfcb6b1897fe2102c2e676d3adac5f844e3f938",
+    "historical_cpu_regressions_with_updated_import_paths": "34 passed in 1.24s"
+  },
+  "source_sha256": {
+    "__init__.py": "e6afee62bff73f45ff92327506a3eeb956883dc73ceaba6e309d67ba6acbecd2",
+    "audit.py": "4d35bcc7ea07952b393c404dc3b55e252d9b7a7a5dad79f7cbcad42c1726d307",
+    "blender_patch_panel.py": "215bdc384802edcbcacc6de147055d442702a07dd642827d03851e681a5358bd",
+    "profile.py": "04e67fc4a183fd04c55680d9787dee9a214e6d3cd06005c3598f648cbca7b35a",
+    "contracts.py": "0c27093ced45b2ca9bd197b39fbf1beb14ecfcf41fa8c03f52490c1868ca1d1b",
+    "coupling.py": "f90fef11264ccc57e0bde5e892fc6363153265d11ea01a13109721a4d6c919ae",
+    "controller.py": "c1653405851a0b45b53cccc2ce37fd3ed873f7a088067c01378df10bb4dcfa44",
+    "run.py": "aba4f04f131773c672ce648e48d9b74de0b745b3b641511dbe339cd890d8b11b",
+    "panel.py": "cb75768c7878fbc4c96a214301547bce82f4063544eb99e840587b9fdd385ed1",
+    "render.py": "88a690c368ce967d9d0136e81a41c78778c8044cb7e68c16df948539756e55ed",
+    "prepare.py": "f2aab7eb92cc0f765e2b8ae13b37337904e7e7f7d7df5fd13b58e609e134b6d4",
+    "blender_termination.py": "462a7bca1f03ef03407084f303e27d5658b387fb8e58fcede63c75dc6a78d895",
+    "render_native.py": "f0bca99662a53492502a4617c473b2c435d7990e572a33f13c5dabdbe779067f",
+    "assets.py": "a47db4dbc2581386a6413813b6ce442aa52d3d8ed1fd3166af408e453a264e84"
+  },
+  "artifacts": {
+    "nominal-02/report.json": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02/report.json",
+      "sha256": "0596a62093b07995f4a502f08ad94d99f2197e5cbcb57b9dcb0e2e930d0292b7",
+      "bytes": 63648
+    },
+    "nominal-02/trajectory.npz": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02/trajectory.npz",
+      "sha256": "c0dabeec79346531a836c04413e173ca967d2573f53da8a9bb0d0e68f6c34095",
+      "bytes": 1349834
+    },
+    "nominal-02/scene.usda": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02/scene.usda",
+      "sha256": "be572eeaeecca530377bda8cff517c786a0b0253de727f70589f99cf021016f1",
+      "bytes": 453869
+    },
+    "nominal-02/settling.npz": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02/settling.npz",
+      "sha256": "e17bf56a99ce657380cc15019190f4b89f326ff5a7b5217fc380639f5f7ea1f3",
+      "bytes": 26194
+    },
+    "nominal-02-audit.json": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/nominal-02-audit.json",
+      "sha256": "80e0619b75bd00b7b7b2f48444201e0e6d5d0524897853083d3f52ae735258d8",
+      "bytes": 1890
+    },
+    "archive-acceptance-nominal-02.json": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/archive-acceptance-nominal-02.json",
+      "sha256": "1cb407a9f6e0c77736967a54d185203df3dc418867d8b6acc063802cd2d338ad",
+      "bytes": 1118
+    },
+    "native-02/native_report.json": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/native-02/native_report.json",
+      "sha256": "83cb413975ea9cc0aa9228701bbecfa0bf7acf0eb9037606ccc7983049f43c3b",
+      "bytes": 1894
+    },
+    "native-02/verification.json": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/native-02/verification.json",
+      "sha256": "4fa3c9cf76caaf747187931e7cb734b338e659e533fbae1efe4dbeccb435800c",
+      "bytes": 2307
+    },
+    "native-02/frames.json": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/native-02/frames.json",
+      "sha256": "baea2e522febdd8ba09287d211a9a79a8ab1730d11a6fcb44f8715a8e20c0b37",
+      "bytes": 141610
+    },
+    "native-02/rack-insertion.mp4": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/native-02/rack-insertion.mp4",
+      "sha256": "b6323322ac5a14ff483f6e604fec0119e9d0e00dc678cb904929a709dd8affea",
+      "bytes": 5063444
+    },
+    "native-02/native.log": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/native-02/native.log",
+      "sha256": "d61317027f2aef537371a6f4f55ee2e16a82fb116583b29a387e32019683390f",
+      "bytes": 1047978
+    },
+    "logs/nominal-02.log": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/logs/nominal-02.log",
+      "sha256": "54e34c5738fe5f8a7f76a3109b3fc1daecb6dd74ea619dfd25d272c80ec56f7e",
+      "bytes": 14876
+    },
+    "logs/native-02.log": {
+      "path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/portable-rack/logs/native-02.log",
+      "sha256": "7b90e155dd1f29ed6bfe93340b601f2503133cdd395893a76efe314732b388db",
+      "bytes": 197
+    }
+  }
+}

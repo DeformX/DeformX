@@ -1,0 +1,795 @@
+{
+  "host": "ps",
+  "finding": "Localized shimmer on the grille and port markings is present in native source frames and survives compression. A repeated frozen pose isolates DLSS sampling as the larger contributor, with per-frame renderer resets a smaller contributor.",
+  "causal_probe": {
+    "source_index": 286,
+    "host": "ps",
+    "units": "SDR luma 0\u2013255",
+    "modes": {
+      "old_per_frame_reset": {
+        "reset_function_available": true,
+        "reset_per_frame": true,
+        "aa": 3,
+        "histogram": false,
+        "metrics": {
+          "rack_interior": {
+            "mean_luma": 14.897796630859375,
+            "mean_luma_peak_to_peak": 0.14631080627441406,
+            "mean_pixel_temporal_std": 0.383993536233902,
+            "adjacent_mean_abs_luma": 0.15479782223701477,
+            "adjacent_p95_mean_abs_luma": 0.1664269283413887,
+            "adjacent_p95_pixel_abs_luma": 0.7874011993408203,
+            "adjacent_max_mean_abs_luma": 0.16693007946014404,
+            "adjacent_abs_luma_over_5_fraction": 0.00015560640732265447
+          },
+          "rack_door_grid": {
+            "mean_luma": 58.83481216430664,
+            "mean_luma_peak_to_peak": 0.370819091796875,
+            "mean_pixel_temporal_std": 1.0000343322753906,
+            "adjacent_mean_abs_luma": 0.49037668108940125,
+            "adjacent_p95_mean_abs_luma": 0.5196086704730988,
+            "adjacent_p95_pixel_abs_luma": 1.7873992919921875,
+            "adjacent_max_mean_abs_luma": 0.5231247544288635,
+            "adjacent_abs_luma_over_5_fraction": 0.0014729370008873114
+          },
+          "panel_numbering": {
+            "mean_luma": 35.37666702270508,
+            "mean_luma_peak_to_peak": 0.3588981628417969,
+            "mean_pixel_temporal_std": 0.6803649067878723,
+            "adjacent_mean_abs_luma": 0.30124297738075256,
+            "adjacent_p95_mean_abs_luma": 0.3204022109508514,
+            "adjacent_p95_pixel_abs_luma": 1.0000076293945312,
+            "adjacent_max_mean_abs_luma": 0.3256339728832245,
+            "adjacent_abs_luma_over_5_fraction": 0.0006521739130434783
+          }
+        }
+      },
+      "continuous_same_aa": {
+        "reset_function_available": true,
+        "reset_per_frame": false,
+        "aa": 3,
+        "histogram": false,
+        "metrics": {
+          "rack_interior": {
+            "mean_luma": 15.11449146270752,
+            "mean_luma_peak_to_peak": 0.06439781188964844,
+            "mean_pixel_temporal_std": 0.36483779549598694,
+            "adjacent_mean_abs_luma": 0.14783109724521637,
+            "adjacent_p95_mean_abs_luma": 0.15963231176137924,
+            "adjacent_p95_pixel_abs_luma": 0.7874002456665039,
+            "adjacent_max_mean_abs_luma": 0.16272996366024017,
+            "adjacent_abs_luma_over_5_fraction": 0.00015102974828375287
+          },
+          "rack_door_grid": {
+            "mean_luma": 59.32991409301758,
+            "mean_luma_peak_to_peak": 0.07130050659179688,
+            "mean_pixel_temporal_std": 0.9152873754501343,
+            "adjacent_mean_abs_luma": 0.46254998445510864,
+            "adjacent_p95_mean_abs_luma": 0.4960606932640076,
+            "adjacent_p95_pixel_abs_luma": 1.7152023315429688,
+            "adjacent_max_mean_abs_luma": 0.5003475546836853,
+            "adjacent_abs_luma_over_5_fraction": 0.0010721679976338362
+          },
+          "panel_numbering": {
+            "mean_luma": 35.86057662963867,
+            "mean_luma_peak_to_peak": 0.11101913452148438,
+            "mean_pixel_temporal_std": 0.6360726952552795,
+            "adjacent_mean_abs_luma": 0.28707998991012573,
+            "adjacent_p95_mean_abs_luma": 0.30552775859832765,
+            "adjacent_p95_pixel_abs_luma": 1.0000019073486328,
+            "adjacent_max_mean_abs_luma": 0.31302061676979065,
+            "adjacent_abs_luma_over_5_fraction": 0.0005032938076416337
+          }
+        }
+      },
+      "continuous_dlaa": {
+        "reset_function_available": true,
+        "reset_per_frame": false,
+        "aa": 4,
+        "histogram": false,
+        "metrics": {
+          "rack_interior": {
+            "mean_luma": 15.59017562866211,
+            "mean_luma_peak_to_peak": 0.2082204818725586,
+            "mean_pixel_temporal_std": 0.22822676599025726,
+            "adjacent_mean_abs_luma": 0.07902715355157852,
+            "adjacent_p95_mean_abs_luma": 0.08123204857110977,
+            "adjacent_p95_pixel_abs_luma": 0.7151999473571777,
+            "adjacent_max_mean_abs_luma": 0.0819498598575592,
+            "adjacent_abs_luma_over_5_fraction": 1.1441647597254004e-06
+          },
+          "rack_door_grid": {
+            "mean_luma": 59.34342575073242,
+            "mean_luma_peak_to_peak": 0.5145683288574219,
+            "mean_pixel_temporal_std": 0.5213571786880493,
+            "adjacent_mean_abs_luma": 0.18876533210277557,
+            "adjacent_p95_mean_abs_luma": 0.1933537781238556,
+            "adjacent_p95_pixel_abs_luma": 0.9277992248535156,
+            "adjacent_max_mean_abs_luma": 0.19697785377502441,
+            "adjacent_abs_luma_over_5_fraction": 8.725229222123631e-05
+          },
+          "panel_numbering": {
+            "mean_luma": 36.157352447509766,
+            "mean_luma_peak_to_peak": 0.3065032958984375,
+            "mean_pixel_temporal_std": 0.3678796589374542,
+            "adjacent_mean_abs_luma": 0.13583603501319885,
+            "adjacent_p95_mean_abs_luma": 0.13969018310308456,
+            "adjacent_p95_pixel_abs_luma": 0.7873992919921875,
+            "adjacent_max_mean_abs_luma": 0.14072750508785248,
+            "adjacent_abs_luma_over_5_fraction": 6.78524374176548e-05
+          }
+        }
+      },
+      "continuous_dlaa_fixed_exposure": {
+        "reset_function_available": true,
+        "reset_per_frame": false,
+        "aa": 4,
+        "histogram": false,
+        "metrics": {
+          "rack_interior": {
+            "mean_luma": 15.779812812805176,
+            "mean_luma_peak_to_peak": 0.03274250030517578,
+            "mean_pixel_temporal_std": 0.21334712207317352,
+            "adjacent_mean_abs_luma": 0.07971107214689255,
+            "adjacent_p95_mean_abs_luma": 0.0818902812898159,
+            "adjacent_p95_pixel_abs_luma": 0.7152004241943359,
+            "adjacent_max_mean_abs_luma": 0.08236707746982574,
+            "adjacent_abs_luma_over_5_fraction": 0.0
+          },
+          "rack_door_grid": {
+            "mean_luma": 59.93282699584961,
+            "mean_luma_peak_to_peak": 0.17823028564453125,
+            "mean_pixel_temporal_std": 0.455389142036438,
+            "adjacent_mean_abs_luma": 0.18381819128990173,
+            "adjacent_p95_mean_abs_luma": 0.18831250965595245,
+            "adjacent_p95_pixel_abs_luma": 0.9277992248535156,
+            "adjacent_max_mean_abs_luma": 0.1894862800836563,
+            "adjacent_abs_luma_over_5_fraction": 5.175983436853002e-05
+          },
+          "panel_numbering": {
+            "mean_luma": 36.55180358886719,
+            "mean_luma_peak_to_peak": 0.0970306396484375,
+            "mean_pixel_temporal_std": 0.33722251653671265,
+            "adjacent_mean_abs_luma": 0.1347750574350357,
+            "adjacent_p95_mean_abs_luma": 0.13627745360136032,
+            "adjacent_p95_pixel_abs_luma": 0.7873992919921875,
+            "adjacent_max_mean_abs_luma": 0.1371173858642578,
+            "adjacent_abs_luma_over_5_fraction": 5.3359683794466405e-05
+          }
+        }
+      }
+    }
+  },
+  "runtime_settings_check": {
+    "renderer_settings_compared": {
+      "archived": 1290,
+      "immediate": 1290,
+      "settled": 1290
+    },
+    "direct_setting_diff": {
+      "/rtx/post/aa/op": [
+        3,
+        4
+      ]
+    },
+    "settled_settings_diff": {
+      "/rtx/externalFrameCounter": [
+        92,
+        396
+      ],
+      "/rtx/post/aa/op": [
+        3,
+        4
+      ]
+    },
+    "archived_repeat_frame_zero": {
+      "cyan_iou": 0.9972047519217331,
+      "cyan_new_outside_archived_2px_fraction": 0.0,
+      "cyan_archived_outside_new_2px_fraction": 0.0,
+      "mean_abs_rgb_difference": 0.5034592013888889
+    },
+    "stabilized_frame_zero": {
+      "cyan_iou": 0.9775242047026279,
+      "cyan_new_outside_archived_2px_fraction": 0.0010496850944716584,
+      "cyan_archived_outside_new_2px_fraction": 0.0,
+      "mean_abs_rgb_difference": 2.9168844039351853
+    }
+  },
+  "replay_rehearsal": {
+    "frames": 74,
+    "motion_metrics": {
+      "min_cyan_iou": 0.6652777777777777,
+      "max_cyan_new_outside_archived_2px_fraction": 0.026217228464419477,
+      "max_cyan_archived_outside_new_2px_fraction": 0.09278350515463918,
+      "max_frame_mean_abs_rgb_difference": 6.247845052083333
+    },
+    "visual_review": "Compared paired archived and DLAA stills around opening, motion, insertion, release, all excerpt camera cuts and final pose. No visible retained cyan silhouette or stale shot."
+  },
+  "full_replay_motion_sample": {
+    "frames": 75,
+    "motion_metrics": {
+      "min_cyan_iou": 0.6648199445983379,
+      "max_cyan_new_outside_archived_2px_fraction": 0.029465930018416207,
+      "max_cyan_archived_outside_new_2px_fraction": 0.07952871870397643,
+      "max_frame_mean_abs_rgb_difference": 6.215389539930555
+    }
+  },
+  "scene_and_source": {
+    "authored_camera_material_lighting": "Same frozen camera paths, material bindings and light settings.",
+    "render_setting_change": "Set AA mode 4 after the archived first-frame initialization. Keep renderer history within consecutive frames of the same shot and discard 36 warm-up ticks after an authored cut.",
+    "physics_stepped": false,
+    "max_capture_clock_delta_s": 0.0,
+    "max_authored_pose_matrix_error": 1.7562667986833787e-09,
+    "capture_trajectory_sha256": "c0dabeec79346531a836c04413e173ca967d2573f53da8a9bb0d0e68f6c34095",
+    "capture_state_count": 602,
+    "history_reset_source_frames": [
+      0,
+      87,
+      180,
+      255,
+      330,
+      511,
+      556
+    ],
+    "image_overlay": false,
+    "native_process_exit": 0,
+    "native_shutdown_logged": true,
+    "archived_excerpt_video_sha256": "8e7d6840dbb6b31ba38da3a542f11d43386a3dfe7293d90f825e75e89120e193"
+  },
+  "full_clip_comparison": {
+    "units": "SDR luma 0\u2013255",
+    "clips": {
+      "route_wide": {
+        "source_frames": [
+          181,
+          254
+        ],
+        "rois_xyxy": {
+          "floor": [
+            0,
+            10,
+            260,
+            215
+          ],
+          "rack_upright": [
+            845,
+            20,
+            910,
+            260
+          ],
+          "grid": [
+            1130,
+            20,
+            1245,
+            250
+          ]
+        },
+        "raw": {
+          "floor": {
+            "archived": {
+              "mean_luma": 189.25360107421875,
+              "mean_luma_peak_to_peak": 0.4041900634765625,
+              "mean_pixel_temporal_std": 0.9496684670448303,
+              "adjacent_mean_abs_luma": 0.2815306782722473,
+              "adjacent_p95_mean_abs_luma": 0.36579216718673674,
+              "adjacent_p95_pixel_abs_luma": 0.9999847412109375,
+              "adjacent_max_mean_abs_luma": 0.46050018072128296,
+              "adjacent_abs_luma_over_5_fraction": 1.028039785139685e-06
+            },
+            "stabilized": {
+              "mean_luma": 189.44143676757812,
+              "mean_luma_peak_to_peak": 0.41168212890625,
+              "mean_pixel_temporal_std": 0.6298465132713318,
+              "adjacent_mean_abs_luma": 0.17109383642673492,
+              "adjacent_p95_mean_abs_luma": 0.18651854395866393,
+              "adjacent_p95_pixel_abs_luma": 0.7152099609375,
+              "adjacent_max_mean_abs_luma": 0.18949049711227417,
+              "adjacent_abs_luma_over_5_fraction": 0.0
+            }
+          },
+          "rack_upright": {
+            "archived": {
+              "mean_luma": 47.89662170410156,
+              "mean_luma_peak_to_peak": 2.7656517028808594,
+              "mean_pixel_temporal_std": 2.003749132156372,
+              "adjacent_mean_abs_luma": 0.4551624655723572,
+              "adjacent_p95_mean_abs_luma": 0.5717903256416316,
+              "adjacent_p95_pixel_abs_luma": 1.7152099609375,
+              "adjacent_max_mean_abs_luma": 1.1405103206634521,
+              "adjacent_abs_luma_over_5_fraction": 0.002237442922374429
+            },
+            "stabilized": {
+              "mean_luma": 48.8206787109375,
+              "mean_luma_peak_to_peak": 0.5910682678222656,
+              "mean_pixel_temporal_std": 0.7975429892539978,
+              "adjacent_mean_abs_luma": 0.20622873306274414,
+              "adjacent_p95_mean_abs_luma": 0.21394590735435484,
+              "adjacent_p95_pixel_abs_luma": 0.9999923706054688,
+              "adjacent_max_mean_abs_luma": 0.2206125110387802,
+              "adjacent_abs_luma_over_5_fraction": 0.0
+            }
+          },
+          "grid": {
+            "archived": {
+              "mean_luma": 101.80912780761719,
+              "mean_luma_peak_to_peak": 1.5418624877929688,
+              "mean_pixel_temporal_std": 1.6328794956207275,
+              "adjacent_mean_abs_luma": 0.49399662017822266,
+              "adjacent_p95_mean_abs_luma": 0.75839809179306,
+              "adjacent_p95_pixel_abs_luma": 1.2126007080078125,
+              "adjacent_max_mean_abs_luma": 1.1418113708496094,
+              "adjacent_abs_luma_over_5_fraction": 0.0006390967708522153
+            },
+            "stabilized": {
+              "mean_luma": 102.83446502685547,
+              "mean_luma_peak_to_peak": 0.34607696533203125,
+              "mean_pixel_temporal_std": 0.7860530018806458,
+              "adjacent_mean_abs_luma": 0.23738983273506165,
+              "adjacent_p95_mean_abs_luma": 0.24254630506038666,
+              "adjacent_p95_pixel_abs_luma": 0.9278030395507812,
+              "adjacent_max_mean_abs_luma": 0.24585102498531342,
+              "adjacent_abs_luma_over_5_fraction": 0.0
+            }
+          }
+        },
+        "encoded": {
+          "floor": {
+            "archived": {
+              "mean_luma": 188.75868225097656,
+              "mean_luma_peak_to_peak": 0.3498077392578125,
+              "mean_pixel_temporal_std": 0.9307270646095276,
+              "adjacent_mean_abs_luma": 0.1534596085548401,
+              "adjacent_p95_mean_abs_luma": 0.39945216178894033,
+              "adjacent_p95_pixel_abs_luma": 1.0,
+              "adjacent_max_mean_abs_luma": 0.46172603964805603,
+              "adjacent_abs_luma_over_5_fraction": 6.42524865712303e-06
+            },
+            "stabilized": {
+              "mean_luma": 188.92120361328125,
+              "mean_luma_peak_to_peak": 0.315460205078125,
+              "mean_pixel_temporal_std": 0.5143913626670837,
+              "adjacent_mean_abs_luma": 0.04817162826657295,
+              "adjacent_p95_mean_abs_luma": 0.14879549443721768,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.17500938475131989,
+              "adjacent_abs_luma_over_5_fraction": 1.285049731424606e-06
+            }
+          },
+          "rack_upright": {
+            "archived": {
+              "mean_luma": 46.52099609375,
+              "mean_luma_peak_to_peak": 2.74993896484375,
+              "mean_pixel_temporal_std": 1.9627777338027954,
+              "adjacent_mean_abs_luma": 0.22196096181869507,
+              "adjacent_p95_mean_abs_luma": 0.5559326291084289,
+              "adjacent_p95_pixel_abs_luma": 1.0000076293945312,
+              "adjacent_max_mean_abs_luma": 0.7621676325798035,
+              "adjacent_abs_luma_over_5_fraction": 0.0015718299964875308
+            },
+            "stabilized": {
+              "mean_luma": 47.343257904052734,
+              "mean_luma_peak_to_peak": 0.5705146789550781,
+              "mean_pixel_temporal_std": 0.610844075679779,
+              "adjacent_mean_abs_luma": 0.044404156506061554,
+              "adjacent_p95_mean_abs_luma": 0.18080949187278733,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.23199911415576935,
+              "adjacent_abs_luma_over_5_fraction": 3.073410607657183e-05
+            }
+          },
+          "grid": {
+            "archived": {
+              "mean_luma": 100.2355728149414,
+              "mean_luma_peak_to_peak": 1.435882568359375,
+              "mean_pixel_temporal_std": 1.4998040199279785,
+              "adjacent_mean_abs_luma": 0.1668824851512909,
+              "adjacent_p95_mean_abs_luma": 0.6155236601829526,
+              "adjacent_p95_pixel_abs_luma": 1.0000076293945312,
+              "adjacent_max_mean_abs_luma": 1.0769754648208618,
+              "adjacent_abs_luma_over_5_fraction": 0.000744749721625191
+            },
+            "stabilized": {
+              "mean_luma": 101.1941146850586,
+              "mean_luma_peak_to_peak": 0.27447509765625,
+              "mean_pixel_temporal_std": 0.39110851287841797,
+              "adjacent_mean_abs_luma": 0.0274930689483881,
+              "adjacent_p95_mean_abs_luma": 0.11423059999942779,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.15565215051174164,
+              "adjacent_abs_luma_over_5_fraction": 2.0716264857446203e-06
+            }
+          }
+        }
+      },
+      "align_fixed": {
+        "source_frames": [
+          255,
+          329
+        ],
+        "rois_xyxy": {
+          "rack_interior": [
+            700,
+            410,
+            900,
+            600
+          ],
+          "rack_door_grid": [
+            980,
+            400,
+            1100,
+            645
+          ],
+          "panel_numbering": [
+            715,
+            290,
+            1115,
+            455
+          ]
+        },
+        "raw": {
+          "rack_interior": {
+            "archived": {
+              "mean_luma": 14.691219329833984,
+              "mean_luma_peak_to_peak": 0.6264104843139648,
+              "mean_pixel_temporal_std": 0.9883400201797485,
+              "adjacent_mean_abs_luma": 0.3082294166088104,
+              "adjacent_p95_mean_abs_luma": 0.49754466116428353,
+              "adjacent_p95_pixel_abs_luma": 1.0000009536743164,
+              "adjacent_max_mean_abs_luma": 1.239693522453308,
+              "adjacent_abs_luma_over_5_fraction": 0.0026632290184921766
+            },
+            "stabilized": {
+              "mean_luma": 15.9402494430542,
+              "mean_luma_peak_to_peak": 0.3072824478149414,
+              "mean_pixel_temporal_std": 0.3965456485748291,
+              "adjacent_mean_abs_luma": 0.08706358075141907,
+              "adjacent_p95_mean_abs_luma": 0.09469565600156783,
+              "adjacent_p95_pixel_abs_luma": 0.7152004241943359,
+              "adjacent_max_mean_abs_luma": 0.09684130549430847,
+              "adjacent_abs_luma_over_5_fraction": 0.0
+            }
+          },
+          "rack_door_grid": {
+            "archived": {
+              "mean_luma": 58.52015686035156,
+              "mean_luma_peak_to_peak": 2.117908477783203,
+              "mean_pixel_temporal_std": 3.2967631816864014,
+              "adjacent_mean_abs_luma": 0.976591169834137,
+              "adjacent_p95_mean_abs_luma": 2.2161762952804533,
+              "adjacent_p95_pixel_abs_luma": 3.0722007751464844,
+              "adjacent_max_mean_abs_luma": 7.3088765144348145,
+              "adjacent_abs_luma_over_5_fraction": 0.02335263835263835
+            },
+            "stabilized": {
+              "mean_luma": 59.885841369628906,
+              "mean_luma_peak_to_peak": 0.9702110290527344,
+              "mean_pixel_temporal_std": 0.8252246975898743,
+              "adjacent_mean_abs_luma": 0.18907493352890015,
+              "adjacent_p95_mean_abs_luma": 0.19754595160484315,
+              "adjacent_p95_pixel_abs_luma": 0.9277992248535156,
+              "adjacent_max_mean_abs_luma": 0.20018939673900604,
+              "adjacent_abs_luma_over_5_fraction": 5.837470123184409e-05
+            }
+          },
+          "panel_numbering": {
+            "archived": {
+              "mean_luma": 35.28665542602539,
+              "mean_luma_peak_to_peak": 2.2917251586914062,
+              "mean_pixel_temporal_std": 2.148508071899414,
+              "adjacent_mean_abs_luma": 0.6690375804901123,
+              "adjacent_p95_mean_abs_luma": 1.3258947014808642,
+              "adjacent_p95_pixel_abs_luma": 2.7152023315429688,
+              "adjacent_max_mean_abs_luma": 4.22354793548584,
+              "adjacent_abs_luma_over_5_fraction": 0.013377354627354628
+            },
+            "stabilized": {
+              "mean_luma": 36.91129684448242,
+              "mean_luma_peak_to_peak": 0.28737640380859375,
+              "mean_pixel_temporal_std": 0.6404802799224854,
+              "adjacent_mean_abs_luma": 0.14299443364143372,
+              "adjacent_p95_mean_abs_luma": 0.14815696775913237,
+              "adjacent_p95_pixel_abs_luma": 0.7874002456665039,
+              "adjacent_max_mean_abs_luma": 0.14989274740219116,
+              "adjacent_abs_luma_over_5_fraction": 5.651105651105651e-05
+            }
+          }
+        },
+        "encoded": {
+          "rack_interior": {
+            "archived": {
+              "mean_luma": 13.376169204711914,
+              "mean_luma_peak_to_peak": 0.5936594009399414,
+              "mean_pixel_temporal_std": 1.0228482484817505,
+              "adjacent_mean_abs_luma": 0.17506620287895203,
+              "adjacent_p95_mean_abs_luma": 0.356434318423271,
+              "adjacent_p95_pixel_abs_luma": 1.0,
+              "adjacent_max_mean_abs_luma": 1.1156481504440308,
+              "adjacent_abs_luma_over_5_fraction": 0.0010881934566145093
+            },
+            "stabilized": {
+              "mean_luma": 14.54455280303955,
+              "mean_luma_peak_to_peak": 0.23153209686279297,
+              "mean_pixel_temporal_std": 0.30227193236351013,
+              "adjacent_mean_abs_luma": 0.027538424357771873,
+              "adjacent_p95_mean_abs_luma": 0.06548778191208837,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.09314960986375809,
+              "adjacent_abs_luma_over_5_fraction": 1.7780938833570412e-06
+            }
+          },
+          "rack_door_grid": {
+            "archived": {
+              "mean_luma": 57.227935791015625,
+              "mean_luma_peak_to_peak": 2.198284149169922,
+              "mean_pixel_temporal_std": 3.2925031185150146,
+              "adjacent_mean_abs_luma": 0.4692527651786804,
+              "adjacent_p95_mean_abs_luma": 1.1348556220531447,
+              "adjacent_p95_pixel_abs_luma": 2.0000038146972656,
+              "adjacent_max_mean_abs_luma": 7.310001373291016,
+              "adjacent_abs_luma_over_5_fraction": 0.014298124655267513
+            },
+            "stabilized": {
+              "mean_luma": 58.54831314086914,
+              "mean_luma_peak_to_peak": 0.7517204284667969,
+              "mean_pixel_temporal_std": 0.6407008767127991,
+              "adjacent_mean_abs_luma": 0.03630790486931801,
+              "adjacent_p95_mean_abs_luma": 0.1979316562414169,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.28186458349227905,
+              "adjacent_abs_luma_over_5_fraction": 0.00010985475271189558
+            }
+          },
+          "panel_numbering": {
+            "archived": {
+              "mean_luma": 34.016502380371094,
+              "mean_luma_peak_to_peak": 2.1588592529296875,
+              "mean_pixel_temporal_std": 2.1487860679626465,
+              "adjacent_mean_abs_luma": 0.349821001291275,
+              "adjacent_p95_mean_abs_luma": 0.8510685920715325,
+              "adjacent_p95_pixel_abs_luma": 2.0,
+              "adjacent_max_mean_abs_luma": 4.097299098968506,
+              "adjacent_abs_luma_over_5_fraction": 0.006799344799344799
+            },
+            "stabilized": {
+              "mean_luma": 35.6691780090332,
+              "mean_luma_peak_to_peak": 0.2121124267578125,
+              "mean_pixel_temporal_std": 0.4873024821281433,
+              "adjacent_mean_abs_luma": 0.03446090966463089,
+              "adjacent_p95_mean_abs_luma": 0.10713919997215268,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.15913443267345428,
+              "adjacent_abs_luma_over_5_fraction": 3.071253071253071e-05
+            }
+          }
+        }
+      },
+      "release_fixed": {
+        "source_frames": [
+          556,
+          601
+        ],
+        "rois_xyxy": {
+          "rack_interior": [
+            700,
+            410,
+            900,
+            600
+          ],
+          "rack_door_grid": [
+            980,
+            400,
+            1100,
+            645
+          ],
+          "panel_numbering": [
+            715,
+            290,
+            1115,
+            455
+          ]
+        },
+        "raw": {
+          "rack_interior": {
+            "archived": {
+              "mean_luma": 30.962356567382812,
+              "mean_luma_peak_to_peak": 2.13323974609375,
+              "mean_pixel_temporal_std": 1.9870641231536865,
+              "adjacent_mean_abs_luma": 0.6698634624481201,
+              "adjacent_p95_mean_abs_luma": 1.4999202728271483,
+              "adjacent_p95_pixel_abs_luma": 2.9999961853027344,
+              "adjacent_max_mean_abs_luma": 2.78377628326416,
+              "adjacent_abs_luma_over_5_fraction": 0.01918654970760234
+            },
+            "stabilized": {
+              "mean_luma": 32.1817626953125,
+              "mean_luma_peak_to_peak": 0.5400810241699219,
+              "mean_pixel_temporal_std": 0.4816039204597473,
+              "adjacent_mean_abs_luma": 0.12993209064006805,
+              "adjacent_p95_mean_abs_luma": 0.1353568583726883,
+              "adjacent_p95_pixel_abs_luma": 0.7873954772949219,
+              "adjacent_max_mean_abs_luma": 0.14033956825733185,
+              "adjacent_abs_luma_over_5_fraction": 5.847953216374269e-07
+            }
+          },
+          "rack_door_grid": {
+            "archived": {
+              "mean_luma": 57.093936920166016,
+              "mean_luma_peak_to_peak": 2.9257354736328125,
+              "mean_pixel_temporal_std": 3.3051817417144775,
+              "adjacent_mean_abs_luma": 1.2026172876358032,
+              "adjacent_p95_mean_abs_luma": 2.8703874588012694,
+              "adjacent_p95_pixel_abs_luma": 4.715198516845703,
+              "adjacent_max_mean_abs_luma": 5.835016250610352,
+              "adjacent_abs_luma_over_5_fraction": 0.039570672713529854
+            },
+            "stabilized": {
+              "mean_luma": 58.36825942993164,
+              "mean_luma_peak_to_peak": 0.49346923828125,
+              "mean_pixel_temporal_std": 0.7220341563224792,
+              "adjacent_mean_abs_luma": 0.21783553063869476,
+              "adjacent_p95_mean_abs_luma": 0.24177735149860383,
+              "adjacent_p95_pixel_abs_luma": 0.9278030395507812,
+              "adjacent_max_mean_abs_luma": 0.24988442659378052,
+              "adjacent_abs_luma_over_5_fraction": 7.558578987150416e-05
+            }
+          },
+          "panel_numbering": {
+            "archived": {
+              "mean_luma": 42.08512496948242,
+              "mean_luma_peak_to_peak": 2.634510040283203,
+              "mean_pixel_temporal_std": 2.3244123458862305,
+              "adjacent_mean_abs_luma": 0.8211061358451843,
+              "adjacent_p95_mean_abs_luma": 1.846525502204895,
+              "adjacent_p95_pixel_abs_luma": 3.2126007080078125,
+              "adjacent_max_mean_abs_luma": 3.4426510334014893,
+              "adjacent_abs_luma_over_5_fraction": 0.025626262626262625
+            },
+            "stabilized": {
+              "mean_luma": 43.004798889160156,
+              "mean_luma_peak_to_peak": 0.4693794250488281,
+              "mean_pixel_temporal_std": 0.5403167009353638,
+              "adjacent_mean_abs_luma": 0.15367846190929413,
+              "adjacent_p95_mean_abs_luma": 0.1596502959728241,
+              "adjacent_p95_pixel_abs_luma": 0.7874031066894531,
+              "adjacent_max_mean_abs_luma": 0.1602087765932083,
+              "adjacent_abs_luma_over_5_fraction": 5.0841750841750845e-05
+            }
+          }
+        },
+        "encoded": {
+          "rack_interior": {
+            "archived": {
+              "mean_luma": 29.580638885498047,
+              "mean_luma_peak_to_peak": 1.9511394500732422,
+              "mean_pixel_temporal_std": 1.8995540142059326,
+              "adjacent_mean_abs_luma": 0.34466713666915894,
+              "adjacent_p95_mean_abs_luma": 1.0883166313171377,
+              "adjacent_p95_pixel_abs_luma": 2.0,
+              "adjacent_max_mean_abs_luma": 2.596719980239868,
+              "adjacent_abs_luma_over_5_fraction": 0.010450877192982455
+            },
+            "stabilized": {
+              "mean_luma": 30.66667366027832,
+              "mean_luma_peak_to_peak": 0.3696575164794922,
+              "mean_pixel_temporal_std": 0.2392285168170929,
+              "adjacent_mean_abs_luma": 0.026469197124242783,
+              "adjacent_p95_mean_abs_luma": 0.09322357773780822,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.14561180770397186,
+              "adjacent_abs_luma_over_5_fraction": 7.017543859649123e-06
+            }
+          },
+          "rack_door_grid": {
+            "archived": {
+              "mean_luma": 55.76429748535156,
+              "mean_luma_peak_to_peak": 2.6313858032226562,
+              "mean_pixel_temporal_std": 3.1340572834014893,
+              "adjacent_mean_abs_luma": 0.5890998244285583,
+              "adjacent_p95_mean_abs_luma": 1.6416856765747059,
+              "adjacent_p95_pixel_abs_luma": 3.0,
+              "adjacent_max_mean_abs_luma": 5.715810298919678,
+              "adjacent_abs_luma_over_5_fraction": 0.021967498110355255
+            },
+            "stabilized": {
+              "mean_luma": 56.9081916809082,
+              "mean_luma_peak_to_peak": 0.3446846008300781,
+              "mean_pixel_temporal_std": 0.3177206218242645,
+              "adjacent_mean_abs_luma": 0.03070135973393917,
+              "adjacent_p95_mean_abs_luma": 0.11174923479557036,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.2312319576740265,
+              "adjacent_abs_luma_over_5_fraction": 0.0001126228269085412
+            }
+          },
+          "panel_numbering": {
+            "archived": {
+              "mean_luma": 40.759849548339844,
+              "mean_luma_peak_to_peak": 2.4581832885742188,
+              "mean_pixel_temporal_std": 2.1862354278564453,
+              "adjacent_mean_abs_luma": 0.4218585193157196,
+              "adjacent_p95_mean_abs_luma": 1.218644416332244,
+              "adjacent_p95_pixel_abs_luma": 2.000001907348633,
+              "adjacent_max_mean_abs_luma": 3.30558705329895,
+              "adjacent_abs_luma_over_5_fraction": 0.012883501683501683
+            },
+            "stabilized": {
+              "mean_luma": 41.583351135253906,
+              "mean_luma_peak_to_peak": 0.2970733642578125,
+              "mean_pixel_temporal_std": 0.2353096306324005,
+              "adjacent_mean_abs_luma": 0.024980254471302032,
+              "adjacent_p95_mean_abs_luma": 0.0940440878272056,
+              "adjacent_p95_pixel_abs_luma": 0.0,
+              "adjacent_max_mean_abs_luma": 0.10392779111862183,
+              "adjacent_abs_luma_over_5_fraction": 4.410774410774411e-05
+            }
+          }
+        }
+      }
+    }
+  },
+  "delivery": {
+    "source_trajectory_sha256": "c0dabeec79346531a836c04413e173ca967d2573f53da8a9bb0d0e68f6c34095",
+    "source_report_sha256": "4df0981973052e4e715dd8d677d8a513415a33a96ad55d752b82c92a726d7230",
+    "source_scene_sha256": "43b6266b11cb86090cadd74491470299cfc5444fb6fc6786671aec9d60058671",
+    "source_movie_sha256": "c8d4aa7057a72e62eb98571a9416a61eb2fe853e603cf8287eecb6730304fdc7",
+    "source_frame_map_sha256": "747206d378aa46dbea782bc72b62e42f8aaa051bd9d24b2fb462fc477179367e",
+    "usd_integrity_audit_sha256": "3d849eec6c35859fc77fc36265f94cfbd5768222b2239331b131442681306b9c",
+    "source_renderer_sha256": {
+      "render.py": "d3688e334266cfcc2b88a54d9869b5dc3ed3bd44b94d423744260394fe23c4e2",
+      "render_native.py": "d15ad1efd2a8872cfa54e267206e72ff56936aff0ee7677c44e592c3d5f71441",
+      "panel.py": "48dcdaa328fb71ca40fe71b0fabe7756dc2e882b3e76f3634f63fed610521ee5"
+    },
+    "clean_renderer_sha256": "bccf071997a349385a3277b548328474235bbe14470e8e317693794f97f95baa",
+    "recipe_sha256": "a3bac286a86f0b6d7fc69a9252c4e75a18a710105dd2e96203affe95c7329707",
+    "native_report_sha256": "b1d55df49736c16cd68b777c5bc749d008b522e6e4f582aad216c1fe7eeef808",
+    "source_frames_replayed_and_verified": 602,
+    "excerpt_source_frame_first": 158,
+    "excerpt_source_frame_last": 601,
+    "excerpt_trajectory_time_first_s": 5.300000000000001,
+    "excerpt_trajectory_time_last_s": 20.066666666666666,
+    "camera_material_lighting": "Original native replay settings",
+    "image_overlay": false,
+    "native_renderer": {
+      "antialiasing": "DLAA",
+      "runtime_antialiasing_mode": 4,
+      "automatic_exposure": false,
+      "history_reset_source_frames": [
+        0,
+        87,
+        180,
+        255,
+        330,
+        511,
+        556
+      ],
+      "discarded_warmup_ticks_per_cut": 36,
+      "clean_process_exit": true
+    },
+    "physical_asset_markings": "Original markings preserved",
+    "physics_replay_disabled": true,
+    "capture_clock_delta_max_s": 0.0,
+    "replay_max_matrix_error": 1.7562667986833787e-09,
+    "playback_rate": 1.0,
+    "frame_map_sha256": "a899a7fbfaca8a4adf8fb54726c58cf14fbc0ba22c89975466269bf9d27c3316",
+    "video": {
+      "path": "rack-panel-steady-clean.mp4",
+      "sha256": "731127811c33ddae443a54d0d1b26587c7ddd58bf627a01b36a35be1b369663f",
+      "bytes": 3086502,
+      "codec": "h264",
+      "width": 1280,
+      "height": 720,
+      "frames": 444,
+      "fps": 30,
+      "duration_s": 14.8,
+      "max_relative_pts_error_s": 3.333333342681044e-07,
+      "full_decode": true
+    },
+    "poster": {
+      "path": "rack-panel-steady-clean-preview.png",
+      "sha256": "8d9a4bf9b98fd83f1a949bee7b09fd2632b07e9c4f55f28a81079804e564e7b9",
+      "source_frame": 492,
+      "video_frame": 334,
+      "trajectory_time_s": 16.433333333333334
+    }
+  }
+}

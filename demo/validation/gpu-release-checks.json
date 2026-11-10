@@ -1,0 +1,191 @@
+{
+  "date": "2026-11-08",
+  "backend_commit": "96b8514c7c55c724f1abba1fbf6ed6642b7db72b",
+  "extension_sha256": "652156b9af5a4b249dc6a1ed007894e415b438322ad771e5a14ad18efbbc4f85",
+  "hardware": "NVIDIA GeForce RTX 5090",
+  "torch": "2.7.0+cu128",
+  "backend_suite": {
+    "passed": 134,
+    "expected_failures": 1
+  },
+  "parent_suite": {
+    "passed": 73
+  },
+  "checks": [
+    {
+      "name": "hanging",
+      "args": [
+        "-m",
+        "demo.examples",
+        "hanging",
+        "--out",
+        "runs/release-checks/hanging"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "6efd50805f1ece012521e5efd9ab213cc55c5493c7b50a3c10e49b53e22d258c"
+    },
+    {
+      "name": "endpoints",
+      "args": [
+        "-m",
+        "demo.examples",
+        "endpoints",
+        "--out",
+        "runs/release-checks/endpoints"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "b20bab877a606ac2394050d887f09ced41ce8196397d764e29d964f7015d68de"
+    },
+    {
+      "name": "obstacle",
+      "args": [
+        "-m",
+        "demo.examples",
+        "obstacle",
+        "--out",
+        "runs/release-checks/obstacle"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "3910a75ff558edace0c0c3a29f7fde4298defbab7dfdc08b31a4656725a838d9"
+    },
+    {
+      "name": "self-contact",
+      "args": [
+        "-m",
+        "demo.examples",
+        "self-contact",
+        "--out",
+        "runs/release-checks/self-contact"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "ae4c578fd7fa7df9544e1cf8cc7bc0a65c72dc6684f7f920149b523ccd6d86d3"
+    },
+    {
+      "name": "materials",
+      "args": [
+        "-m",
+        "demo.examples",
+        "materials",
+        "--out",
+        "runs/release-checks/materials"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "3b4ba218b99fde9369fa82dca674a2370bcfe193344fc9f022149bda710bc874"
+    },
+    {
+      "name": "tip-target",
+      "args": [
+        "-m",
+        "demo.examples",
+        "tip-target",
+        "--out",
+        "runs/release-checks/tip-target"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "63b2f184d043cfeb703070a5ad7aff09b486313eeb9d8459665b50401586303f"
+    },
+    {
+      "name": "braid",
+      "args": [
+        "-m",
+        "demo.examples",
+        "braid",
+        "--out",
+        "runs/release-checks/braid"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "52c7164e00bbc4ee47f2c0f14d6bcf00b94bf84be2c6c412c629ab7182cf7db5"
+    },
+    {
+      "name": "winch",
+      "args": [
+        "-m",
+        "demo.examples",
+        "winch",
+        "--out",
+        "runs/release-checks/winch"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "98809d402ebca9f251934b508734ecf3df209a81cda35c8173559fab94b2e249"
+    },
+    {
+      "name": "contact-arena",
+      "args": [
+        "-m",
+        "demo.examples",
+        "contact-arena",
+        "--worlds",
+        "64",
+        "--seconds",
+        "2",
+        "--out",
+        "runs/release-checks/contact-arena"
+      ],
+      "exit_code": 0,
+      "numerically_complete": true,
+      "case_criterion_passed": true,
+      "report_sha256": "f0ecb01f621abf07e80ea516a40b35708d42049e20721b5deedca85b5ebcd502"
+    }
+  ],
+  "source_sha256": {
+    "tests/test_contact_arena.py": "431bf1864b5ccaf070bdc1897d2a62fcc2187abd27cb44c1f555fb681f590a48",
+    "tests/test_winch_tension.py": "559a822ac1cb7543dc3a87cbac3bfe06e773be80b0f75c705af9f7157f821632",
+    "tests/test_example_catalog.py": "2362c2b4589361d943ab3c03b2e93b5a452b3e9614812238e2ed3c67a7384b41",
+    "tests/test_basic_examples.py": "45ebfba0d82bc32c9d35a5e5951c4b8363681d177c7fd4787f688005864ce9e7",
+    "tests/test_basic_video.py": "dc282c94095515a523ec654521fc6db6571b9ecc3456d71f07d95f62a7e9d53a",
+    "tests/test_braiding_machine.py": "986ba5e5c4976d92c774994d0e97eea818a810610511d3ec7ae2421720c69dc9",
+    "demo/basics/__init__.py": "67dd858fb3b2b16fdf4eb742b3bf529f8094b3550df9c61de4b2364509791dd0",
+    "demo/basics/scenes.py": "257c0901ed7ac14db0f587eac7b9b347d3446b0f469fd8bdb293b1e128a861a9",
+    "demo/basics/task.py": "8d9094cba33a3ce7f175a543515ea8209159ab2d0783c224925f742ad2c14103",
+    "demo/basics/blender_props.py": "bb839cb008c743ae509faf99abc369acb749e2fa36ed2ef9bbcd9ddfd5f35db7",
+    "demo/basics/run.py": "73d53354171745dc60b65dc2f8d23d819192fbb29d9358c63654efeb2bf15862",
+    "demo/basics/render.py": "f48518d3ca658b6267765ac194acb6a4c626a508e6601226757aa945cb541d10",
+    "demo/basics/plot.py": "6b43fbb716ad6564c600fa7ac27f9d13cfd255fde488b6d420cae418b1ccc4a2",
+    "demo/braiding_machine/blender_assets.py": "1159d362cc71b7bc497c165b412230b69819469916a1e424e00bfd1f158af9ef",
+    "demo/braiding_machine/__init__.py": "d904dc7803d2f94577674ada9de4bb15e7924871647857d3477d587c71b1174b",
+    "demo/braiding_machine/analyze.py": "312069eb01f1df322c5b96e0a11916383029c27bcab98da95007818a8f02edfa",
+    "demo/braiding_machine/__main__.py": "c2d30a48a18f93e9da1398e8bad8caa7f60deaaaa01c0cc2350c7b9ac43d1d35",
+    "demo/braiding_machine/compare.py": "99262fccd2149cbaa6aa3c22720d1f273bf261b4d687cea46d133f0f43ecf78a",
+    "demo/braiding_machine/run.py": "113c67cbd15e86acfac7072608b1662b71b39e43599029a4fc00aa93083ca3a2",
+    "demo/braiding_machine/render.py": "73841737b2d6a084e0b53f14792c796f6ae34183b0c12ca7e484f9f610340870",
+    "demo/braiding_machine/model.py": "78c30e8f03bc2542f68d1967dae3e6a214dde78da3aae295c7774990d1ecba41",
+    "demo/braiding_machine/render_native.py": "a9c5beb3ba949db411777f721ed317591322e7544033ea9e6a1c93e275c08c87",
+    "demo/winch_tension/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "demo/winch_tension/blender_reels.py": "04e79caa36092fa9146b06f1c2943909e6a6e807e01abbda6aa83df53453c934",
+    "demo/winch_tension/run.py": "7569703e09a3558782559e51cca27fe29411645090dd147339086b2aed33f46f",
+    "demo/winch_tension/analysis.py": "a053b38d855ae3893eab75fe73808de42fd3d553fcbb578a3abef26d81c2b72c",
+    "demo/winch_tension/render.py": "bdc20aaf72d967a3af6772350d5c258726c91deac07a1773325da12c785e0d67",
+    "demo/winch_tension/model.py": "d5cfac048ffe46cd04b9c9b975d72a854b0527fda94e052406ee7ad2600a6e59",
+    "demo/contact_arena/blender_assets.py": "103678f6a9107ddcd66e864a8c87a3ee655256b5c5246ceb8e9d66ac8135af2f",
+    "demo/contact_arena/__init__.py": "5907eef14b2abc8231c724fd3463a76d4fcb0d0403b23c3d5455151c2f078589",
+    "demo/contact_arena/analyze.py": "9f869b0b6427fa36c8032c94bab5afe2b9c8092cc4bcd12b3fa76898c734816c",
+    "demo/contact_arena/run.py": "5fd4844081cfab61578342d906130461b02b214dc98b62192c1791cfe5d33734",
+    "demo/contact_arena/render.py": "b304c101414ae082a0c9225540173eba84aae886e6c26a70e334c6341bf1f75c",
+    "demo/contact_arena/model.py": "30cb07e9ce7c0c477f5b04f6451356507174e26f034aec60a6a0a88e938a0baa",
+    "demo/showcase/__init__.py": "dac366c8835fb2c5607f9f9d0e3aaaba4cb43485e61683f2a4b94a7247d53a41",
+    "demo/showcase/simulate.py": "a4c6f3910658362f5748e39c5ecac1e6832a6664a4e61f9ced2dcec97e2d45c3",
+    "demo/showcase/scenes.py": "23888cd83e841107aaa8fc12b5255662599e5eca6ee68cdc204c6c435c9e6d3a",
+    "demo/showcase/diagnostics.py": "e949e99c8853ac5a394de16cbec422b4e4bfa009dfcd15f4c0cb4752652b146b",
+    "demo/showcase/asset_robot.py": "02fa8af510280ce89645502b74b6118286dd0442b518fed9e903a9e78ef40489",
+    "demo/showcase/metrics.py": "dec53c3cf2fe24d8425f659f94a1fb132035476e5d47a1d29c1672ff2156a5f0",
+    "demo/batch_arena/__init__.py": "dbf2c241f4acdaec698b3b37c4475bb3173bd5edadbc6b436851759450b9e201",
+    "demo/batch_arena/model.py": "7d5e8ee705fb941c44a5851af8a5121e53f9ec27729a3383325271698157d891"
+  },
+  "scope": "Default basic/task/braid/winch runs and 64-world 2-second arena. No re-render or full-length movie rerun; no new performance claim."
+}

@@ -18,9 +18,25 @@ The `*_gpu` demos need the `Cosserat-Rod-Solver-CUDA` submodule built and Isaac 
 (see [The GPU rod solver](../README.md#the-gpu-rod-solver) in the root README); the others use
 the CPU engine in `PyElastica-Mesh` and plain Isaac Sim.
 
+## Standalone CUDA examples
+
+[Videos](SHOWCASE.md) · [Installation and full catalog](EXAMPLES.md)
+
+```bash
+python -m demo.examples --list
+python -m demo.examples hanging --out runs/hanging
+python -m demo.examples braid --preset process --out runs/braid
+```
+
+The eleven standalone entries simulate without Isaac Sim. [Basics and a tip-target task](basics/README.md), [three-strand braiding](braiding_machine/README.md), [traction reels](winch_tension/README.md) and the [moving-guide benchmark](contact_arena/README.md) each document their options, controls and optional Isaac replay. The [humanoid guitar](humanoid_guitar/README.md) includes model downloads and Blender preparation; [dense cable cascade](cable_cascade/README.md) requires no external models. [Rack insertion](rack_insertion/README.md) adds contact-driven grasping and insertion in Isaac Lab, with asset preparation, launch and audit commands.
+
+## Robot cable extraction (CUDA + Isaac Lab)
+
+The [cable extraction task](cable_extraction/README.md) uses a Panda's finger contact to draw one strand out of an intertwined five-cable bundle. It includes source, Blender pull-tab generation, a measured-trajectory audit and an open-gripper control. It requires Isaac Lab and the external Panda/table assets, separately from the standalone CUDA examples.
+
 ## Running
 
-Every script runs **from the repository root** with Isaac Sim's Python and the rod engine
+The Isaac Sim scripts below run **from the repository root** with Isaac Sim's Python and the rod engine
 on the path (setup in the [root README](../README.md#environment-setup)):
 
 ```bash

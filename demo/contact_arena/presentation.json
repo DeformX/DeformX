@@ -1,0 +1,102 @@
+{
+  "video": "contact-arena-pullback.mp4",
+  "video_sha256": "5660e2a332fded66037628b30d91ced0aa28a2d6fa28111879b9a35f59588f19",
+  "frames": 720,
+  "fps": 30,
+  "duration_s": 24,
+  "dimensions": [
+    1280,
+    720
+  ],
+  "full_decode": true,
+  "host": "ps",
+  "playback_multiplier": 1,
+  "physics_recomputed": false,
+  "image_overlay": false,
+  "trajectory_sha256": "aae257f82615bcbcbe780e2a8f0b576a40a322628a3465f23d27afcfd62f5c9a",
+  "run_report_sha256": "7c9a2efa2df359ec5b84242c95cf2e4531c953da0c2000e01872c1e69f37a223",
+  "native_report_sha256": "7c5f67e93ae33802808d693f7a901c626faae2fd39045d8ab413f284abde4a3a",
+  "recipe_sha256": "42ea94a08550f6858da3624d6e387340437c6287c9c899d673988a1a75780bdc",
+  "original_native_report_sha256": "520a02bcab2f697f30dc47060ccaa78173e7a2c7c0033d1c4c0a1d40236e89dc",
+  "original_renderer_sha256": "b304c101414ae082a0c9225540173eba84aae886e6c26a70e334c6341bf1f75c",
+  "native_worker_sha256": "27118f7b7391e6857280c9734f5a6927694ccd85536ad62081f2f8587ad80ee7",
+  "asset_sha256": {
+    "guide.blend": "881ec6817b13110b46626e1db9b9ed8166add1207b22ef3efb83581052937f96",
+    "guide.usda": "25ceb1edaeb55eedbeb8bd73598c42fe3d5fa24093cdf93098a17adde206be7e",
+    "cell.usda": "625dfce2b63debc03051e4e47958ccd4171985d59107fb43c6379f3b3d5f24ee",
+    "manifest.json": "678fd1baa5fa6982499822c1e33763736f0d343f2feaa795b32627c4390e14a4"
+  },
+  "camera": {
+    "near_eye_m": [
+      0.35,
+      -5.3,
+      1.9
+    ],
+    "near_target_m": [
+      0.0,
+      -2.52,
+      0.4
+    ],
+    "whole_eye_m": [
+      0.0,
+      -11.757072959083578,
+      10.881038726691836
+    ],
+    "whole_target_m": [
+      0.0,
+      0.0,
+      0.2996730635166168
+    ],
+    "near_hold_s": [
+      0,
+      1.5
+    ],
+    "pullback_s": [
+      1.5,
+      5.5
+    ],
+    "whole_hold_s": [
+      5.5,
+      24
+    ],
+    "bounds_m": [
+      [
+        -5.574999999999999,
+        -2.845,
+        -0.0725
+      ],
+      [
+        5.574999999999999,
+        2.845,
+        0.6718461270332337
+      ]
+    ],
+    "max_abs_whole_bounds_ndc": 0.9096355884923224,
+    "whole_ndc_limit": 0.92,
+    "focal_length_mm": 23,
+    "horizontal_aperture_mm": 20.954999923706055,
+    "vertical_aperture_mm": 11.787187576293945,
+    "transition": "quintic smootherstep"
+  },
+  "capture_check": {
+    "native_exit": 0,
+    "images": 720,
+    "all_source_states_and_times_match": true,
+    "all_image_hashes_match": true,
+    "physics_recomputed": false,
+    "recipe_sha256": "42ea94a08550f6858da3624d6e387340437c6287c9c899d673988a1a75780bdc",
+    "worker_sha256": "27118f7b7391e6857280c9734f5a6927694ccd85536ad62081f2f8587ad80ee7",
+    "native_report_sha256": "7c5f67e93ae33802808d693f7a901c626faae2fd39045d8ab413f284abde4a3a"
+  },
+  "render_settings": {
+    "anti_aliasing_mode": 3,
+    "automatic_exposure": false,
+    "lighting": "Original Blender HDR environment selected explicitly; original distant key and materials unchanged"
+  },
+  "archived_pose_rgb_mae": 1.039386574074074,
+  "environment_selection": {
+    "disabled_dome": "/World/Dome",
+    "selected_environment": "Original Blender asset color_121212.hdr; distant key unchanged"
+  },
+  "poster_sha256": "f95ddbdffbc0ab971dd3171064dd421b084b09021aac9389d54d0d416f4da1e1"
+}

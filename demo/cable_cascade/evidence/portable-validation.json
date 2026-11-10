@@ -1,0 +1,192 @@
+{
+  "purpose": "Fresh portable cascade validation, separate from the archived showcase recording",
+  "backend_commit": "96b8514c7c55c724f1abba1fbf6ed6642b7db72b",
+  "commands": [
+    "python -S -u -m demo.cable_cascade.run --out physics",
+    "python -m demo.cable_cascade.audit --data physics --reference",
+    "python -u -m demo.cable_cascade.render --data physics --out render",
+    "python -S -u -m demo.examples cascade --count 4 --seconds 0.2 --out smoke",
+    "python -S -m demo.cable_cascade.audit --data smoke",
+    "python -m pytest -p no:cacheprovider -q tests/test_cable_cascade_portable.py"
+  ],
+  "exit_codes": {
+    "physics": 0,
+    "render": 0,
+    "smoke": 0
+  },
+  "cpu_contract_tests": {
+    "passed": 13,
+    "source_sha256": "119f1ed0fcf7270c53c6baa221a35249c2c26ef4af0e90a4f65744c07d6b9f03"
+  },
+  "execution": {
+    "driver": "580.178.04",
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers",
+    "gpu_jobs_serialized": true,
+    "raw_frame_files_and_sha256_verified": 181,
+    "diagnostic_samples": 62
+  },
+  "reference_model_comparison": {
+    "reference_source_sha256": "23888cd83e841107aaa8fc12b5255662599e5eca6ee68cdc204c6c435c9e6d3a",
+    "bitwise_initial_positions_match": true,
+    "settings_and_fixture_dimensions_match": true,
+    "palette_matches": true,
+    "frame_count": 181,
+    "dt": 0.008333333333333333,
+    "max_absolute_ndc_xy": [
+      0.5978447577722055,
+      0.9102184428607846
+    ]
+  },
+  "physics": {
+    "complete": true,
+    "settings": {
+      "seconds": 6,
+      "count": 48,
+      "vertices": 33,
+      "seed": 0,
+      "substeps": 200,
+      "iterations": 24,
+      "dt_s": 0.008333333333333333,
+      "fps": 30,
+      "contact_group_size": 48,
+      "radius_m": 0.00635,
+      "density_kg_m": 0.117,
+      "EA_N": 11473.0,
+      "EI_Nm2": 0.00448,
+      "gravity_m_s2": [
+        0.0,
+        0.0,
+        -9.81
+      ],
+      "drag": 0.5,
+      "friction": 0.4,
+      "sphere_radius_m": 0.28,
+      "sphere_center_m": [
+        0.0,
+        0.0,
+        0.28
+      ],
+      "sdf_spacing_m": 0.004,
+      "contact_barrier_m": 0.01143,
+      "diagnostic_stride_outer_steps": 12
+    },
+    "runtime": {
+      "host": "ps",
+      "python": "3.11.15",
+      "torch": "2.7.0+cu128",
+      "cuda": "12.8",
+      "gpu": "NVIDIA GeForce RTX 5090",
+      "backend_sha256": "652156b9af5a4b249dc6a1ed007894e415b438322ad771e5a14ad18efbbc4f85",
+      "source_sha256": {
+        "run.py": "5fec2d4522bdf84a52474127287d98878dd49911ef742c17862983e20e6d0648",
+        "model.py": "1f79538aac3e24667b3d9851d83061a69302a9a3e10ea1d4ff856b970facb810",
+        "audit.py": "891a327e3a569892ec1b6944ac34d548062576998ae01e856f39940390f8f437"
+      }
+    },
+    "stop_reason": null,
+    "frames": 181,
+    "outer_steps": 720,
+    "trajectory_sha256": "74359aaf38ca1d0b92e873cfd630d30f0ea1b71baf30afb07829de4e74cacbe7",
+    "diagnostics_sha256": "032bf45d1b39567d2bc9bf0990335933e289ed84d46eca672de4f8965298d6c5",
+    "metrics": {
+      "finite": true,
+      "flags": [],
+      "max_strain": 0.022379636764526367,
+      "min_nonlocal_centerline_distance_m": 0.01191313201567966,
+      "min_cross_rod_centerline_distance_m": 0.01191313201567966,
+      "min_cross_rod_surface_gap_m": -0.0007868679843203389,
+      "min_sphere_surface_gap_m": -0.0005318453116618157,
+      "min_floor_surface_gap_m": -2.941659092902879e-06
+    },
+    "contact_proximity_frames": {
+      "cross_rods": 58,
+      "sphere": 59,
+      "floor": 57
+    },
+    "timing": {
+      "warmup_steps": 15,
+      "samples": 705,
+      "median_ms": 143.73988,
+      "per_world_rtf": 0.05645769473341112,
+      "scope": "CUDA solve and synchronization"
+    }
+  },
+  "render": {
+    "complete": true,
+    "source_trajectory_sha256": "74359aaf38ca1d0b92e873cfd630d30f0ea1b71baf30afb07829de4e74cacbe7",
+    "native_child_exit_code": 0,
+    "frames": 181,
+    "fps": 30,
+    "resolution": [
+      1280,
+      720
+    ],
+    "simulation_interval_s": [
+      0.0,
+      6.0
+    ],
+    "encoded_duration_s": 6.033333,
+    "exact_pts_verified": true,
+    "full_decode": true,
+    "native_report_sha256": "6eb4dcb586e96353018edc2f2d3ae8aa4ddb696c8c1f9719abbd35a6a40c4961",
+    "frame_map_sha256": "16daf53b188d8a8d6eee90b8ebcdc3e569fb4c72a3fcd4fb2dfc13bc0bae1981",
+    "video_sha256": "1afd85e3df081f38fb97c3a8e6caa0e621701a52664156cbbde058799c956e11",
+    "poster_frame": 27,
+    "poster_sha256": "4324c8cfe9e454203d5f83e906192d670d8698712b2c7ba1f27f5e88e0ca6dfa",
+    "source_sha256": {
+      "render.py": "3ce342463a640b27c7cdd3b443e979c7c155e10acb950c33909b76372d40972e",
+      "_native.py": "0ede632d76f27dcf460639ea95dd4188efdaa2d6e351dae8b093372e891d051b"
+    }
+  },
+  "native": {
+    "complete": true,
+    "app_close_invoked": true,
+    "isaacsim": "5.1.0.0",
+    "frames": 181,
+    "trajectory_sha256": "74359aaf38ca1d0b92e873cfd630d30f0ea1b71baf30afb07829de4e74cacbe7",
+    "visual_radius_m": 0.00635,
+    "renderer": "RaytracedLighting",
+    "anti_aliasing": "FXAA",
+    "render_subframes": 4,
+    "temporal_history_reset": true,
+    "clock_delta_max_s": 0.0,
+    "camera": {
+      "first_eye_m": [
+        2.1582698310518014,
+        -5.6750592284758685,
+        3.711643587515046
+      ],
+      "first_target_m": [
+        -0.02141836689775317,
+        0.030595172039140833,
+        1.3396299603346484
+      ],
+      "final_eye_m": [
+        1.0485014016335847,
+        -2.5729389975076855,
+        1.333529422296269
+      ],
+      "final_target_m": [
+        -0.014446881478964694,
+        0.2094844494633991,
+        0.17679158479143617
+      ],
+      "focal_length_mm": 22.0,
+      "max_absolute_ndc_xy": [
+        0.5978447577722055,
+        0.9102184428607846
+      ]
+    }
+  },
+  "configurable_smoke": {
+    "rods": 4,
+    "frames": 7,
+    "seconds": 0.2,
+    "trajectory_sha256": "b74e81223d55e4c481aa91f91cf5f6c50199036b70fd7b13db4f0accc67c3c1d"
+  },
+  "limitations": [
+    "Fresh trajectory differs from the archived trajectory.",
+    "Contact checks sample outer-step states and use analytic fixture distances.",
+    "Negative surface gaps record overlap with the nominal cable radius."
+  ]
+}

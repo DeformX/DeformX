@@ -1,0 +1,252 @@
+{
+  "decision": "Raise the five-second detail eye and target by 0.70 m to frame the forming braid beneath the carriers.",
+  "scope": "All 630 saved state/time tuples and native image hashes checked; both complete encoded streams decoded. Frame comparisons use identical source times and camera poses; brightness stability measures use fixed backdrop patches.",
+  "host": "ps",
+  "physics_stepping": false,
+  "image_overlay": false,
+  "playback_speed": 1.0,
+  "native_capture": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/braid-formation-20261109/final/capture",
+  "native_exit": 0,
+  "app_close_invoked": true,
+  "capture_clock_delta_max_s": 0.0,
+  "max_render_position_error_m": 0.0,
+  "saved_source_states_and_times_verified": 630,
+  "native_frames_hash_verified": 630,
+  "native_report_sha256": "1a3cbe89431e05bbd607f37d1bb13f2ab04f92c9e3c7c51f0924bddbd56e441b",
+  "renderer_sha256": "6628c1e384f10b26f2de59010e133566a95424dbf06eddddcc34378e06296a39",
+  "measurement_script_sha256": "47416d46b48bc282a7c7d3b4b04ec5db064d021eee89f709ac579f2e7754f57f",
+  "video": {
+    "full_decode": true,
+    "frames": 630,
+    "fps": 30,
+    "duration_s": 21.0,
+    "width": 1280,
+    "height": 720,
+    "relative_pts_error_s": 3.3333333604446125e-07,
+    "sha256": "854cb279d1eadfc3258bbb631a6db5d470208269bf650683ecf13d0a31a8541d"
+  },
+  "poster_sha256": "5fddd45a3760f07731125029305ffa29c9c692f7667344c83f4c27f63fafba44",
+  "camera": {
+    "sequence_s": {
+      "carriers": [
+        0,
+        1
+      ],
+      "downward_traverse": [
+        1,
+        4
+      ],
+      "braid_detail": [
+        4,
+        9
+      ],
+      "pullback": [
+        9,
+        13
+      ],
+      "whole_machine": [
+        13,
+        21
+      ]
+    },
+    "frame_counts": {
+      "carriers": 30,
+      "descend": 90,
+      "braid_detail": 150,
+      "pullback": 120,
+      "whole": 240
+    },
+    "close_target_z_m": 2.45,
+    "close_eye_and_target_translation_m": [
+      0.0,
+      0.0,
+      0.7
+    ],
+    "constant_eye_offset_during_descent": true,
+    "max_adjacent_eye_step_m": 0.12812813544550788,
+    "complete_machine_max_abs_ndc": 0.9439181852458125,
+    "opening_camera_poses_match_previous": true,
+    "all_camera_poses_match_expected_vertical_translation": true,
+    "whole_machine_framing_matches_previous": true
+  },
+  "fixed_patch_luma_metrics": {
+    "native": {
+      "opening_backdrop": {
+        "frames": 30,
+        "backdrop_box_xyxy": [
+          40,
+          360,
+          280,
+          600
+        ],
+        "playback_frames": [
+          0,
+          30
+        ],
+        "adjacent_mean_luma_p95": 0.06852731597222429,
+        "adjacent_mean_luma_max": 0.07500147569443527
+      },
+      "braid_detail_backdrop": {
+        "frames": 150,
+        "backdrop_box_xyxy": [
+          40,
+          150,
+          280,
+          550
+        ],
+        "playback_frames": [
+          120,
+          270
+        ],
+        "adjacent_mean_luma_p95": 0.06675739666665663,
+        "adjacent_mean_luma_max": 0.11379453124999372
+      },
+      "whole_backdrop": {
+        "frames": 240,
+        "backdrop_box_xyxy": [
+          40,
+          70,
+          280,
+          230
+        ],
+        "playback_frames": [
+          390,
+          630
+        ],
+        "adjacent_mean_luma_p95": 0.1156485213541643,
+        "adjacent_mean_luma_max": 0.1910034635416764
+      }
+    },
+    "encoded": {
+      "opening_backdrop": {
+        "frames": 30,
+        "backdrop_box_xyxy": [
+          40,
+          360,
+          280,
+          600
+        ],
+        "playback_frames": [
+          0,
+          30
+        ],
+        "adjacent_mean_luma_p95": 0.06675557499999625,
+        "adjacent_mean_luma_max": 0.09968980555555618
+      },
+      "braid_detail_backdrop": {
+        "frames": 150,
+        "backdrop_box_xyxy": [
+          40,
+          150,
+          280,
+          550
+        ],
+        "playback_frames": [
+          120,
+          270
+        ],
+        "adjacent_mean_luma_p95": 0.060966745000004596,
+        "adjacent_mean_luma_max": 0.07674136666668119
+      },
+      "whole_backdrop": {
+        "frames": 240,
+        "backdrop_box_xyxy": [
+          40,
+          70,
+          280,
+          230
+        ],
+        "playback_frames": [
+          390,
+          630
+        ],
+        "adjacent_mean_luma_p95": 0.13456658749998665,
+        "adjacent_mean_luma_max": 0.1692622708333431
+      }
+    }
+  },
+  "matched_previous_appearance": {
+    "native_report_sha256": "fa91cc0297d00541859351fb8a524e1d53a22ea74679c06727b60b99f482fd94",
+    "video_sha256": "5fed7a0b9f43fdd47208d60e50e3ec38fe1d929164933e61f6e13aca8f63ebb0",
+    "metrics": {
+      "native": {
+        "unchanged_opening": {
+          "frames": 30,
+          "playback_frames": [
+            0,
+            30
+          ],
+          "mean_abs_rgb_delta_p95": 0.5886148365162036,
+          "mean_abs_rgb_delta_max": 0.6015353732638888,
+          "abs_mean_luma_shift_p95": 0.01965476060112847,
+          "abs_mean_luma_shift_max": 0.022968457465277772
+        },
+        "whole_machine_after_pullback": {
+          "frames": 240,
+          "playback_frames": [
+            390,
+            630
+          ],
+          "mean_abs_rgb_delta_p95": 0.6830652488425926,
+          "mean_abs_rgb_delta_max": 0.6930645978009259,
+          "abs_mean_luma_shift_p95": 0.050764292447916644,
+          "abs_mean_luma_shift_max": 0.08287477647569445
+        }
+      },
+      "encoded": {
+        "unchanged_opening": {
+          "frames": 30,
+          "playback_frames": [
+            0,
+            30
+          ],
+          "mean_abs_rgb_delta_p95": 0.8304982819733797,
+          "mean_abs_rgb_delta_max": 0.8387789351851852,
+          "abs_mean_luma_shift_p95": 0.021356655349392357,
+          "abs_mean_luma_shift_max": 0.030987359809027778
+        },
+        "whole_machine_after_pullback": {
+          "frames": 240,
+          "playback_frames": [
+            390,
+            630
+          ],
+          "mean_abs_rgb_delta_p95": 0.7800120442708333,
+          "mean_abs_rgb_delta_max": 0.7986020688657407,
+          "abs_mean_luma_shift_p95": 0.06080983331163193,
+          "abs_mean_luma_shift_max": 0.10220435460069444
+        }
+      }
+    }
+  },
+  "encoded_review_playback_indices": [
+    0,
+    90,
+    119,
+    120,
+    160,
+    210,
+    255,
+    269,
+    300,
+    345,
+    390,
+    629
+  ],
+  "encoded_detail_before_after_indices": [
+    120,
+    210,
+    269
+  ],
+  "studio_environment": {
+    "selected_dome": "/World/Lights/StudioAmbient",
+    "inactive_blender_domes": [
+      "/World/Hardware/Frame/env_light",
+      "/World/Hardware/Carrier_0/env_light",
+      "/World/Hardware/Carrier_1/env_light",
+      "/World/Hardware/Carrier_2/env_light"
+    ],
+    "studio_ambient_intensity": 600
+  },
+  "renderer_settings": "The worker changes only the detail target height. The selected StudioAmbient dome, its intensity, the disabled Blender HDR domes, distant lights, materials and antialiasing match the previous replay."
+}

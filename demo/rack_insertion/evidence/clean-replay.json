@@ -1,0 +1,65 @@
+{
+  "source_trajectory_sha256": "c0dabeec79346531a836c04413e173ca967d2573f53da8a9bb0d0e68f6c34095",
+  "source_report_sha256": "4df0981973052e4e715dd8d677d8a513415a33a96ad55d752b82c92a726d7230",
+  "source_scene_sha256": "43b6266b11cb86090cadd74491470299cfc5444fb6fc6786671aec9d60058671",
+  "source_movie_sha256": "c8d4aa7057a72e62eb98571a9416a61eb2fe853e603cf8287eecb6730304fdc7",
+  "source_frame_map_sha256": "747206d378aa46dbea782bc72b62e42f8aaa051bd9d24b2fb462fc477179367e",
+  "usd_integrity_audit_sha256": "3d849eec6c35859fc77fc36265f94cfbd5768222b2239331b131442681306b9c",
+  "source_renderer_sha256": {
+    "render.py": "d3688e334266cfcc2b88a54d9869b5dc3ed3bd44b94d423744260394fe23c4e2",
+    "render_native.py": "d15ad1efd2a8872cfa54e267206e72ff56936aff0ee7677c44e592c3d5f71441",
+    "panel.py": "48dcdaa328fb71ca40fe71b0fabe7756dc2e882b3e76f3634f63fed610521ee5"
+  },
+  "clean_renderer_sha256": "bccf071997a349385a3277b548328474235bbe14470e8e317693794f97f95baa",
+  "recipe_sha256": "a3bac286a86f0b6d7fc69a9252c4e75a18a710105dd2e96203affe95c7329707",
+  "native_report_sha256": "b1d55df49736c16cd68b777c5bc749d008b522e6e4f582aad216c1fe7eeef808",
+  "source_frames_replayed_and_verified": 602,
+  "excerpt_source_frame_first": 158,
+  "excerpt_source_frame_last": 601,
+  "excerpt_trajectory_time_first_s": 5.300000000000001,
+  "excerpt_trajectory_time_last_s": 20.066666666666666,
+  "camera_material_lighting": "Original native replay settings",
+  "image_overlay": false,
+  "native_renderer": {
+    "antialiasing": "DLAA",
+    "runtime_antialiasing_mode": 4,
+    "automatic_exposure": false,
+    "history_reset_source_frames": [
+      0,
+      87,
+      180,
+      255,
+      330,
+      511,
+      556
+    ],
+    "discarded_warmup_ticks_per_cut": 36,
+    "clean_process_exit": true
+  },
+  "physical_asset_markings": "Original markings preserved",
+  "physics_replay_disabled": true,
+  "capture_clock_delta_max_s": 0.0,
+  "replay_max_matrix_error": 1.7562667986833787e-09,
+  "playback_rate": 1.0,
+  "frame_map_sha256": "a899a7fbfaca8a4adf8fb54726c58cf14fbc0ba22c89975466269bf9d27c3316",
+  "video": {
+    "path": "rack-panel-steady-clean.mp4",
+    "sha256": "731127811c33ddae443a54d0d1b26587c7ddd58bf627a01b36a35be1b369663f",
+    "bytes": 3086502,
+    "codec": "h264",
+    "width": 1280,
+    "height": 720,
+    "frames": 444,
+    "fps": 30,
+    "duration_s": 14.8,
+    "max_relative_pts_error_s": 3.333333342681044e-07,
+    "full_decode": true
+  },
+  "poster": {
+    "path": "rack-panel-steady-clean-preview.png",
+    "sha256": "8d9a4bf9b98fd83f1a949bee7b09fd2632b07e9c4f55f28a81079804e564e7b9",
+    "source_frame": 492,
+    "video_frame": 334,
+    "trajectory_time_s": 16.433333333333334
+  }
+}

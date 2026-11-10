@@ -9,9 +9,56 @@ DeformX is a co-simulation framework for deformable linear objects (DLOs) such a
 
 ## 🔥 Updates
 
-* **\[Nov 2026\]** We released the **GPU/CUDA Stable Cosserat Rods solver** ([Cosserat-Rod-Solver-CUDA](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA)): thousands of ropes in one solver, contact with planes, meshes and other ropes, and two-way coupling with PhysX in Isaac Lab, with the rope-swing RL task and new demos in this repository.
+* **\[Nov 2026\]** Added the **GPU/CUDA Stable Cosserat Rods solver** ([Cosserat-Rod-Solver-CUDA](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA)): thousands of ropes in one solver, contact with planes, meshes and other ropes, and two-way coupling with PhysX in Isaac Lab, with the rope-swing RL task and new demos in this repository.
 * **\[Jun 2026\]** We open-sourced **DeformX**, the co-simulation framework integrating a dedicated Cosserat rod engine with NVIDIA Isaac Sim, together with the dataset-generation and RL tooling in this repository.
 * **\[Jun 2026\]** We released **[WireSeg-36k](https://huggingface.co/datasets/DeformX/WireSeg-36K)** — a synthetic wire instance segmentation dataset (36k RGB images, depth maps, and per-wire instance masks) — together with its generation pipeline and the [render assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) needed to reproduce it.
+
+## Demos
+
+[![DeformX GPU examples](demo/media/gpu-showcase-2col-3row-3b64275a.gif)](demo/media/gpu-showcase-2col-3row-410592ff.mp4)
+
+[Watch the full demos](demo/SHOWCASE.md) · [Run the examples](demo/EXAMPLES.md)
+
+### Standalone CUDA examples
+
+These examples run without Isaac Sim. Follow the [CUDA setup](demo/EXAMPLES.md#installation), then run from the repository root with a fresh output directory:
+
+```bash
+python -m demo.examples --list
+python -m demo.examples braid --help
+```
+
+| Gravity and supports | Contact | Materials and control |
+|---|---|---|
+| [![Hanging rod](demo/basics/media/hanging-preview.jpg)](demo/basics/media/hanging.mp4) | [![Obstacle contact](demo/basics/media/obstacle-preview.jpg)](demo/basics/media/obstacle.mp4) | [![Bending stiffness](demo/basics/media/materials-preview.jpg)](demo/basics/media/materials.mp4) |
+| <code>python -m demo.examples hanging --out runs/hanging</code> | <code>python -m demo.examples obstacle --out runs/obstacle</code> | <code>python -m demo.examples materials --out runs/materials</code> |
+| [![Moving endpoints](demo/basics/media/endpoints-preview.jpg)](demo/basics/media/endpoints.mp4) | [![Self-contact](demo/basics/media/self-contact-preview.jpg)](demo/basics/media/self-contact.mp4) | [![Tip target](demo/basics/media/tip-target-preview.jpg)](demo/basics/media/tip-target.mp4) |
+| <code>python -m demo.examples endpoints --out runs/endpoints</code> | <code>python -m demo.examples self-contact --out runs/self-contact</code> | <code>python -m demo.examples tip-target --out runs/tip-target</code> |
+
+[Basic examples and task API](demo/basics/README.md) · [Performance](demo/contact_arena/README.md#interpret-timing-and-contact) · [Validation and limitations](docs/GPU_VALIDATION.md)
+
+### Robot cable extraction
+
+Requires [Isaac Lab, Blender and Panda/table assets](demo/cable_extraction/README.md#reproduce-on-an-isaacdeformx-workstation). Replace the asset paths below and run in the configured Isaac Lab environment:
+
+```bash
+blender --background --python-exit-code 1 --python demo/cable_extraction/blender_tab.py -- \
+  --out runs/pull-tab
+python -m demo.cable_extraction.run --headless \
+  --robot-usd /absolute/FrankaEmika/panda_instanceable.usd \
+  --table-usd /absolute/SeattleLabTable/table_instanceable.usd \
+  --tab-usd runs/pull-tab/pull-tab.usdc \
+  --cache runs/collision-cache --out runs/extraction
+```
+
+### More Isaac Sim examples
+
+Run with Isaac Sim's Python. See the [demo catalog](demo/README.md) for inputs and headless options.
+
+```bash
+PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON demo/cable_sim_demo/interactive/move_wire_with_ball.py      # drag the ball in the viewport
+cd demo/rope_swing_rl && $ISAAC_PYTHON -m RL.train task=wire_swing algo=ppo render=false total_steps=1000
+```
 
 ## Why DeformX?
 
@@ -35,6 +82,15 @@ dataset_generator/          WireSeg-36k generation: drop/hang and datacenter ren
 PyElastica-Mesh/            the CPU Cosserat rod engine (git submodule)
 Cosserat-Rod-Solver-CUDA/   the GPU Cosserat rod solver, module `ropesim` (git submodule)
 demo/
+  examples.py              Unified launcher: python -m demo.examples --list
+  basics/                  Gravity, endpoints, obstacle/self-contact, materials and a tip-target task
+  braiding_machine/        Three-strand braiding with native rod–rod contact
+  winch_tension/           Frictional cable transport and a passive braked axle
+  contact_arena/           Batched moving-guide contact and scoped timing
+  rack_insertion/         Contact-driven rack insertion with asset preparation and audit
+  cable_cascade/          48 interacting cables falling over an obstacle
+  cable_extraction/       Robot extraction from an intertwined cable bundle
+  humanoid_guitar/         Five-string contact strumming with model downloads
   cable_sim_demo/           Isaac Sim cable demos on the CPU engine: interactive, ball-joint wire, trajectory replay, bunny
   cable_sim_demo_gpu/       Isaac Lab demos on the GPU solver: rope curtain, rope pile, two-way coupling with PhysX bodies
   rope_swing_rl/            rope-swing RL (CPU engine, Isaac Sim + Hydra PPO) and wire-end calibration
@@ -48,19 +104,22 @@ Each folder has a README with every command:
 [demo/rope_swing_rl](demo/rope_swing_rl/README.md) ·
 [demo/rope_swing_rl_gpu](demo/rope_swing_rl_gpu/README.md) ·
 [demo/rope_swing_rl/calibration](demo/rope_swing_rl/calibration/README.md) ·
-[Cosserat-Rod-Solver-CUDA](Cosserat-Rod-Solver-CUDA/README.md).
+[Cosserat-Rod-Solver-CUDA](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA/blob/96b8514c7c55c724f1abba1fbf6ed6642b7db72b/README.md).
 
 Created on demand and ignored by git: `asset_wireseg36k/` (render assets), `output/`,
 `outputs/`, `logs/`, `checkpoints/`, `data/`, `eval_exports/`, `wandb/`.
 
 ## Environment Setup
 
-DeformX uses **two Python environments**. Using the right one is the most common source of confusion:
+DeformX uses separate Python environments. Using the right one is the most common source of confusion:
 
 | Environment | Use it for | Python |
 |---|---|---|
 | **`uv` virtualenv** | CPU utilities: dataset organization, segmentation QA, plots, contact sheets | system Python 3.10–3.12 |
-| **Isaac Sim Python** | Anything importing Isaac Sim / Omniverse / the rod engine: rendering, dataset generation, demos, RL | Isaac Sim's own interpreter |
+| **Isaac Sim Python** | Isaac Sim / Omniverse rendering, dataset generation, co-simulation demos and RL | Isaac Sim's own interpreter |
+| **Standalone CUDA env** | Standalone GPU examples; NumPy, CUDA PyTorch and `ropesim` | tested with Python 3.11 |
+
+For the standalone CUDA examples, follow [their installation guide](demo/EXAMPLES.md#installation). The setup below retains the CPU/Isaac Sim workflows.
 
 ### 1. Prerequisites
 
@@ -74,7 +133,7 @@ DeformX uses **two Python environments**. Using the right one is the most common
 
 ### 2. Clone with submodules
 
-Both rod engines are submodules (`PyElastica-Mesh`, `Cosserat-Rod-Solver-CUDA`); a plain `git clone` leaves them empty.
+Both rod engines are submodules (`PyElastica-Mesh`, `Cosserat-Rod-Solver-CUDA`); a plain `git clone` leaves them empty. The CUDA submodule requires repository access during the release preview.
 
 ```bash
 git clone --recursive https://github.com/DeformX/DeformX.git
@@ -140,10 +199,10 @@ PYTHONPATH=PyElastica-Mesh OMNI_KIT_ACCEPT_EULA=YES $ISAAC_PYTHON dataset_genera
 
 ## Configuration (paths and environment variables)
 
-DeformX contains **no machine-specific hardcoded paths**. Every location is resolved by a
-small helper module (`dataset_generator/paths.py` for the generators, `demo/common/paths.py`
-for the demos) with a repository-relative default, so the code runs right after `git clone`.
-Override only if your assets or data live elsewhere:
+Dataset and legacy demo paths use repository-relative defaults through
+`dataset_generator/paths.py` and `demo/common/paths.py`. The showcase examples accept explicit
+asset and output paths; follow each example’s setup before running. Override these variables
+when your assets or data live elsewhere:
 
 | Variable | Read by | Purpose | Default |
 |---|---|---|---|
@@ -183,35 +242,27 @@ wrapped as the Python module `ropesim`: all ropes of all environments in one GPU
 kinematic root driving for a robot end effector, contact with planes, signed-distance meshes
 and other ropes, and `ropesim.isaac_bridge`, which turns PhysX bodies into rope colliders and
 hands the rope's wrench back to PhysX. It is GPL-3.0 (its vendored solver is) and has its own
-[README](Cosserat-Rod-Solver-CUDA/README.md) and [solver notes](Cosserat-Rod-Solver-CUDA/docs/SOLVER.md).
+[README](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA/blob/96b8514c7c55c724f1abba1fbf6ed6642b7db72b/README.md) and [solver notes](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA/blob/96b8514c7c55c724f1abba1fbf6ed6642b7db72b/docs/SOLVER.md).
 
 Build it into the Isaac Sim environment (a CUDA toolkit matching your torch build, CMake,
-Ninja and glm are needed):
+Ninja and GLM 0.9.9.8 are needed for the validated build):
 
 ```bash
-export CUDACXX=/usr/local/cuda-12.8/bin/nvcc             # torch cu128 <-> CUDA 12.8
+export CUDA_TOOLKIT_ROOT=/usr/local/cuda-12.8           # torch cu128 <-> CUDA 12.8
+export CUDACXX="$CUDA_TOOLKIT_ROOT/bin/nvcc"
+export LD_LIBRARY_PATH="$CUDA_TOOLKIT_ROOT/lib64:$CUDA_TOOLKIT_ROOT/targets/x86_64-linux/lib${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"
+export GLM_INCLUDE_DIR=/path/to/glm-0.9.9.8             # directory containing glm/glm.hpp
 $ISAAC_PYTHON -m pip install -e Cosserat-Rod-Solver-CUDA  # about a minute
-$ISAAC_PYTHON -m pytest Cosserat-Rod-Solver-CUDA/tests    # 124 physics tests, optional
+$ISAAC_PYTHON -m pytest Cosserat-Rod-Solver-CUDA/tests    # optional; install backend test dependencies first
 ```
 
-The GPU demos and the GPU RL task run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
+The existing co-simulation GPU demos and the GPU RL task run on **Isaac Lab** (2.3.x on Isaac Sim 5.1):
 `$ISAAC_PYTHON -m pip install "isaaclab[all]==2.3.2.post1" --extra-index-url https://pypi.nvidia.com`.
 
 ```bash
-python demo/cable_sim_demo_gpu/rope_curtain.py                     # 48 ropes swept by a box, viewport
-python demo/cable_sim_demo_gpu/rope_box_pulley.py --scene pulley   # two-way coupling with a PhysX cylinder
-python demo/rope_swing_rl_gpu/train.py --headless --num_envs 1024  # RL: 1024 envs, one rope solver
-```
-
-## Demos
-
-All demos run from the repository root with Isaac Sim's Python and take `--headless`
-(plus `--max_steps N` where there is a free-running loop). Commands and inputs for each are in
-[demo/README.md](demo/README.md); the two RL demos and the calibration have their own READMEs.
-
-```bash
-PYTHONPATH=PyElastica-Mesh $ISAAC_PYTHON demo/cable_sim_demo/interactive/move_wire_with_ball.py      # drag the ball in the viewport
-cd demo/rope_swing_rl && $ISAAC_PYTHON -m RL.train task=wire_swing algo=ppo render=false total_steps=1000
+$ISAAC_PYTHON demo/cable_sim_demo_gpu/rope_curtain.py                     # 48 ropes swept by a box, viewport
+$ISAAC_PYTHON demo/cable_sim_demo_gpu/rope_box_pulley.py --scene pulley   # two-way coupling with a PhysX cylinder
+$ISAAC_PYTHON demo/rope_swing_rl_gpu/train.py --headless --num_envs 1024  # RL: 1024 envs, one rope solver
 ```
 
 ## Citation
@@ -233,3 +284,5 @@ MIT (see `LICENSE`) for this repository. The submodules carry their own licenses
 `PyElastica-Mesh` (see its LICENSE) and `Cosserat-Rod-Solver-CUDA` (GPL-3.0, it vendors the
 YarnBall solver). The NVIDIA datacenter content pack and the Texturelabs ground textures are
 not covered and are not redistributed here.
+
+The additional showcase media retain their asset licenses and notices; see [credits and provenance](demo/SHOWCASE.md#credits).

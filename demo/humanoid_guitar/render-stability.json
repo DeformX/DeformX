@@ -1,0 +1,109 @@
+{
+  "demo": "humanoid_guitar",
+  "host": "ps",
+  "decision": "retain_existing_video_and_poster",
+  "finding": "No meaningful lighting flicker in the shipped guitar clip. Renderer accumulation resets each frame, but the shipped renderer does not force a DLSS parameter reset. Static pose noise stayed below 0.15/255 mean absolute luma difference in both views. Preserving history at the same AA barely changed that difference. Larger differences near the strings in motion disappear with the pose held. No color or camera edits made.",
+  "released_aa_mode": "DLSS (3)",
+  "histogram_exposure_enabled": false,
+  "numeric_units": "8-bit RGB Rec.709",
+  "fixed_pose_probe": {
+    "frames_per_pose_per_mode": 48,
+    "exit_code": 0,
+    "app_close_invoked": true,
+    "physics_steps_during_capture": 0,
+    "capture_clock_delta_max_s": 0.0,
+    "modes": {
+      "baseline": "Shipped DLSS mode, accumulation reset on each captured frame",
+      "same_aa_keep_history": "Shipped DLSS mode with warm history",
+      "dlaa_keep_history": "DLAA with warm history"
+    },
+    "results": {
+      "closeup": {
+        "fixed_pose_output_frame": 0,
+        "fixed_pose_trajectory_index": 552,
+        "adjacent_full_image_luma_mad": {
+          "baseline": 0.1431,
+          "same_aa_keep_history": 0.1369,
+          "dlaa_keep_history": 0.0893
+        },
+        "largest_adjacent_full_image_luma_mean_shift_in_shipped_mode": 0.0448
+      },
+      "overview": {
+        "fixed_pose_output_frame": 184,
+        "fixed_pose_trajectory_index": 1288,
+        "adjacent_full_image_luma_mad": {
+          "baseline": 0.1301,
+          "same_aa_keep_history": 0.1305,
+          "dlaa_keep_history": 0.094
+        },
+        "largest_adjacent_full_image_luma_mean_shift_in_shipped_mode": 0.0226
+      }
+    }
+  },
+  "released_delivery": {
+    "full_decode_exit_code": 0,
+    "verified_native_png_hash_count": 478,
+    "physics_steps_during_capture": 0,
+    "capture_clock_delta_max_s": 0.0,
+    "replay_max_matrix_error": 0.0,
+    "capture_inputs": {
+      "trajectory_sha256": "f20bc5d9025250833b6920a1ec480d8169224554326ecf3ca3cec1911ed22cda",
+      "motion_sha256": "b9690ef5efce649668c82a86b9d57422b2126c66633086746ff4971ebc67b9dc",
+      "profile_sha256": "4a02ea889d80085b4cc5a59337e3b6cc9f20762192f16453670837c30eb336bf",
+      "camera_profile_sha256": "c36f7bf6631c22b90442c0fb4063a706d685b88aff570c80e2d8d33ebd5e6da1",
+      "acceptance_audit_sha256": "b6cf68b5666278dec43d928d83f83bd6dbf923ebde933e84334613ec78f1e917"
+    },
+    "sha256": {
+      "video_sha256": "6776de6c8623cd4c9cae3d9aefb6b7d8d870ff8328a55112e1db10f6867723b5",
+      "poster_sha256": "c866c51df3f2c0bf65453a4e2e96c743679cc5ecd66eb6dc6a22866348e6989b",
+      "frame_map_sha256": "cf2a266235dce65be78400d85bfed27f70156d2981b72edb44ce7f270744396a",
+      "native_report_sha256": "027bc7e162b2125bd26f511b66ef66d844246b9a059ae5bf7ba3c18bbcd7c8f6",
+      "native_renderer_after_sha256": "65c3e73995822a49638175ab2fefff181d888f8dd75ed7b1e34b2c5de64f8904"
+    },
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "avg_frame_rate": "30/1",
+          "nb_read_frames": "478"
+        }
+      ],
+      "format": {
+        "duration": "15.933333"
+      }
+    },
+    "encoded_static_roi_p95_luma_mad": {
+      "upper_static_guitar_lacquer": 0.4457,
+      "floor_to_right": 0.0869,
+      "backdrop_upper_left": 0.0759
+    },
+    "encoded_visual_review_frames": [
+      0,
+      1,
+      2,
+      3,
+      118,
+      119,
+      120,
+      121,
+      139,
+      149,
+      159,
+      169,
+      182,
+      183,
+      184,
+      185
+    ]
+  },
+  "detail_files_sha256": {
+    "probe-audit.json": "60d98ffd24b65a635228f32b075d94ec8ab1c54352488f877698c88f0de42bcb",
+    "baseline-audit.json": "1bb1dd3280f98bbcb5e38a4c95d623aff77a2bc11f431d4a99e956d1e384e034",
+    "motion-review.png": "df006a82c374dcc43e11012a0a2405768ae90ecaa490e274dbe084838303fe4c"
+  }
+}

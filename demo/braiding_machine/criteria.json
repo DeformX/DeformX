@@ -1,0 +1,14 @@
+{
+  "schema": 1,
+  "min_interstrand_centerline_m": 0.0216,
+  "min_nonlocal_self_centerline_m": 0.0216,
+  "max_abs_segment_strain": 0.12,
+  "min_crossing_abs_depth_m": 0.017,
+  "min_crossing_vertical_gap_m": 0.035,
+  "min_barrier_samples_per_pair": 3,
+  "max_endpoint_error_m": 0.000008,
+  "contact_off_max_min_centerline_m": 0.012,
+  "refinement_max_crossing_z_delta_m": 0.035,
+  "refinement_max_interstrand_clearance_delta_m": 0.002,
+  "refinement_max_peak_strain_delta": 0.018
+}

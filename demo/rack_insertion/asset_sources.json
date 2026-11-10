@@ -1,0 +1,170 @@
+{
+  "VR3307/simready_usd/.simready/validation.json": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/.simready/validation.json",
+    "sha256": "9b8fd55857c78d727718e364ed7a3d774234521b61506617566dac38bfcedfca"
+  },
+  "VR3307/simready_usd/.thumbs/256x256/VR3307_main.usd.png": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/.thumbs/256x256/VR3307_main.usd.png",
+    "sha256": "83c3affff9ad214974f0e8c0f7366a808a9a4e750de5d815b9cd9e943323a84f"
+  },
+  "VR3307/simready_usd/.thumbs/256x256/VR3307_main.usd_light.png": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/.thumbs/256x256/VR3307_main.usd_light.png",
+    "sha256": "23bab949c977195d366f441ebcf56b262f4d7d1a55539634ce53e5b3f83fce5e"
+  },
+  "VR3307/simready_usd/.thumbs/256x256/VR3307_main.usd_transparent.png": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/.thumbs/256x256/VR3307_main.usd_transparent.png",
+    "sha256": "a0688b728c6bdcdec2cd6f97975675c997ce2e0be5465d6f7e789f0f05b0ec82"
+  },
+  "VR3307/simready_usd/VR3307_main.usd": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/VR3307_main.usd",
+    "sha256": "2a75bf9aaab6a2fa2ea84da4c2c16e968fa415c10ac7ebf5dc3af750957f3742"
+  },
+  "VR3307/simready_usd/layers/VR3307_ConnectionPoints.usd": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/layers/VR3307_ConnectionPoints.usd",
+    "sha256": "569062662b1d65156e75d2474fe9b65a432e4bd69c59b4a36e458256e9b78644"
+  },
+  "VR3307/simready_usd/layers/VR3307_Properties.json": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/layers/VR3307_Properties.json",
+    "sha256": "e6a4d2e7739d9d911bcec9789eeb0dbe82f4aa87e0efae172453b60fb47046c1"
+  },
+  "VR3307/simready_usd/layers/VR3307_Properties.usda": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/layers/VR3307_Properties.usda",
+    "sha256": "804fbd2b65e24132843ba32d5a8c6e41aca20df84c5c097d70ba6c3f8ad8429b"
+  },
+  "VR3307/simready_usd/materials/Carpaint_Solid.mdl": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/materials/Carpaint_Solid.mdl",
+    "sha256": "e51996b5c78df239742fcf76ed3475002328afd0c5ba7922932bca89330a3b56"
+  },
+  "VR3307/simready_usd/materials/Felt_Plain.mdl": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/materials/Felt_Plain.mdl",
+    "sha256": "5aa846a0de66dcd112d01eed66423adfaf1add2b463e7f0a69e7704237ba7c92"
+  },
+  "VR3307/simready_usd/materials/Rubber_Textured.mdl": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/materials/Rubber_Textured.mdl",
+    "sha256": "c9bcb7378897899c987f1629470929bf2e857196d3342c773f45c689f6e935d7"
+  },
+  "VR3307/simready_usd/materials/Stainless_Steel_Brushed.mdl": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/materials/Stainless_Steel_Brushed.mdl",
+    "sha256": "0898730d0c187f7400ca0d35ed97261dec41d0dda10fd47a371684bf71873597"
+  },
+  "VR3307/simready_usd/materials/WhiteMode.mdl": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/materials/WhiteMode.mdl",
+    "sha256": "3bc76f53a19cada6acc1c4f9463264f0934f3dd45805cbe6af56c7b7df895b5d"
+  },
+  "VR3307/simready_usd/payloads/external.usd": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/payloads/external.usd",
+    "sha256": "90d50ff441efa0a74f71a6ff3060cc02133fd10c08fa5649a5fa0268210d9fa5"
+  },
+  "VR3307/simready_usd/payloads/internal.usd": {
+    "url": "https://huggingface.co/datasets/Vertiv/simready-assets/resolve/38c9c1a3de37b6b00944fd57384819842b3ff0aa/VR3307/simready_usd/payloads/internal.usd",
+    "sha256": "9d008994f1c60b410d09276220a6b101e953eae72afe146bf0c80563b824e9b0"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Materials/Materials.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Materials/Materials.usd",
+    "sha256": "163ad21137370dfa8f8fda6337fa5a84aab3b7dbcdd134c91792239272c33691"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/instanceable_collision_meshes.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/instanceable_collision_meshes.usd",
+    "sha256": "e2d053fdd789ea000f04c243d2323167038a4aa0883a9e418c92d936c771417e"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_hand.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_hand.usd",
+    "sha256": "9bead1ccc72d702d333074ae30e5352f4328290e7e64dbf072696f052ba12a90"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_leftfinger.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_leftfinger.usd",
+    "sha256": "53725ac396c13d8f90960780626c00ef05acdf1d1a6043f7bd7bd879750e6270"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link0.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link0.usd",
+    "sha256": "4b46e614cf37f745ef5f8212137ac6af06aaef34b3858ae02f2f67d2f2c988a7"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link1.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link1.usd",
+    "sha256": "9f3f8b7d980865d2023ead815fd2faed9727af533959077b5700e28f6242187b"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link2.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link2.usd",
+    "sha256": "f05fd2f8ce2533f06bb6b5bf916a0e8e8b151e5d1f58e270ce5617507590b27e"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link3.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link3.usd",
+    "sha256": "bf5b30913f51811cd7f772651d25ead0f48ed37d994a25c9fbccb38c8479dbf8"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link4.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link4.usd",
+    "sha256": "9dc792ca5a4fc5506cec8b7be83332d121727c0f32e3b133ad5a8478ab6a10e0"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link5.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link5.usd",
+    "sha256": "4b67be8b886c6705455b389ce6be7d710c75187397a8607381f1515c7b1e626c"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link6.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link6.usd",
+    "sha256": "ca05c47f20b3711dea3a36aa27c70d9047ce8fbdf5945eb2fbdb4069cd76308c"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link7.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_link7.usd",
+    "sha256": "2f18324e59305650cf650d24d37e5bbe04e8f7e781da6e309105f6ec99840e0f"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_rightfinger.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/Props/panda_rightfinger.usd",
+    "sha256": "c156a8aa36191c5debacb1048fd17a0d6d1939403d936db2235c8fd4ebcec926"
+  },
+  "isaac-4.5/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/IsaacLab/Robots/FrankaEmika/panda_instanceable.usd",
+    "sha256": "7f5a0c0aa6760cfbd348e08bc464d4b94341f027f51c2d9e42406ceefcc7787f"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_BaseColor.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_BaseColor.png",
+    "sha256": "2cf139f46874df8a133c26eb51405161824ddecb0ce6a094e6477a675656bfe4"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_Metallic.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_Metallic.png",
+    "sha256": "c56bdeeecef908a1a6869af71556ad9c43794d0d292e3b8463aa7b82f3367771"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_Normal.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_Normal.png",
+    "sha256": "bfcbadb3f98c9fe116bc6eb2c040d09196c40ca16347367900f8fd2d3451e10d"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_Roughness.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableBase_Roughness.png",
+    "sha256": "35426471bf910ae4ef32d044b360489de8477c97cf1a75ad25341ef2a25a644b"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_BaseColor.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_BaseColor.png",
+    "sha256": "5d095ed2e4fe2fa18d35a2677f3c281796fba135544439db8ec32d851144fbc0"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_Metallic.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_Metallic.png",
+    "sha256": "fdcd7dcec52034b60662cccf58c02ae442c0a87d60b099fcf6cd9ccd6cf5535d"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_Normal.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_Normal.png",
+    "sha256": "9413615d7cf9809f639ec9722022c164ad73a14add32a94293fc7c69d97b601c"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_Roughness.png": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/Materials/Textures/DemoTable_TableParts_Roughness.png",
+    "sha256": "1cb2096ba97d3519f876b9d0dc84822bdd428cf93f0887a8f75e3bba208c4a35"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/table.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/table.usd",
+    "sha256": "fb8988eb83dd1fd5ee63877b6a60b74d80952940568c005989de1afe20fa3e1d"
+  },
+  "isaac-4.5/Isaac/Props/Mounts/SeattleLabTable/table_instanceable.usd": {
+    "url": "https://omniverse-content-production.s3-us-west-2.amazonaws.com/Assets/Isaac/4.5/Isaac/Props/Mounts/SeattleLabTable/table_instanceable.usd",
+    "sha256": "479ed8fd374d8eafdedf3ca3b9d0d5981ffc6d5c5016929347f748be93d5df17"
+  },
+  "newton/rj45_plug.usd": {
+    "url": "https://raw.githubusercontent.com/newton-physics/newton/f1aa3296cb984e9a341f92f5a335b0d807632cc9/newton/examples/assets/rj45_plug.usd",
+    "sha256": "50c95bcfb63544777f9148d548aac6f16b62f65cacbaaa9316453d579de4b4fa"
+  },
+  "patch-panel/LICENSE": {
+    "url": "https://raw.githubusercontent.com/tomasf/keystone-patch-panel/33b2e66203d57256e38e85a160be145cd03f3a86/LICENSE",
+    "sha256": "cada501eae9fad746f1df474519a7ab6b7d478fc979a643ca97306938b700adf"
+  },
+  "patch-panel/patch-panel-19inch.3mf": {
+    "url": "https://raw.githubusercontent.com/tomasf/keystone-patch-panel/33b2e66203d57256e38e85a160be145cd03f3a86/3MF/patch-panel-19inch.3mf",
+    "sha256": "87d961554221eb1cb5d496a41c54a11cd57a169023030bc26c1bfa82e0f1b2f2"
+  }
+}

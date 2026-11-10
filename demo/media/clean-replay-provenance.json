@@ -1,0 +1,659 @@
+{
+  "purpose": "Text-free presentation media for the DeformX/DeformX root README",
+  "date": "2026-11-08",
+  "simulation_source_commit": "5de1d322ceea3a3ea7192012321092af52ffe3a4",
+  "simulation_backend_commit": "708e0a9077487870d486c39954f7fec5873d1d06",
+  "physics_recomputed": false,
+  "caption_or_hud_overlays": false,
+  "geometry_note": "Original physical asset markings may remain. The braider display logo is hidden and its Blender frame widened to 2.1 m, preserving grips, carrier paths and physics. Camera: top carriers 0\u20131 s; downward traverse 1\u20134 s; crossing detail 4\u20136 s; pullback 6\u201310 s; complete machine 10\u201321 s. All saved states and timing are unchanged. Final whole-machine framing is tightened to keep complete fixture bounds within NDC \u00b10.95.",
+  "basics_and_arena": {
+    "script_sha256": "ed8971df62e79d6d8e9a442a60abdb6a9e81f49ee05dac0165aee293c9bc40dc",
+    "basics_manifest_sha256": "0edd43f9af5acdfe2449e8adfd11d568140e0e238c6bbea9ebd21559080b5bef",
+    "basics_native_report_sha256": "a24dc7a43afdbd7ab168ca172640e4baa6139e77cea4e57b5e39962e298ad5ee",
+    "cases": {
+      "hanging": {
+        "video": "hanging.mp4",
+        "sha256": "57f3cae7d2d54b2e2ca583cca77381fcdc348c1938379b61f2762583b12a9470",
+        "poster": "hanging-preview.jpg",
+        "poster_sha256": "a5d9922d9e706949d10f02f9ca8e3e4e70f47efd923b318226cc7c571020e8f9",
+        "frames": 407,
+        "fps": 30,
+        "duration_s": 13.566666666666666,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "trajectory_sha256": "51352f96586ae5b02acbf8e0590b08e1e63246c97399e710b0fa2245192b9955",
+        "playback_segments": [
+          {
+            "view": "whole",
+            "speed": 1.0,
+            "first_video_frame": 0,
+            "end_video_frame_exclusive": 46
+          },
+          {
+            "view": "detail",
+            "speed": 0.125,
+            "first_video_frame": 46,
+            "end_video_frame_exclusive": 407
+          }
+        ]
+      },
+      "endpoints": {
+        "video": "endpoints.mp4",
+        "sha256": "204f2cc262aab9a56e3ead74b53075830853e123a78be1f513340f001d108d26",
+        "poster": "endpoints-preview.jpg",
+        "poster_sha256": "dd4f4be6f0a958c8d4b4948c7eb5b24941c60c69c47dd6994e91ed9fe4680ad5",
+        "frames": 380,
+        "fps": 30,
+        "duration_s": 12.666666666666666,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "trajectory_sha256": "ccc491771853157af266ba81e4e00f95068bea1a7d38755ec9592b3c9965753e",
+        "playback_segments": [
+          {
+            "view": "whole",
+            "speed": 1.0,
+            "first_video_frame": 0,
+            "end_video_frame_exclusive": 43
+          },
+          {
+            "view": "detail",
+            "speed": 0.125,
+            "first_video_frame": 43,
+            "end_video_frame_exclusive": 380
+          }
+        ]
+      },
+      "obstacle": {
+        "video": "obstacle.mp4",
+        "sha256": "65a7f43c50bf20aa9c577666111cd2db763f679446805f315e65aebcb1fffbe1",
+        "poster": "obstacle-preview.jpg",
+        "poster_sha256": "2323399a70b5d745e440a1b1b69682f033551d93af540eb06f6b491c37ee9161",
+        "frames": 380,
+        "fps": 30,
+        "duration_s": 12.666666666666666,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "trajectory_sha256": "dd97a0468823c2f0ba3c46abf55ea1eb92547e7acb88a70bc0f3fa9aed87c8ea",
+        "playback_segments": [
+          {
+            "view": "whole",
+            "speed": 1.0,
+            "first_video_frame": 0,
+            "end_video_frame_exclusive": 43
+          },
+          {
+            "view": "detail",
+            "speed": 0.125,
+            "first_video_frame": 43,
+            "end_video_frame_exclusive": 380
+          }
+        ]
+      },
+      "self-contact": {
+        "video": "self-contact.mp4",
+        "sha256": "94895953c7045fc1985c8b128281d95650f1033c85c9100a4c9cb257df5802c1",
+        "poster": "self-contact-preview.jpg",
+        "poster_sha256": "556d99931ea34d0d2cb35e91477aa7707d34cced16d2f12de0e4aa0096c20b3d",
+        "frames": 326,
+        "fps": 30,
+        "duration_s": 10.866666666666667,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "trajectory_sha256": "5c18846512aa31bc90987c107d9cfe12650130715c54ca77e4bfcd40d298ba67",
+        "playback_segments": [
+          {
+            "view": "whole",
+            "speed": 1.0,
+            "first_video_frame": 0,
+            "end_video_frame_exclusive": 37
+          },
+          {
+            "view": "detail",
+            "speed": 0.125,
+            "first_video_frame": 37,
+            "end_video_frame_exclusive": 326
+          }
+        ]
+      },
+      "materials": {
+        "video": "materials.mp4",
+        "sha256": "79427dd9913aad27c699d69fa5ca02ede26a688e5f5cd4a071b19d837de5015f",
+        "poster": "materials-preview.jpg",
+        "poster_sha256": "fd5aa401aa01d979dd2dd97065ab1901aff9a9134ae63ecf02fb2100494b2d56",
+        "frames": 407,
+        "fps": 30,
+        "duration_s": 13.566666666666666,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "trajectory_sha256": "e982ae2471095a19a5bc896e0e4f884ba64dcfdc3d5d2924c4ddedfa10752946",
+        "playback_segments": [
+          {
+            "view": "whole",
+            "speed": 1.0,
+            "first_video_frame": 0,
+            "end_video_frame_exclusive": 46
+          },
+          {
+            "view": "detail",
+            "speed": 0.125,
+            "first_video_frame": 46,
+            "end_video_frame_exclusive": 407
+          }
+        ]
+      },
+      "tip-target": {
+        "video": "tip-target.mp4",
+        "sha256": "485b4f4dd72b55c6ee4f5f88dd21fb14d9e049cdc966049aa63d94a9b8eed15b",
+        "poster": "tip-target-preview.jpg",
+        "poster_sha256": "306991824e6b188ba1cd987e3fb8c5ae292a19bd89239aae6c2b503eeb5a8036",
+        "frames": 317,
+        "fps": 30,
+        "duration_s": 10.566666666666666,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "trajectory_sha256": "442b7b01f42a65571069e0db1810d2f03f165ad9fa44ece0e2932ea6628ad8ec",
+        "playback_segments": [
+          {
+            "view": "whole",
+            "speed": 1.0,
+            "first_video_frame": 0,
+            "end_video_frame_exclusive": 36
+          },
+          {
+            "view": "detail",
+            "speed": 0.125,
+            "first_video_frame": 36,
+            "end_video_frame_exclusive": 317
+          }
+        ]
+      },
+      "contact-arena": {
+        "video": "contact-arena-long.mp4",
+        "sha256": "7172bedc6cac3af424ed1c68189f8751036700a4d5218815e64ff5b53e1d630d",
+        "poster": "long-preview.jpg",
+        "poster_sha256": "8377893546ee0678a0ecf96702a2c654ab731f317ab42dfb2558ddef5fbf1b00",
+        "frames": 720,
+        "fps": 30,
+        "duration_s": 24.0,
+        "full_decode": true,
+        "added_text": false,
+        "cropped": false,
+        "amplitude_scale": 1,
+        "native_report_sha256": "520a02bcab2f697f30dc47060ccaa78173e7a2c7c0033d1c4c0a1d40236e89dc",
+        "trajectory_sha256": "aae257f82615bcbcbe780e2a8f0b576a40a322628a3465f23d27afcfd62f5c9a",
+        "displayed_worlds": 64,
+        "simulated_worlds": 1024,
+        "playback_speed": 1
+      }
+    }
+  },
+  "braid": {
+    "original": {
+      "trajectory_sha256": "71b2623c0ba8e44d5c854b63a73bf2c9446d80fe7bf5517aabb378bc0ecc3ce2",
+      "video_sha256": "ea2025caad05641bb9d968236f8d5b8b019aca8701f5848916601202389d4cc8",
+      "native_report_sha256": "253f3a939f61cfe5bd8bfe3979c7184885c1cc56e4782d4a6f749a49dbef8b08",
+      "renderer_source_sha256": {
+        "render.py": "73841737b2d6a084e0b53f14792c796f6ae34183b0c12ca7e484f9f610340870",
+        "render_native.py": "a9c5beb3ba949db411777f721ed317591322e7544033ea9e6a1c93e275c08c87"
+      },
+      "fixture_manifest_sha256": "b5d38ee1b6313e876c6ca25b25fed7115a2dfc4caaa9ffd3170bd8f4f45efd16"
+    },
+    "clean_capture": {
+      "matches_all_original_timestamps_and_saved_states": true,
+      "frames": 630,
+      "source_first_s": 0.3,
+      "source_last_s": 21.266666666666666,
+      "playback_speed": 1.0,
+      "capture_clock_delta_max_s": 0.0,
+      "max_render_position_error_m": 0.0,
+      "physics_stepping": false,
+      "image_overlay": false,
+      "hidden_visual_lettering_prim": "/World/Hardware/Frame/FrontLogo",
+      "camera_framing": {
+        "native_focal_length_mm": 33.0,
+        "native_aperture_mm": [
+          20.954999923706055,
+          11.787187576293945
+        ],
+        "detail": {
+          "subject": "three moving top carriers",
+          "eye_m": [
+            0.24,
+            -1.65,
+            3.16
+          ],
+          "target_m": [
+            0.0,
+            0.0,
+            2.98
+          ]
+        },
+        "whole": {
+          "eye_m": [
+            0.6907453651744309,
+            -9.83654092850216,
+            2.416512265633324
+          ],
+          "target_m": [
+            0.0,
+            0.03125000256113708,
+            1.5777500364929438
+          ]
+        },
+        "machine_bounds_m": [
+          [
+            -1.0499999523162842,
+            -0.37749999994412065,
+            -0.0025000013411045074
+          ],
+          [
+            1.0499999523162842,
+            0.4400000050663948,
+            3.158000074326992
+          ]
+        ],
+        "whole_machine_ndc_bounds": [
+          [
+            -0.3582100279791895,
+            -0.9439181852458125
+          ],
+          [
+            0.34452654240163244,
+            0.9221115014793206
+          ]
+        ],
+        "max_abs_whole_machine_ndc": 0.9439181852458125,
+        "full_machine_ndc_limit": 0.95,
+        "descent_start_playback_s": 1.0,
+        "descent_end_playback_s": 4.0,
+        "braid_detail": {
+          "eye_m": [
+            0.24,
+            -1.65,
+            1.6800000000000002
+          ],
+          "target_m": [
+            0.0,
+            0.0,
+            1.5
+          ]
+        },
+        "detail_hold_playback_s": [
+          4.0,
+          6.0
+        ],
+        "pullback_start_playback_s": 6.0,
+        "pullback_end_playback_s": 10.0,
+        "transition": "quintic smootherstep; one continuous camera shot",
+        "up_vector": [
+          0.0,
+          0.0,
+          1.0
+        ],
+        "front_fill": {
+          "intensity": 1100,
+          "rgb": [
+            0.78,
+            0.88,
+            1.0
+          ],
+          "rotation_xyz_deg": [
+            90,
+            0,
+            0
+          ]
+        }
+      },
+      "complete_machine_framing_verified": true,
+      "whole_view_frames": 330,
+      "fixture_manifest_sha256": "0383b89508bac06861a4ccecf77d9c6f2b5fad46f4ccaf574d65289bbf0718ff",
+      "fixture_asset_sha256": {
+        "carrier_0.usdc": "19c664de2e7a07d3a82f09bac7b960c60199d63eee518661837b7e7ada5f7c5f",
+        "carrier_1.usdc": "d978d21ee685d04a64393e3251126771aaee21aa382a37e3ae8c0ad009719444",
+        "carrier_2.usdc": "44ad5980945e0a1dc85f7fa04ead90db9deb6af9fa53a46d431fb72f7b7a3ca4",
+        "frame.usdc": "5c5c3844383909ad534b9483d655d2024bea959ce25d61fd1ac78f691a18c46d"
+      },
+      "frame_presentation": {
+        "style": "wide portal frame",
+        "width_m": 2.0999999046325684,
+        "height_m": 3.16049999371171,
+        "height_to_width": 1.5050000653522384,
+        "bounds_m": [
+          [
+            -1.0499999523162842,
+            -0.3774999976158142,
+            -0.0025000013411045074
+          ],
+          [
+            1.0499999523162842,
+            0.4399999976158142,
+            3.1579999923706055
+          ]
+        ],
+        "original_bounds_m": [
+          [
+            -0.4950000047683716,
+            -0.2874999940395355,
+            -0.0025000013411045074
+          ],
+          [
+            0.4950000047683716,
+            0.3499999940395355,
+            3.1579999923706055
+          ]
+        ],
+        "original_manifest_sha256": "b5d38ee1b6313e876c6ca25b25fed7115a2dfc4caaa9ffd3170bd8f4f45efd16",
+        "original_author_source_sha256": "1159d362cc71b7bc497c165b412230b69819469916a1e424e00bfd1f158af9ef",
+        "protected_geometry_unchanged": true,
+        "protected_objects": [
+          "AnchorPlinth",
+          "AnchorTray",
+          "CarrierLane_-1",
+          "CarrierLane_1",
+          "DriveCassette",
+          "FixedGripCollar_0",
+          "FixedGripCollar_1",
+          "FixedGripCollar_2",
+          "FixedGripFerrule_0",
+          "FixedGripFerrule_1",
+          "FixedGripFerrule_2",
+          "FixedGripHousing_0",
+          "FixedGripHousing_1",
+          "FixedGripHousing_2",
+          "FixedGripStem_0",
+          "FixedGripStem_1",
+          "FixedGripStem_2"
+        ],
+        "changed_display_objects": [
+          "DarkWorkSurface",
+          "DeckBolt_-1_-0.13",
+          "DeckBolt_-1_0.22",
+          "DeckBolt_1_-0.13",
+          "DeckBolt_1_0.22",
+          "EtchedIndex_-1_0.23",
+          "EtchedIndex_-1_0.34",
+          "EtchedIndex_-1_0.45",
+          "EtchedIndex_-1_0.56",
+          "EtchedIndex_-1_0.67",
+          "EtchedIndex_-1_0.78",
+          "EtchedIndex_-1_0.89",
+          "EtchedIndex_-1_1.0",
+          "EtchedIndex_-1_1.11",
+          "EtchedIndex_-1_1.22",
+          "EtchedIndex_-1_1.33",
+          "EtchedIndex_-1_1.44",
+          "EtchedIndex_-1_1.55",
+          "EtchedIndex_-1_1.6600000000000001",
+          "EtchedIndex_-1_1.77",
+          "EtchedIndex_-1_1.88",
+          "EtchedIndex_-1_1.99",
+          "EtchedIndex_-1_2.1",
+          "EtchedIndex_-1_2.21",
+          "EtchedIndex_-1_2.3200000000000003",
+          "EtchedIndex_-1_2.4299999999999997",
+          "EtchedIndex_-1_2.54",
+          "EtchedIndex_-1_2.65",
+          "EtchedIndex_-1_2.76",
+          "EtchedIndex_-1_2.87",
+          "EtchedIndex_1_0.23",
+          "EtchedIndex_1_0.34",
+          "EtchedIndex_1_0.45",
+          "EtchedIndex_1_0.56",
+          "EtchedIndex_1_0.67",
+          "EtchedIndex_1_0.78",
+          "EtchedIndex_1_0.89",
+          "EtchedIndex_1_1.0",
+          "EtchedIndex_1_1.11",
+          "EtchedIndex_1_1.22",
+          "EtchedIndex_1_1.33",
+          "EtchedIndex_1_1.44",
+          "EtchedIndex_1_1.55",
+          "EtchedIndex_1_1.6600000000000001",
+          "EtchedIndex_1_1.77",
+          "EtchedIndex_1_1.88",
+          "EtchedIndex_1_1.99",
+          "EtchedIndex_1_2.1",
+          "EtchedIndex_1_2.21",
+          "EtchedIndex_1_2.3200000000000003",
+          "EtchedIndex_1_2.4299999999999997",
+          "EtchedIndex_1_2.54",
+          "EtchedIndex_1_2.65",
+          "EtchedIndex_1_2.76",
+          "EtchedIndex_1_2.87",
+          "Footing",
+          "FrontIdentificationPlate",
+          "FrontLogo",
+          "FrontStatusWindow",
+          "GantryTop",
+          "OverheadGantry",
+          "RecessedDeck",
+          "TopBumper",
+          "TopSignalStrip",
+          "TowerFace_-1",
+          "TowerFace_1",
+          "TowerShoe_-1",
+          "TowerShoe_1",
+          "TowerTrack_-1",
+          "TowerTrack_1",
+          "Tower_-1",
+          "Tower_1"
+        ],
+        "carrier_assets_unchanged": true
+      },
+      "native_report_sha256": "d18bd766c69a063120f7a2170c0942ecfd51a145747ce297d9b1c962eb1ce4c6",
+      "native_worker_sha256": "4aa809c78ec8eb9acc50017267f413efefc0c86d6647a156b494db15dec6165b",
+      "recipe_sha256": "6a0991fc81012a800557f6acf501f26257c51923be9f039bb3d97de13835a4b3"
+    },
+    "poster": {
+      "path": "preview-process-clean.jpg",
+      "source_frame": 629,
+      "source_time_s": 21.266666666666666,
+      "sha256": "166edac9f0e28493494dc1b59df294eb986d0f9b13c894076410b893760cb77c"
+    },
+    "video": {
+      "path": "braiding-process-clean.mp4",
+      "bytes": 3970306,
+      "full_decode": true,
+      "frames": 630,
+      "fps": 30,
+      "duration_s": 21.0,
+      "width": 1280,
+      "height": 720,
+      "relative_pts_error_s": 3.3333333604446125e-07,
+      "sha256": "5105fa41aa3521f78bc6f32dcecace2dae061ef168041be32911e1e4aee1b1fc"
+    }
+  },
+  "winch": {
+    "host": "ps",
+    "method": "Isaac Sim camera RGB replay of the archived eight-cycle driven recording, using native-resolution DLAA",
+    "overlay": "Pillow HUD bypassed before writing frames",
+    "capture": {
+      "camera_and_sample_schedule_identical": true,
+      "trajectory_sha256": "bd40012426602103e00777bd5b39a751ebf960943f94f9d05be7b0258d713951",
+      "asset_sha256": {
+        "chassis.usdc": "0c961f65638536f30db38b11c10aa264a3a76e1ea1a2a663b98c74ec871da5cc",
+        "drive.usdc": "45b5b20b243a001b094be52f6874221eae0360a3cf93f363ec787f20a84cae5d",
+        "guide.usdc": "31e20ceedba42de1b94e6471ab678e95cc45834d9f6d0832deebef05ba7debb1",
+        "tether.usdc": "04d6186e1f5d656d270c1edbcb1f6e11002ddafb9fcaeea11db8c6182a575daf",
+        "ferrule.usdc": "a93101aba05df46da4519f05492b1afa36e2411f253932fda66765dc11007c35"
+      },
+      "input_times_s": [
+        0.55,
+        26.55
+      ],
+      "playback_speed": 1.0,
+      "frame_count": 781,
+      "scheduled_cycles": 8,
+      "capture_clock_delta_s": 0.0,
+      "physics_steps_during_capture": 0,
+      "source_interval_max_error_s": 1.8943180357666733e-15,
+      "renderer_exit_status": 0
+    },
+    "original_sources": {
+      "code/DeformX-showcase-20261105/demo/winch_tension/render.py": "bdc20aaf72d967a3af6772350d5c258726c91deac07a1773325da12c785e0d67",
+      "runs/long-showcases-20261108/winch/nominal/report.json": "357b992d6c6ce3019813ec53e04d106882c0208b30b2b54bcd8753de1d146bed",
+      "runs/long-showcases-20261108/winch/nominal/trajectory.npz": "bd40012426602103e00777bd5b39a751ebf960943f94f9d05be7b0258d713951",
+      "runs/usable-examples-20261107/winch/assets/manifest.json": "bbb572d017d822e868a3e72a9054bc696153b605da3d5804e1c5bc5966ca80e2",
+      "runs/usable-examples-20261107/winch/assets/textures/color_121212.hdr": "c4c6bc7a125abb414d9336a2b03c698f9db650c7917b69068beaedb569cb2291",
+      "runs/long-showcases-20261108/winch/native/native_report.json": "e898ef9b18afb826d21f3b299d9a20c12d27cd0f78790957abbd814394fe8f56",
+      "runs/long-showcases-20261108/winch/native/winch_tension.mp4": "69ec1d93ea982e4a545ba35b99bb0de9e1b52b2231e6ac62067c72e2c6ee22d2"
+    },
+    "isolated_renderer": {
+      "source/demo/winch_tension/__init__.py": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source/demo/winch_tension/analysis.py": "a053b38d855ae3893eab75fe73808de42fd3d553fcbb578a3abef26d81c2b72c",
+      "source/demo/winch_tension/render.py": "5e7fdf3d1bd06c204e4ae93f416b535e4c9960b08bac005ef71394d9383cc425",
+      "source/demo/winch_tension/model.py": "d5cfac048ffe46cd04b9c9b975d72a854b0527fda94e052406ee7ad2600a6e59"
+    },
+    "clean_native_report_sha256": "f81403d402d5add8229d788115cd589f15a419a310654927cdc390a847958df4",
+    "video": {
+      "name": "winch-tension-long-clean.mp4",
+      "sha256": "fb264788078b369f9adab8a2af37535e08db792c1a0caa0f1b090ee0f32270f0",
+      "full_decode_ok": true,
+      "stream": {
+        "index": 0,
+        "codec_name": "h264",
+        "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+        "profile": "High",
+        "codec_type": "video",
+        "codec_tag_string": "avc1",
+        "codec_tag": "0x31637661",
+        "mime_codec_string": "avc1.64001f",
+        "width": 1280,
+        "height": 720,
+        "coded_width": 1280,
+        "coded_height": 720,
+        "has_b_frames": 2,
+        "pix_fmt": "yuv420p",
+        "level": 31,
+        "chroma_location": "left",
+        "field_order": "progressive",
+        "refs": 4,
+        "is_avc": "true",
+        "nal_length_size": "4",
+        "id": "0x1",
+        "r_frame_rate": "30/1",
+        "avg_frame_rate": "30/1",
+        "time_base": "1/15360",
+        "start_pts": 0,
+        "start_time": "0.000000",
+        "duration_ts": 399872,
+        "duration": "26.033333",
+        "bit_rate": "1472452",
+        "bits_per_raw_sample": "8",
+        "nb_frames": "781",
+        "nb_read_frames": "781",
+        "extradata_size": 46,
+        "disposition": {
+          "default": 1,
+          "dub": 0,
+          "original": 0,
+          "comment": 0,
+          "lyrics": 0,
+          "karaoke": 0,
+          "forced": 0,
+          "hearing_impaired": 0,
+          "visual_impaired": 0,
+          "clean_effects": 0,
+          "attached_pic": 0,
+          "timed_thumbnails": 0,
+          "non_diegetic": 0,
+          "captions": 0,
+          "descriptions": 0,
+          "metadata": 0,
+          "dependent": 0,
+          "still_image": 0,
+          "multilayer": 0
+        },
+        "tags": {
+          "language": "und",
+          "handler_name": "VideoHandler",
+          "encoder": "Lavc63.1.102 libx264"
+        }
+      }
+    },
+    "poster": {
+      "name": "winch-tension-long-clean-preview.png",
+      "sha256": "9aa4f9ad94cfeed3c5694cb96c27d02319c187cb62f490cd4878f4d464516221",
+      "source_frame": 41,
+      "width": 1280,
+      "height": 720
+    },
+    "render_stability": {
+      "path": "demo/winch_tension/render-stability.json",
+      "sha256": "e9afc4480ed2ec917ac177213ff58f1d5179f86bfe6d533eeeaf7517c0a92641",
+      "effective_anti_aliasing": "DLAA",
+      "previous_video_sha256": "c5d6a2ea972c68ce602423e0ce9083d61f617da007ba20e1eb43cd71d3b51a53"
+    }
+  },
+  "guitar": {
+    "complete": true,
+    "source_commit": "5de1d322ceea3a3ea7192012321092af52ffe3a4",
+    "old_video_sha256": "854689d424822291a7aae52b4c128acd517f67a06d5eaaae1de94c4033740f38",
+    "native_renderer_before_sha256": "2e7ac0b258461f0d5f9b05a606340e85e46059e9518fff8145111117b8a99517",
+    "native_renderer_after_sha256": "65c3e73995822a49638175ab2fefff181d888f8dd75ed7b1e34b2c5de64f8904",
+    "patch_sha256": "44cf3fe7c1c0d72173294363d1b2408f2979cf1fb2ec44351df0a2b3051e188f",
+    "native_report_sha256": "027bc7e162b2125bd26f511b66ef66d844246b9a059ae5bf7ba3c18bbcd7c8f6",
+    "frame_map_sha256": "cf2a266235dce65be78400d85bfed27f70156d2981b72edb44ce7f270744396a",
+    "camera_profile_sha256": "c36f7bf6631c22b90442c0fb4063a706d685b88aff570c80e2d8d33ebd5e6da1",
+    "source_trajectory_sha256": "f20bc5d9025250833b6920a1ec480d8169224554326ecf3ca3cec1911ed22cda",
+    "source_motion_sha256": "b9690ef5efce649668c82a86b9d57422b2126c66633086746ff4971ebc67b9dc",
+    "source_profile_sha256": "4a02ea889d80085b4cc5a59337e3b6cc9f20762192f16453670837c30eb336bf",
+    "source_acceptance_audit_sha256": "b6cf68b5666278dec43d928d83f83bd6dbf923ebde933e84334613ec78f1e917",
+    "equal_frame_rows_excluding_png_sha256": 478,
+    "native_frames_checked_for_absence_of_original_hud_panel": 478,
+    "capture_clock_delta_max_s": 0.0,
+    "replay_max_matrix_error": 0.0,
+    "overview_frames": 294,
+    "physics_steps_during_capture": 0,
+    "amplitude_scale": 1.0,
+    "video_sha256": "6776de6c8623cd4c9cae3d9aefb6b7d8d870ff8328a55112e1db10f6867723b5",
+    "full_decode_success": true,
+    "ffprobe": {
+      "programs": [],
+      "stream_groups": [],
+      "streams": [
+        {
+          "codec_name": "h264",
+          "codec_type": "video",
+          "width": 1280,
+          "height": 720,
+          "pix_fmt": "yuv420p",
+          "r_frame_rate": "30/1",
+          "avg_frame_rate": "30/1",
+          "nb_frames": "478",
+          "nb_read_frames": "478"
+        }
+      ],
+      "format": {
+        "duration": "15.933333"
+      }
+    },
+    "poster_sha256": "c866c51df3f2c0bf65453a4e2e96c743679cc5ecd66eb6dc6a22866348e6989b",
+    "poster_video_frame": 355,
+    "poster_trajectory_index": 4024,
+    "qa_contact_sheet_sha256": "7444ea0f259a38547dec33ec35208521c929aa7694fb5dae35406d0918d7bcf1",
+    "qa_encoded_frames": [
+      0,
+      60,
+      132,
+      148,
+      184,
+      239,
+      330,
+      420,
+      477
+    ]
+  }
+}

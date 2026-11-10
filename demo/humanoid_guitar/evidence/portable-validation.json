@@ -1,0 +1,328 @@
+{
+  "complete": true,
+  "host": "ps",
+  "recovered_scene_source_revision": "5de1d322ceea3a3ea7192012321092af52ffe3a4",
+  "release_backend_revision": "96b8514c7c55c724f1abba1fbf6ed6642b7db72b",
+  "release_backend_extension_sha256": "652156b9af5a4b249dc6a1ed007894e415b438322ad771e5a14ad18efbbc4f85",
+  "runtime": {
+    "python": "3.11.15",
+    "numpy": "1.26.0",
+    "scipy": "1.15.3",
+    "torch": "2.7.0+cu128",
+    "trimesh": "4.5.1",
+    "warp-lang": "1.14.0",
+    "isaacsim": "5.1.0.0",
+    "pillow": "11.3.0",
+    "gpu_and_driver": "NVIDIA GeForce RTX 5090, 580.178.04",
+    "cuda_toolkit": "Build cuda_12.8.r12.8/compiler.35583870_0",
+    "blender": "Blender 4.5.9 LTS",
+    "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "exit_codes": {
+    "prepare": 0,
+    "prepare-factory": 0,
+    "asset-geometry": 0,
+    "asset-static-clearance": 0,
+    "run": 0,
+    "audit": 0,
+    "render": 0
+  },
+  "fresh_source_files_verified": 63,
+  "registered_collision_meshes": 50,
+  "rebuilt_factory_startup_contact_and_clearance_mesh_hashes_equal": true,
+  "unloaded_instrument_centerline_crossings": 0,
+  "physics": {
+    "settings": {
+      "substeps": 200,
+      "iterations": 24,
+      "dt_s": 0.0020833333333333333,
+      "record_hz": 480.0,
+      "corridor_spacing_m": 0.0015,
+      "grid_scale": 1.0,
+      "vertices_per_string": 138,
+      "strings": 6,
+      "pinned_vertices": 12,
+      "only_endpoint_positions_pinned": true,
+      "fix_root_orientation": false,
+      "settling_physical_s": 2.0,
+      "main_physical_s": 12.45,
+      "requested_main_physical_s": 12.45,
+      "deterministic_sweeps": true,
+      "pad_node_replaces_nearby_corridor_node": true,
+      "pick_sampling_halfwidth_m": 0.014
+    },
+    "metrics": {
+      "finite": true,
+      "flags": [],
+      "max_segment_strain": 0.010505437850952148,
+      "max_endpoint_error_m": 3.252772378586282e-08,
+      "settled_max_velocity_m_s": 0.007141722831875086,
+      "initial_contact_force_N": 0.0,
+      "settled_tension_proxy_N_per_string_percentiles": [
+        [
+          74.88101959228516,
+          74.93913269042969,
+          74.99903106689453,
+          75.0775360107422,
+          75.14655303955078
+        ],
+        [
+          74.8559799194336,
+          74.92643432617187,
+          75.00082397460938,
+          75.06608581542969,
+          75.15281677246094
+        ],
+        [
+          74.83720397949219,
+          74.9248275756836,
+          74.99813842773438,
+          75.06984252929688,
+          75.13582611083984
+        ],
+        [
+          74.90158081054688,
+          74.90676574707031,
+          74.99813842773438,
+          75.07181396484376,
+          75.15013122558594
+        ],
+        [
+          74.90605163574219,
+          74.9078369140625,
+          74.99813842773438,
+          75.07342224121093,
+          75.13671875
+        ],
+        [
+          74.8300552368164,
+          74.96487884521484,
+          74.99724578857422,
+          75.05643157958984,
+          75.12152099609375
+        ]
+      ],
+      "settled_transverse_sag_m_per_string": [
+        3.449346329413199e-05,
+        3.4370846495996194e-05,
+        4.5584817125763675e-05,
+        3.837273287127612e-05,
+        3.438461637065339e-05,
+        3.424311215743924e-05
+      ],
+      "min_rest_segment_length_m": 0.0014114909572526813
+    },
+    "main_loop_wall_s": 731.6058722090092,
+    "settling_wall_s": 83.72817410796415
+  },
+  "audit": {
+    "complete": true,
+    "acceptance_scope": "single_case_24_stroke",
+    "gates": {
+      "finite_unflagged_full_record": true,
+      "only_endpoints_pinned": true,
+      "fixed_held_left_joints": true,
+      "opposing_pad_and_fret_support": true,
+      "five_ordered_pick_contacts_per_stroke": true,
+      "measured_transverse_excursion": true,
+      "pick_released_at_each_turnaround": true,
+      "no_pick_on_held_string_or_outside_strokes": true,
+      "no_right_hand_or_fingerboard_contact": true
+    },
+    "failed_required_gates": [],
+    "audit_source_sha256": "5b4480598cc9e996c17cb4225e981f1ae3c9f05cce055ebe259bde14fc6ed5fc",
+    "case_report_sha256": "c55a6c5937526553b3404f8e04a96163b6899c2dd76d12eff3550cf086ffeb1e",
+    "profile_sha256": "03e0054447c7d495f38adc676c36d73ef1f14c646a30109610879e6e132749aa",
+    "motion_sha256": "b9690ef5efce649668c82a86b9d57422b2126c66633086746ff4971ebc67b9dc",
+    "trajectory_sha256": "70ac447b6f5a89a4295a98fcc10934209b270f5dd36325ae7809f6a150cd5655",
+    "criteria_sha256": "d0bdda4d010738f07324d89429bba448a05f07977f37e07a80fc84d0bb0d82c9",
+    "stroke_count": 24,
+    "saved_states": 5977,
+    "recorded_seconds": 12.45,
+    "loaded_stroke_string_channels": 120,
+    "visible_supported_states": 5425,
+    "visible_states": 5425,
+    "longest_visible_support_dropout_s": 0.0,
+    "minimum_per_stroke_support_fraction": 1.0,
+    "median_visible_fret_load_N": 5.498994827270508,
+    "transverse_excursion_range_m": [
+      0.0013783600879833102,
+      0.0017316207522526383
+    ],
+    "max_excluded_pick_load_N": 0.0,
+    "max_outside_stroke_pick_load_N": 0.0,
+    "max_turnaround_pick_load_N": 0.0,
+    "max_right_hand_load_N": 0.0,
+    "max_visible_fingerboard_load_N": 0.0,
+    "validation_scope": "Single case; no left-disabled control, temporal/spatial comparisons or dense penetration audit."
+  },
+  "native": {
+    "app_close_invoked": true,
+    "capture_clock_delta_max_s": 0.0,
+    "replay_max_matrix_error": 0.0,
+    "physics_steps_during_capture": 0,
+    "fullbody_framing_proof": {
+      "overview_frames": 294,
+      "image_resolution_px": [
+        1280,
+        720
+      ],
+      "minimum_required_margin_fraction": 0.035,
+      "minimum_margin_px_by_subject": {
+        "robot": {
+          "left": 405.53983012689724,
+          "top": 78.15941736439817,
+          "right": 406.2033791542325,
+          "bottom": 82.78529623085399
+        },
+        "head": {
+          "left": 525.8725547323279,
+          "top": 104.46979756544044,
+          "right": 632.0757338280906,
+          "bottom": 479.6013420464824
+        },
+        "left_foot": {
+          "left": 656.4816601533171,
+          "top": 528.6681264829654,
+          "right": 523.8270979875576,
+          "bottom": 131.59190745333626
+        },
+        "right_foot": {
+          "left": 559.808290276497,
+          "top": 558.9772486825782,
+          "right": 618.329068456898,
+          "bottom": 97.64666625354334
+        },
+        "guitar": {
+          "left": 537.577471549135,
+          "top": 138.9793283714859,
+          "right": 383.3181630681063,
+          "bottom": 316.4507365680228
+        },
+        "stool": {
+          "left": 410.8346783355729,
+          "top": 357.44084197483124,
+          "right": 628.1327362518147,
+          "bottom": 50.776867366611896
+        }
+      }
+    },
+    "video": {
+      "complete": true,
+      "full_decode_success": true,
+      "frames": 478,
+      "acceptance_scope": "single_case_24_stroke",
+      "video_sha256": "c1a33ece3d62b24bd2b7d7e66cbf9f67728149cc5be80155ac4c504d4dffbe0c",
+      "native_report_sha256": "8a3e88c5befa9955c0fffe5feda27bd249522a407a1254e3214dbe44a81bffa2",
+      "frame_map_sha256": "3f583fac38179bd75c658b7364b32640903d71764fbb927b92a72a7cac21576d",
+      "trajectory_sha256": "70ac447b6f5a89a4295a98fcc10934209b270f5dd36325ae7809f6a150cd5655",
+      "native_capture_exit_code": 0,
+      "probe": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "codec_name": "h264",
+            "width": 1280,
+            "height": 720,
+            "pix_fmt": "yuv420p",
+            "avg_frame_rate": "30/1",
+            "nb_read_frames": "478"
+          }
+        ],
+        "format": {
+          "duration": "15.933333"
+        }
+      }
+    }
+  },
+  "artifact_sha256": {
+    "assets-fresh/sources/verified-sources.json": "a42c574d094402944eebaae48d19b24499823d0025d248ff9e4a8132c64bd230",
+    "assets-fresh/contact-v4/contact_profile.json": "dc35f0ab9d6a3efd20a37ddf20fb8731f340c97d7d57b06e7a3a749f574bf0f5",
+    "assets-fresh/contact-v4/contact_geometry_validation.json": "4fb3cdf71122ba91ce7b4362244bb7547783d6a260637b7759d105ec216a4ed8",
+    "assets-fresh/contact-v4/static_clearance_validation.json": "e744eac200aa5398aeb4e1cce704fd6a3f99fbc7361ad61c1ecd585627a09ef9",
+    "assets-factory/contact-v4/contact_profile.json": "37c3fdee8de73c0c9cd94bc2c30080a84ed82a864563b9c468c84b8a28cae0d8",
+    "factory-pose.json": "79b7a0498343b2f3e87621e71da0523bbcb384eaa0aef7c14dc70c1d250fa2fc",
+    "run-fresh/pose.json": "ffc7af88053ef32283c1d97492eecbd0c80e0fadaba8d9e16e799ee214b6dd9e",
+    "run-fresh/cache-report.json": "0fb2835cabf29c162d36eb66a49b16628144e4621fb96c0508b735089139627e",
+    "run-fresh/case/report.json": "c55a6c5937526553b3404f8e04a96163b6899c2dd76d12eff3550cf086ffeb1e",
+    "run-fresh/case/execution.json": "34601417b356230ee7bba5a7e2028670ec73c32daeb3b3973149ac7328a49bf8",
+    "run-fresh/case/asset_integrity.json": "2f8dde93308cf4d81c145f51f10d0ee36bb5ea8f3897dcf26e20fc32ef1a5944",
+    "run-fresh/case/criteria.json": "d0bdda4d010738f07324d89429bba448a05f07977f37e07a80fc84d0bb0d82c9",
+    "run-fresh/case/profile.json": "03e0054447c7d495f38adc676c36d73ef1f14c646a30109610879e6e132749aa",
+    "run-fresh/case/motion.npz": "b9690ef5efce649668c82a86b9d57422b2126c66633086746ff4971ebc67b9dc",
+    "run-fresh/case/trajectory.npz": "70ac447b6f5a89a4295a98fcc10934209b270f5dd36325ae7809f6a150cd5655",
+    "run-fresh/audit.json": "1f43e8031619adf818158d4e24c5600a245f0ae38a6fb48e21476aa47b09ef73",
+    "run-fresh/native/native_report.json": "8a3e88c5befa9955c0fffe5feda27bd249522a407a1254e3214dbe44a81bffa2",
+    "run-fresh/native/frames.json": "3f583fac38179bd75c658b7364b32640903d71764fbb927b92a72a7cac21576d",
+    "run-fresh/native/video_report.json": "0be3623d100cd207d3823106093b8858e4d63f6870de93ed16974d74b348b917",
+    "run-fresh/native/humanoid-guitar-fullbody-long.mp4": "c1a33ece3d62b24bd2b7d7e66cbf9f67728149cc5be80155ac4c504d4dffbe0c"
+  },
+  "packaged_source_sha256": {
+    "__init__.py": "0971ab420b807a391f11ba9909a512386e23a720d1dbc21049e9c8b479232a25",
+    "asset_sources.json": "7885ef5089993355980b0f6d3454c12dc2cd67234d0c74566072b639b7a86073",
+    "bind_contact_pose.py": "088d9b8babbffac7049fb65e9b1128dc7d1bda476e1a4884e1d0d1e8822d7fe2",
+    "blender_assets.py": "5b4fc4faf24bdc5ff624e8eee5254b346140d028bc51e6b3a060684dc9aeef23",
+    "blender_contact_assets.py": "e93c8970ed98280e107e43403eb75c6f03376553c73e16af40d21670bcd57b63",
+    "blender_contact_binding.py": "21bb9ed33d73d6c67e85c2b710997938bf3266645745a51f188b522cf383ccc9",
+    "blender_contact_hands.py": "aa02abf67b6b8e6bf27716453f68e831ad123a3811f5e54f871b6652221fbd45",
+    "blender_contact_pick.py": "7294b50517a123204a4eeff55df84b9b1867804efb039b37be6f376079df2656",
+    "blender_contact_validate.py": "759a61eccdef2f4090ca0e533e567c0ca3b704ab015028061a5dab4744836c4e",
+    "contact_freeze.py": "47b09ab7195be5baa8fb79d3c5d8c433aeb083d70a37dfb34929633e23a28f65",
+    "contact_full_motion.py": "98a0629bd05025a05f612e5810d0e04be45768f7d3e663ba934d225be2f1293f",
+    "contact_fullbody_framing.py": "25c0d7bb30d8e2a863b6b58067df0e0ef5ef62c6187272065e1e70b6174418c3",
+    "contact_integrity.py": "5110598a9d80c5b46fcfb0816bf125a570db32b507aa886b55a0b9e4f6d0cc7d",
+    "contact_loop_fullbody_camera.json": "c36f7bf6631c22b90442c0fb4063a706d685b88aff570c80e2d8d33ebd5e6da1",
+    "contact_loop_pullback.py": "064360475ca79d2738bd0b40fffbfcbdd826ad0f5311767c088cb94c7a1bca44",
+    "contact_loop_replay.py": "ae01a45974dabfe02b9a08581fbaba5eef939148aa4ad351f784b05dddb8d2dd",
+    "contact_loop_strum_path.py": "f193b2f58b773d31f0a05dc396c8ef90822d0c7fce35cda7fc5f522cf4013963",
+    "contact_motion.py": "da3b00725446665a05db6dab159bf841e632752516b828d4964c209bca314a26",
+    "contact_parameters.json": "cc9fd7ab2b9db56514755acfba18c8746121735ead685bd3a18bf570972ffe57",
+    "contact_physics.py": "bbceff5a5a9b4fcc56574c09b84a11cc112893e2d8bcb3c4a924b41b6225ce62",
+    "contact_render.py": "65fcebde03a740ca2c81ca256804dab36b753cfd01017e9c8115a2255323ad41",
+    "contact_render_native.py": "d6d7ed1fca32dd72fdb25cf9b5f952253fd28496641e9c8a11653cdfed45fd05",
+    "contact_run.py": "17f32bc47d2d158fbea54d0cd51955239eb30d9d60f1132c302e1d4dda0a81e0",
+    "contact_strum_path.py": "4b0479542c4662f37326baeb96c2216922328bf72dd3a9ae1d4d197aaa06f959",
+    "contact_wide_path.py": "ec01df3e2ca00ebb071d23c5c1893ba9cf7192ed953de7db2ddf55f2942117f6",
+    "criteria_template.json": "2c7ab3a7b4ee2a703a2694d654f9912f3775bbcdb021797aa82ff52c6886b37b",
+    "fetch_assets.py": "2edd55112affc39431e8ba01a0e8fcd0a709c09592d2f1846c3ee155652d37d5",
+    "make_preview.py": "d1c228422e9e00ea1331a7a3c261e46d45375f63eba275dad00a5e9633618ce9",
+    "motion.py": "28e745f7decc0168407105dc5ade6b83fae6850a594baba3d015e7db6b554650",
+    "portable_audit.py": "5b4480598cc9e996c17cb4225e981f1ae3c9f05cce055ebe259bde14fc6ed5fc",
+    "pose_template.json": "1edc60b439ed73b9ba3bd0cd78b6f5e6b765212562ff84a1472e9e078539a744",
+    "prepare_assets.py": "dcea3142746edc29222d810eef2cbf9bab5712bd71dba6b23c1bd6794a733881",
+    "prepare_contact_assets.py": "2836e135eee9025cf523cef25cc21cb1991fef3ad5a8e83c0f910b8725c93429",
+    "presentation.json": "c32123bfcea0a9fb1754ae2c37f3b2210681aeae332344db189580ec75f3bc11",
+    "render-stability.json": "60f5560a558d6ecd5357a02fcc85a1e7fda7cc5139fbc4deb91451ec6b22b40b",
+    "run.py": "71fe29dd226e5a76c25309fe4bda10d2ca3d7f751b5c90209de22a640d8f54c5",
+    "validate_contact_geometry.py": "f28a22583c461ebadcd3e70c758cab3ddd6015028b632cbbd6530254a5607497"
+  },
+  "physics_startup_source_sha256": {
+    "blender_contact_hands.py": "aa02abf67b6b8e6bf27716453f68e831ad123a3811f5e54f871b6652221fbd45",
+    "blender_assets.py": "5b4fc4faf24bdc5ff624e8eee5254b346140d028bc51e6b3a060684dc9aeef23",
+    "bind_contact_pose.py": "088d9b8babbffac7049fb65e9b1128dc7d1bda476e1a4884e1d0d1e8822d7fe2",
+    "__init__.py": "0971ab420b807a391f11ba9909a512386e23a720d1dbc21049e9c8b479232a25",
+    "contact_freeze.py": "47b09ab7195be5baa8fb79d3c5d8c433aeb083d70a37dfb34929633e23a28f65",
+    "contact_run.py": "17f32bc47d2d158fbea54d0cd51955239eb30d9d60f1132c302e1d4dda0a81e0",
+    "contact_loop_strum_path.py": "f193b2f58b773d31f0a05dc396c8ef90822d0c7fce35cda7fc5f522cf4013963",
+    "blender_contact_pick.py": "7294b50517a123204a4eeff55df84b9b1867804efb039b37be6f376079df2656",
+    "prepare_assets.py": "7458b5ad29f63d75fd1a9997188352d53d756fb21ff3d40d44b31d068b292995",
+    "fetch_assets.py": "2edd55112affc39431e8ba01a0e8fcd0a709c09592d2f1846c3ee155652d37d5",
+    "blender_contact_binding.py": "21bb9ed33d73d6c67e85c2b710997938bf3266645745a51f188b522cf383ccc9",
+    "validate_contact_geometry.py": "f28a22583c461ebadcd3e70c758cab3ddd6015028b632cbbd6530254a5607497",
+    "prepare_contact_assets.py": "f803f819570350d818011ea197eab3593bd91ec2945c3d796c26ff5d6bd2398f",
+    "run.py": "d4b4499195386ee93cec0436ac9bb55f0da8e925303405f88f6a9909b2b30454",
+    "contact_full_motion.py": "98a0629bd05025a05f612e5810d0e04be45768f7d3e663ba934d225be2f1293f",
+    "blender_contact_assets.py": "e93c8970ed98280e107e43403eb75c6f03376553c73e16af40d21670bcd57b63",
+    "contact_motion.py": "da3b00725446665a05db6dab159bf841e632752516b828d4964c209bca314a26",
+    "contact_strum_path.py": "4b0479542c4662f37326baeb96c2216922328bf72dd3a9ae1d4d197aaa06f959",
+    "motion.py": "28e745f7decc0168407105dc5ade6b83fae6850a594baba3d015e7db6b554650",
+    "portable_audit.py": "5b4480598cc9e996c17cb4225e981f1ae3c9f05cce055ebe259bde14fc6ed5fc",
+    "contact_integrity.py": "5110598a9d80c5b46fcfb0816bf125a570db32b507aa886b55a0b9e4f6d0cc7d",
+    "make_preview.py": "d1c228422e9e00ea1331a7a3c261e46d45375f63eba275dad00a5e9633618ce9",
+    "contact_wide_path.py": "ec01df3e2ca00ebb071d23c5c1893ba9cf7192ed953de7db2ddf55f2942117f6",
+    "blender_contact_validate.py": "759a61eccdef2f4090ca0e533e567c0ca3b704ab015028061a5dab4744836c4e",
+    "contact_physics.py": "bbceff5a5a9b4fcc56574c09b84a11cc112893e2d8bcb3c4a924b41b6225ce62",
+    "contact_parameters.json": "cc9fd7ab2b9db56514755acfba18c8746121735ead685bd3a18bf570972ffe57"
+  }
+}

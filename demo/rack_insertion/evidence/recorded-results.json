@@ -1,0 +1,242 @@
+{
+  "host": "ps",
+  "trial": "coupled-nominal-04",
+  "physical_source_commit": "4c8f2bd",
+  "renderer_verifier_commit": "b2cc877",
+  "complete": true,
+  "finite": true,
+  "errors": [],
+  "exit": 0,
+  "recorded_frames": 602,
+  "report_sha256": "4df0981973052e4e715dd8d677d8a513415a33a96ad55d752b82c92a726d7230",
+  "trajectory_sha256": "c0dabeec79346531a836c04413e173ca967d2573f53da8a9bb0d0e68f6c34095",
+  "scene_sha256": "43b6266b11cb86090cadd74491470299cfc5444fb6fc6786671aec9d60058671",
+  "physical_source_sha256": {
+    "__init__.py": "e41235f41a453cbe84274a9a1630926a4c40ba669adfe5cac404f0339a01cc1d",
+    "blender_patch_panel.py": "215bdc384802edcbcacc6de147055d442702a07dd642827d03851e681a5358bd",
+    "contracts.py": "0c27093ced45b2ca9bd197b39fbf1beb14ecfcf41fa8c03f52490c1868ca1d1b",
+    "analyze.py": "439d0ac5acd9b6dcb62a28d2a510f72a5d4b12e0572c3cb08c342557e0db0cc2",
+    "probe_init.py": "89e6cd6b20b08bd11caf40312e815aac1823869c3e92b60fdeed659634f5aada",
+    "blender_fixtures.py": "b3c5ecad0e1147634e2e865838a012ecb6fb44d1137cda3acedd9fe9cd72c935",
+    "coupling.py": "7a05451ac0061d77e1dfd559dd375830c1dc50269c6444b58b5abeb85365afa9",
+    "controller.py": "c1653405851a0b45b53cccc2ce37fd3ed873f7a088067c01378df10bb4dcfa44",
+    "run.py": "3cfd66ad3182d5458503856c78f920459e5414aa6a0caa41be849d4941655a02",
+    "panel.py": "1ea76a444aeccd015e1c8e5aab3c4891c7f74b515f1da858e163c600643fb53a",
+    "render.py": "c7daa8f6e8a6bb7d25694e999d1b682fb1dadeeb150072f6232d562ba7fa4629",
+    "prepare.py": "8b08be004d5ef6e345417fdfbeb159717f8b69f1d4236329bc61c2834a1dd495",
+    "blender_termination.py": "462a7bca1f03ef03407084f303e27d5658b387fb8e58fcede63c75dc6a78d895",
+    "render_native.py": "486fce80007d65aa7ed56a5c7c413dbf7029f810aa735f9e45029ed0e7629b82"
+  },
+  "acquisition": {
+    "passed": true,
+    "lift_m": 0.18399810791015625,
+    "held_s": 0.7666666666666666,
+    "bilateral_samples": 405
+  },
+  "insertion": {
+    "passed": true,
+    "retained_after_release_s": 2.9333333333333336,
+    "retained_after_withdrawal_s": 1.2999999999999972,
+    "actual_retreat_m": 0.11993873119354248,
+    "final_withdrawal_m": 0.11993849277496338,
+    "withdrawal_threshold_m": 0.05,
+    "withdrawal_direction": "world +Z from release-entry measured TCP",
+    "final_depth_m": 0.009998150396346994,
+    "seated_depth_m": 0.010035013779997826,
+    "final_lateral_error_m": 0.00020079883068624353,
+    "final_axis_error_rad": 0.04376531672247361,
+    "final_socket_force_N": 0.2912522852420807,
+    "final_finger_force_N": 0.0,
+    "attempted": true
+  },
+  "seating": {
+    "t_s": 17.045833333333334,
+    "target_preload_m": 0.0003729166666666648,
+    "actual_depth_m": 0.010144658613204904,
+    "socket_force_N": 1.0148080587387085,
+    "actual_axial_tcp_offset_m": 0.00010011507496232586,
+    "contact_dwell_s": 0.10000000000000142,
+    "stop_reason": "stable measured socket contact"
+  },
+  "controller_failures": [],
+  "simulation_duration_s": 20.066666666666666,
+  "simulation_loop_wall_s": 329.912076092005,
+  "realtime_factor": 0.06082428659286339,
+  "native_grid_count": 19,
+  "panel_grid": {
+    "index": 13,
+    "path": "/World/envs/env_0/Fixtures/PatchPanelPhysical",
+    "spacing": 0.0005,
+    "shape": [
+      1048,
+      93,
+      169
+    ],
+    "thickness_m": 0.0,
+    "geometry_sha256": "5182e613ce0fd49588b0486ec76b570a76a6a3713272e5cf595f30a94a50c544",
+    "triangles": 5482,
+    "dynamic": false,
+    "closed": true,
+    "aperture_grid_probe": {
+      "world_points_m": [
+        [
+          0.401,
+          0.538,
+          1.2475
+        ],
+        [
+          0.41000000000000003,
+          0.538,
+          1.2475
+        ],
+        [
+          0.401,
+          0.538,
+          1.25
+        ],
+        [
+          0.41100000000000003,
+          0.541,
+          1.2475
+        ],
+        [
+          0.401,
+          0.541,
+          1.2475
+        ]
+      ],
+      "phi_m": [
+        0.005700051118788071,
+        -0.0008999548932706858,
+        0.0041000239225054405,
+        -0.00034000714958762313,
+        0.006040868387193807
+      ],
+      "labels": [
+        "socket_axis_open",
+        "interport_web_solid",
+        "slot_center_open",
+        "carrier_side_solid",
+        "carrier_inner_void"
+      ],
+      "method": "actual native trilinear grid interpolation"
+    }
+  },
+  "max_termination_gap_m": 0.0027123817708343267,
+  "max_segment_strain": 0.0004179043139301841,
+  "max_termination_force_N": 0.5943690063899357,
+  "sampled_minimum_contact_separation_m": -7.121243925212184e-06,
+  "fixture_contact_scope": {
+    "robot_fixture_peak_N": 0,
+    "insert_fixture_peak_N": 0,
+    "release_fixture_peak_N": 0,
+    "pickup_close_plug_fixture_peak_N": 32.97568130493164,
+    "note": "Aggregate fixture pickup force is not mating force; socket actor measured separately"
+  },
+  "named_rod_phase_contacts": {
+    "initialization": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 1.4979017972946167,
+        "exchanges_above_20mN": 1798
+      }
+    ],
+    "approach": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.15358658134937286,
+        "exchanges_above_20mN": 3485
+      }
+    ],
+    "close": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.16144195199012756,
+        "exchanges_above_20mN": 960
+      }
+    ],
+    "lift": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.14166782796382904,
+        "exchanges_above_20mN": 1805
+      }
+    ],
+    "hold": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.08558352291584015,
+        "exchanges_above_20mN": 965
+      }
+    ],
+    "route": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.08721932023763657,
+        "exchanges_above_20mN": 3000
+      }
+    ],
+    "align": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.09000738710165024,
+        "exchanges_above_20mN": 3000
+      },
+      {
+        "collider": "/World/envs/env_0/Fixtures/CableGuide0",
+        "force_law_peak_N": 0.173069030046463,
+        "exchanges_above_20mN": 118
+      }
+    ],
+    "insert": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.08725093305110931,
+        "exchanges_above_20mN": 7240
+      }
+    ],
+    "release": [
+      {
+        "collider": "/World/envs/env_0/Table",
+        "force_law_peak_N": 0.09703723341226578,
+        "exchanges_above_20mN": 3625
+      }
+    ]
+  },
+  "integrity_supplement_file": "rack_panel_integrity.json",
+  "integrity_supplement_sha256": "3d849eec6c35859fc77fc36265f94cfbd5768222b2239331b131442681306b9c",
+  "usd_composition_layer_count": 7,
+  "pinned_bom_verified_files": 15,
+  "original_run_profile_report_and_source_unchanged": true,
+  "native_video": {
+    "file": "media/rack-panel-insertion.mp4",
+    "sha256": "e1b218d76ff438211ffa0b29c8640708544ad2071790aade9cebaa34ee2f9ff3",
+    "frames": 602,
+    "native_exit": 0,
+    "capture_clock_delta_s": 0.0,
+    "replay_matrix_error": 1.7562667986833787e-09,
+    "renderer_source_sha256": {
+      "render.py": "d3688e334266cfcc2b88a54d9869b5dc3ed3bd44b94d423744260394fe23c4e2",
+      "render_native.py": "05581ea7714949541e425dd0abdb62a7a4db140731309341ba65069750c1b9f3"
+    },
+    "integrity_audit_sha256": "3d849eec6c35859fc77fc36265f94cfbd5768222b2239331b131442681306b9c",
+    "full_decode_exit": 0,
+    "ffprobe_counted_frames": 602,
+    "resolution": [
+      1280,
+      720
+    ],
+    "fps": 30,
+    "pixel_format": "yuv420p",
+    "duration_s": 20.066667
+  },
+  "limits": {
+    "accepted_nominal_trials": 1,
+    "old_placement_variations_apply": false,
+    "old_open_control_repeated": false,
+    "force_timestep_converged": false,
+    "selected_model_passive_peak_force_sensitivity": 0.374,
+    "real_time": false,
+    "calibrated_hardware_or_latch_electrical_verification": false
+  }
+}

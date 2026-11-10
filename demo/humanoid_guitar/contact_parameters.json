@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "soft_6": {
+    "material": {
+      "density_kg_m": 0.005,
+      "EA_N": 600,
+      "EI_Nm2": 1e-7,
+      "radius_m": 0.00055,
+      "prestress_strain": 0.01,
+      "drag_per_s": 0.05
+    },
+    "record_hz": 240,
+    "pick": {
+      "start_offset_m": -0.004,
+      "travel_m": 0.005,
+      "engagement_lift_m": 0.0015,
+      "clear_lift_m": 0.015
+    }
+  },
+  "tight_75": {
+    "material": {
+      "density_kg_m": 0.005,
+      "EA_N": 7500,
+      "EI_Nm2": 1e-7,
+      "radius_m": 0.00055,
+      "prestress_strain": 0.01,
+      "drag_per_s": 0.05
+    },
+    "record_hz": 480,
+    "pick": {
+      "start_offset_m": -0.0035,
+      "travel_m": 0.0022,
+      "engagement_lift_m": 0.0028,
+      "clear_lift_m": 0.015
+    }
+  },
+  "scope": "Common compliant demonstration strings. Nominal 75N tension is representative of a balanced electric guitar set; EA is an effective rod stiffness, not calibrated steel construction. No six-pitch acoustic claim."
+}

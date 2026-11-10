@@ -1,0 +1,23 @@
+{
+  "purpose": "Content-addressed README and showcase links for the two-column, three-row composition.",
+  "composition_provenance": "gpu-showcase-provenance.json",
+  "rows": 3,
+  "columns": 2,
+  "media_reencoded": true,
+  "encoding_host": "ps",
+  "source_clips_unchanged": true,
+  "files": [
+    {
+      "source": "gpu-showcase.gif",
+      "published_path": "gpu-showcase-2col-3row-3b64275a.gif",
+      "sha256": "3b64275a338c26ccdc35ee909c8d24c785b82fb7d91c97f8bb2febfcb9ecc379"
+    },
+    {
+      "source": "gpu-showcase.mp4",
+      "published_path": "gpu-showcase-2col-3row-410592ff.mp4",
+      "sha256": "410592ffa679248cc7b3281d4e084ed80bd2713d655f6795ed85ecdbaef08da7"
+    }
+  ],
+  "scope": "Full 21-second braider at 1x; full 18.7-second extraction at 2x with a 2.3-second final hold; other four 8-second excerpts repeat at their recorded rates.",
+  "duration_s": 21
+}

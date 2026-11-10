@@ -1,0 +1,91 @@
+{
+  "decision": "Replayed the same saved states with a downward close-up traverse before the pullback.",
+  "scope": "All 630 state/image hashes and camera poses checked; complete encoded stream decoded; brightness metrics cover fixed-camera backdrop patches only, not all surfaces during camera motion.",
+  "host": "ps",
+  "physics_stepping": false,
+  "image_overlay": false,
+  "native_capture": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/down-braid-closer/final/capture",
+  "native_exit": 0,
+  "capture_clock_delta_max_s": 0,
+  "max_render_position_error_m": 0,
+  "native_frames_hash_verified": 630,
+  "native_report_sha256": "d18bd766c69a063120f7a2170c0942ecfd51a145747ce297d9b1c962eb1ce4c6",
+  "renderer_sha256": "4aa809c78ec8eb9acc50017267f413efefc0c86d6647a156b494db15dec6165b",
+  "measurement_script_sha256": "aed266f8a241694cba0d5aac4ec2b922217848fc74741dda22b36946affad18e",
+  "video": {
+    "full_decode": true,
+    "frames": 630,
+    "fps": 30,
+    "duration_s": 21.0,
+    "width": 1280,
+    "height": 720,
+    "relative_pts_error_s": 3.3333333604446125e-07,
+    "sha256": "5105fa41aa3521f78bc6f32dcecace2dae061ef168041be32911e1e4aee1b1fc"
+  },
+  "poster_sha256": "166edac9f0e28493494dc1b59df294eb986d0f9b13c894076410b893760cb77c",
+  "camera": {
+    "sequence_s": {
+      "carriers": [
+        0,
+        1
+      ],
+      "downward_traverse": [
+        1,
+        4
+      ],
+      "braid_detail": [
+        4,
+        6
+      ],
+      "pullback": [
+        6,
+        10
+      ],
+      "whole_machine": [
+        10,
+        21
+      ]
+    },
+    "close_target_z_m": 1.5,
+    "constant_eye_offset_during_descent": true,
+    "max_adjacent_eye_step_m": 0.12860047096063268,
+    "complete_machine_max_abs_ndc": 0.9439181852458125
+  },
+  "fixed_patch_luma_metrics": {
+    "native": {
+      "opening_backdrop": {
+        "frames": 30,
+        "adjacent_mean_luma_p95": 0.08974214791666665,
+        "adjacent_mean_luma_max": 0.09913653125001076
+      },
+      "braid_detail_backdrop": {
+        "frames": 60,
+        "adjacent_mean_luma_p95": 0.08106323812500872,
+        "adjacent_mean_luma_max": 0.10000278541666319
+      },
+      "whole_backdrop": {
+        "frames": 330,
+        "adjacent_mean_luma_p95": 0.15792211666666842,
+        "adjacent_mean_luma_max": 0.23845812499999397
+      }
+    },
+    "encoded": {
+      "opening_backdrop": {
+        "frames": 30,
+        "adjacent_mean_luma_p95": 0.0823352833333331,
+        "adjacent_mean_luma_max": 0.11231127777779193
+      },
+      "braid_detail_backdrop": {
+        "frames": 60,
+        "adjacent_mean_luma_p95": 0.0720137008333296,
+        "adjacent_mean_luma_max": 0.08640145833335566
+      },
+      "whole_backdrop": {
+        "frames": 330,
+        "adjacent_mean_luma_p95": 0.09324127499999689,
+        "adjacent_mean_luma_max": 0.18007412500000441
+      }
+    }
+  },
+  "renderer_settings": "Original lighting and AA settings retained; only camera framing and camera evidence fields changed."
+}

@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "frozen_after": "4-world, 1-second feasibility probe; before final scaling/control/refinement",
+  "max_segment_strain": 0.05,
+  "max_pin_error_m": 0.00005,
+  "minimum_sampled_surface_gap_m": -0.002,
+  "minimum_contact_fraction": 0.9,
+  "minimum_control_position_rms_m": 0.005,
+  "max_refinement_position_rms_m": 0.01,
+  "scope": "Demo numerical and sampled contact acceptance, not experimental force validation"
+}

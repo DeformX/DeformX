@@ -1,0 +1,564 @@
+{
+  "host": "ps",
+  "native_capture": "/home/ps/yy_workspace/runs/long-showcases-20261108/arena-video-24s",
+  "native_report_sha256": "520a02bcab2f697f30dc47060ccaa78173e7a2c7c0033d1c4c0a1d40236e89dc",
+  "trajectory_sha256": "aae257f82615bcbcbe780e2a8f0b576a40a322628a3465f23d27afcfd62f5c9a",
+  "render_source_sha256": "b304c101414ae082a0c9225540173eba84aae886e6c26a70e334c6341bf1f75c",
+  "capture_clock_delta_max_s": 0.0,
+  "displayed_worlds": 64,
+  "simulated_worlds": 1024,
+  "frame_count": 720,
+  "all_native_frame_hashes_and_times_verified": true,
+  "guide_motion_interframe_p95_m": 0.0117,
+  "cable_node_motion_interframe_p95_m": 0.0132,
+  "camera_path": "Static through frame 215, cubic smoothstep push-in 216\u2013575, static from 576. Reproject onto plate plane z=-0.0075m with original camera extrinsics and focal/aperture.",
+  "units": "8-bit luma code values, Y'=0.299 R'+0.587 G'+0.114 B'.",
+  "method": "Track fixed plate surfaces via analytic projection of 7x7 sample grids over 5.6cm squares. Sample residual subtracts average of adjoining frames to reduce smooth camera-dependent specular change. Adjacent phases overlap by one frame so all 719 transitions are checked. Includes local moving shadows and reflections. Coherent statistic aggregates signed changes across spatially separated plates.",
+  "native": {
+    "opening": {
+      "frame_range_inclusive": [
+        0,
+        215
+      ],
+      "visible_patches": 23,
+      "coherent_patch_luma_interframe_p95": 0.299,
+      "coherent_patch_luma_interframe_max": 0.701,
+      "coherent_patch_luma_temporal_residual_p95": 0.1495,
+      "startup_signed_patch_delta_median": 0.0,
+      "projected_floor_patch_locations": [
+        [
+          11,
+          0.4,
+          0.24
+        ],
+        [
+          12,
+          0.4,
+          0.24
+        ],
+        [
+          19,
+          0.4,
+          0.24
+        ],
+        [
+          20,
+          0.4,
+          0.24
+        ],
+        [
+          27,
+          0.4,
+          0.24
+        ],
+        [
+          28,
+          0.4,
+          0.24
+        ],
+        [
+          35,
+          0.4,
+          0.24
+        ],
+        [
+          36,
+          0.4,
+          0.24
+        ],
+        [
+          19,
+          -0.4,
+          0.24
+        ],
+        [
+          20,
+          -0.4,
+          0.24
+        ],
+        [
+          27,
+          -0.4,
+          0.24
+        ],
+        [
+          28,
+          -0.4,
+          0.24
+        ],
+        [
+          35,
+          -0.4,
+          0.24
+        ],
+        [
+          36,
+          -0.4,
+          0.24
+        ],
+        [
+          1,
+          -0.4,
+          0.24
+        ],
+        [
+          9,
+          -0.4,
+          0.24
+        ],
+        [
+          10,
+          -0.4,
+          0.24
+        ],
+        [
+          17,
+          -0.4,
+          0.24
+        ],
+        [
+          18,
+          -0.4,
+          0.24
+        ],
+        [
+          25,
+          -0.4,
+          0.24
+        ],
+        [
+          26,
+          -0.4,
+          0.24
+        ],
+        [
+          33,
+          -0.4,
+          0.24
+        ],
+        [
+          34,
+          -0.4,
+          0.24
+        ]
+      ],
+      "local_patch_temporal_residual_p95_range": [
+        0.6459,
+        3.0
+      ]
+    },
+    "camera_push": {
+      "frame_range_inclusive": [
+        215,
+        575
+      ],
+      "visible_patches": 15,
+      "coherent_patch_luma_interframe_p95": 0.299,
+      "coherent_patch_luma_interframe_max": 0.701,
+      "coherent_patch_luma_temporal_residual_p95": 0.1495,
+      "startup_signed_patch_delta_median": null,
+      "projected_floor_patch_locations": [
+        [
+          11,
+          0.4,
+          0.24
+        ],
+        [
+          12,
+          0.4,
+          0.24
+        ],
+        [
+          19,
+          0.4,
+          0.24
+        ],
+        [
+          20,
+          0.4,
+          0.24
+        ],
+        [
+          27,
+          0.4,
+          0.24
+        ],
+        [
+          28,
+          0.4,
+          0.24
+        ],
+        [
+          35,
+          0.4,
+          0.24
+        ],
+        [
+          36,
+          0.4,
+          0.24
+        ],
+        [
+          19,
+          -0.4,
+          0.24
+        ],
+        [
+          20,
+          -0.4,
+          0.24
+        ],
+        [
+          27,
+          -0.4,
+          0.24
+        ],
+        [
+          28,
+          -0.4,
+          0.24
+        ],
+        [
+          35,
+          -0.4,
+          0.24
+        ],
+        [
+          36,
+          -0.4,
+          0.24
+        ],
+        [
+          34,
+          -0.4,
+          0.24
+        ]
+      ],
+      "local_patch_temporal_residual_p95_range": [
+        0.5897,
+        2.5051
+      ]
+    },
+    "closing": {
+      "frame_range_inclusive": [
+        575,
+        719
+      ],
+      "visible_patches": 15,
+      "coherent_patch_luma_interframe_p95": 0.114,
+      "coherent_patch_luma_interframe_max": 0.701,
+      "coherent_patch_luma_temporal_residual_p95": 0.057,
+      "startup_signed_patch_delta_median": null,
+      "projected_floor_patch_locations": [
+        [
+          11,
+          0.4,
+          0.24
+        ],
+        [
+          12,
+          0.4,
+          0.24
+        ],
+        [
+          19,
+          0.4,
+          0.24
+        ],
+        [
+          20,
+          0.4,
+          0.24
+        ],
+        [
+          27,
+          0.4,
+          0.24
+        ],
+        [
+          28,
+          0.4,
+          0.24
+        ],
+        [
+          35,
+          0.4,
+          0.24
+        ],
+        [
+          36,
+          0.4,
+          0.24
+        ],
+        [
+          19,
+          -0.4,
+          0.24
+        ],
+        [
+          20,
+          -0.4,
+          0.24
+        ],
+        [
+          27,
+          -0.4,
+          0.24
+        ],
+        [
+          28,
+          -0.4,
+          0.24
+        ],
+        [
+          35,
+          -0.4,
+          0.24
+        ],
+        [
+          36,
+          -0.4,
+          0.24
+        ],
+        [
+          34,
+          -0.4,
+          0.24
+        ]
+      ],
+      "local_patch_temporal_residual_p95_range": [
+        0.356,
+        2.609
+      ]
+    }
+  },
+  "encoded": {
+    "opening": {
+      "frame_range_inclusive": [
+        0,
+        215
+      ],
+      "visible_patches": 23,
+      "coherent_patch_luma_interframe_p95": 0.299,
+      "coherent_patch_luma_interframe_max": 0.701,
+      "coherent_patch_luma_temporal_residual_p95": 0.2329,
+      "startup_signed_patch_delta_median": 0.0,
+      "projected_floor_patch_locations": "Same patch locations as the native analysis.",
+      "local_patch_temporal_residual_p95_range": [
+        0.5,
+        2.2121
+      ]
+    },
+    "camera_push": {
+      "frame_range_inclusive": [
+        215,
+        575
+      ],
+      "visible_patches": 15,
+      "coherent_patch_luma_interframe_p95": 0.3596,
+      "coherent_patch_luma_interframe_max": 0.94,
+      "coherent_patch_luma_temporal_residual_p95": 0.299,
+      "startup_signed_patch_delta_median": null,
+      "projected_floor_patch_locations": "Same patch locations as the native analysis.",
+      "local_patch_temporal_residual_p95_range": [
+        0.6495,
+        2.3532
+      ]
+    },
+    "closing": {
+      "frame_range_inclusive": [
+        575,
+        719
+      ],
+      "visible_patches": 15,
+      "coherent_patch_luma_interframe_p95": 0.0948,
+      "coherent_patch_luma_interframe_max": 0.299,
+      "coherent_patch_luma_temporal_residual_p95": 0.0,
+      "startup_signed_patch_delta_median": null,
+      "projected_floor_patch_locations": "Same patch locations as the native analysis.",
+      "local_patch_temporal_residual_p95_range": [
+        0.5,
+        1.9891
+      ]
+    }
+  },
+  "encoded_video_sha256": "7172bedc6cac3af424ed1c68189f8751036700a4d5218815e64ff5b53e1d630d",
+  "full_encoded_decode": true,
+  "mp4_vs_native_sample_luma_abs_error_p95": 3.185,
+  "demo": "GPU CONTACT ARENA",
+  "decision": "retain_original_media",
+  "poster_sha256": "8377893546ee0678a0ecf96702a2c654ab731f317ab42dfb2558ddef5fbf1b00",
+  "render_exit_code": 0,
+  "normal_app_shutdown_log_present": true,
+  "encoded_video": {
+    "codec_name": "h264",
+    "width": 1280,
+    "height": 720,
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "duration": "24.000000",
+    "nb_read_frames": "720"
+  },
+  "playback_rate": 1,
+  "physics_recomputed": false,
+  "reviewed_local_excursions": [
+    {
+      "plate": 17,
+      "tracked_pixel": [
+        256,
+        440
+      ],
+      "frames": [
+        118,
+        127
+      ],
+      "patch_median_luma": [
+        20.78,
+        24.78,
+        30.89,
+        66.69,
+        123.56,
+        135.56,
+        136.56,
+        144.56,
+        147.44,
+        145.56
+      ],
+      "recorded_guide_local_position_m": [
+        [
+          -0.10980000346899033,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.10100000351667404,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.0917000025510788,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.08179999887943268,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.07150000333786011,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.06080000102519989,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.049800001084804535,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.038600001484155655,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.02710000053048134,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.01549999974668026,
+          0.0,
+          0.36000001430511475
+        ]
+      ],
+      "observed_motion": "Plate 17 native frames 118\u2013127 show the neighboring guide/shadow clearing the fixed patch as it brightens."
+    },
+    {
+      "plate": 34,
+      "tracked_pixel": [
+        30,
+        56
+      ],
+      "frames": [
+        663,
+        672
+      ],
+      "patch_median_luma": [
+        18.41,
+        18.41,
+        21.59,
+        42.22,
+        85.26,
+        84.15,
+        76.15,
+        77.26,
+        53.63,
+        38.41
+      ],
+      "recorded_guide_local_position_m": [
+        [
+          -0.15950000286102295,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.1599999964237213,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.15960000455379486,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.1582999974489212,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.15620000660419464,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.15330000221729279,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.14949999749660492,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.14499999582767487,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.1395999938249588,
+          0.0,
+          0.36000001430511475
+        ],
+        [
+          -0.13349999487400055,
+          0.0,
+          0.36000001430511475
+        ]
+      ],
+      "observed_motion": "Plate 34 native frames 663\u2013672 show a moving foreground guide edge crossing the fixed patch as its luma rises and falls."
+    }
+  ],
+  "detailed_metrics_path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/arena-render-stability/final/baseline.json",
+  "detailed_metrics_sha256": "1ec6849ee35f6a8944e8e6abca934c3f68be333aa707268e64423f3a5624b12b",
+  "shadow_review_contact_sheet_path": "/home/ps/yy_workspace/runs/deformx-gpu-release-20261108/arena-render-stability/final/shadow-review.jpg",
+  "shadow_review_contact_sheet_sha256": "3597dbefff8a9167e6cbc272f5921df81175632d4d03c074a4e9fdaa4143ce75",
+  "finding": "The coherent luma changes stayed below one 8-bit code value at every transition within the measured phases, including through the reprojected camera move. Individual large changes are localized; spot checks of the strongest phases show guide and shadow crossings. Native and encoded statistics are similar, with no extraction-like illumination pulse on the sampled surfaces.",
+  "scope": "Checks target lighting variation on arena plate surfaces and visible movement around the largest sampled local excursions."
+}

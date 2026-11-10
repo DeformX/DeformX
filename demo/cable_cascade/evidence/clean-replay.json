@@ -1,0 +1,79 @@
+{
+  "source_trajectory_sha256": "00d84e03ec8a7a5d9ae72c9e3f4b71c923185706fa894ec26ad4011b53ae3c19",
+  "source_metadata_sha256": "9418845d762633535dd4a712f76f722abe0a22b01a55f5cf8047c949a9c1da11",
+  "source_case_report_sha256": "4774359139dc2c2b5c5f7bc1ea033ed44e39163ee8da9b2665913cc15d14814e",
+  "original_native_report_sha256": "ed8a6d1909afb6dfac92ed34def4de7fca408df54dcd41353685f6edc3daa218",
+  "original_native_frame_map_sha256": "0511adac239fb20a7ba2d99f5ebe3b09375568b017931f36ccd7f03c800d7cd6",
+  "original_renderer_sha256": "a347148686b193323bfcb74c7eb2c1121e3eee05f3c0c21be9aa7ad6684a2f1a",
+  "modified_renderer_sha256": "00f4d18ec33a79a430322639e381932e5f5e258826ebd1b0d8828664ac9e5906",
+  "native_report_sha256": "fb4aad4417e7b3532445124a1dc643e4eefc41e754c2e7367ddd114219fdd7f7",
+  "recipe_sha256": "f5bd68bef1884a9b9a25223c210e254bca38de2d77fb60ea6e931badabe2ab56",
+  "frame_map_sha256": "5b2b25f0cc2ef7b2f937eb7b544fc95d71f729ca68c83d19319ece0e4acf5f95",
+  "camera": {
+    "eye": [
+      2.158268722777103,
+      -5.675056327403864,
+      3.711642762537889
+    ],
+    "target": [
+      -0.021420591085796806,
+      0.030600994178431498,
+      1.3396279209812045
+    ],
+    "focal_length_mm": 22.0,
+    "closeup": null,
+    "cascade_push_in": {
+      "blend_interval_s": [
+        0.22,
+        0.88
+      ],
+      "easing": "cubic smoothstep",
+      "opening_eye_m": [
+        2.158268722777103,
+        -5.675056327403864,
+        3.711642762537889
+      ],
+      "opening_target_m": [
+        -0.021420591085796806,
+        0.030600994178431498,
+        1.3396279209812045
+      ],
+      "contact_eye_m": [
+        1.0386761385386996,
+        -2.6487367228507326,
+        1.3917026142144873
+      ],
+      "contact_target_m": [
+        -0.06943903786050681,
+        0.25191770948836567,
+        0.18581256930946885
+      ],
+      "opening_distance_m": 6.552253458533099,
+      "contact_distance_m": 3.331048810872595,
+      "pinhole_max_absolute_ndc_xy_including_sphere_and_rod_radius": [
+        0.5686585900501807,
+        0.9128088993464943
+      ]
+    }
+  },
+  "capture_clock_delta_max_s": 0,
+  "physics_recomputed": false,
+  "geometry_amplification": false,
+  "visual_radius_scale": 1.0,
+  "hud": false,
+  "crop": false,
+  "fps": 30,
+  "frames": 181,
+  "playback_speed": 1,
+  "simulation_interval_s": [
+    0.0,
+    6.0
+  ],
+  "encoded_stream_duration_s": 6.033008,
+  "full_decode": true,
+  "max_source_pts_error_s": 3.33333333379926e-07,
+  "video_sha256": "c4f1723e5173a3f8ecc2da7fd4fbce7d641482560c14e0454600aece0b2e7461",
+  "video_bytes": 1813470,
+  "poster_source_frame": 27,
+  "poster_sha256": "f6adfbdd074a716e21718ff8ab48d35a9f6c4abc6d65b3d5a6c72db4e52a137d"
+}

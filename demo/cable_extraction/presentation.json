@@ -1,0 +1,24 @@
+{
+  "source_video_sha256": "1016deefc3d6f940439c1d62e911714e896cd431d6dc8b83a7336208872439c3",
+  "source_capture_sha256": "ae19dda0c4eaa985c3fb84bb2910dedd5583aa4d18a73c0e36979fa35d75ee03",
+  "source_duration_s": 37.4,
+  "video": "cable-extraction.mp4",
+  "video_sha256": "849f864a2029608e542e170fab6b011a27c6ff4d3c37097e02e33d45d84ad8e9",
+  "duration_s": 18.7,
+  "frames": 1122,
+  "fps": 60,
+  "playback_multiplier": 2,
+  "dimensions": [
+    1280,
+    720
+  ],
+  "encoded_frame_payloads_identical": true,
+  "all_timestamps_halved": true,
+  "frame_dropping": false,
+  "frame_interpolation": false,
+  "full_decode": true,
+  "physics_recomputed": false,
+  "text_overlays": false,
+  "retime_source_sha256": "b8a082dd61877f6cf2049d752500b765749c5cf3275f392c3de90c91a441b114",
+  "ffmpeg": "ffmpeg version 9.0.2 Copyright (c) 2000-2026 the FFmpeg developers"
+}

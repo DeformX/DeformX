@@ -1,0 +1,296 @@
+{
+  "original": {
+    "trajectory_sha256": "71b2623c0ba8e44d5c854b63a73bf2c9446d80fe7bf5517aabb378bc0ecc3ce2",
+    "video_sha256": "ea2025caad05641bb9d968236f8d5b8b019aca8701f5848916601202389d4cc8",
+    "native_report_sha256": "253f3a939f61cfe5bd8bfe3979c7184885c1cc56e4782d4a6f749a49dbef8b08",
+    "renderer_source_sha256": {
+      "render.py": "73841737b2d6a084e0b53f14792c796f6ae34183b0c12ca7e484f9f610340870",
+      "render_native.py": "a9c5beb3ba949db411777f721ed317591322e7544033ea9e6a1c93e275c08c87"
+    },
+    "fixture_manifest_sha256": "b5d38ee1b6313e876c6ca25b25fed7115a2dfc4caaa9ffd3170bd8f4f45efd16"
+  },
+  "clean_capture": {
+    "matches_all_original_timestamps_and_saved_states": true,
+    "frames": 630,
+    "source_first_s": 0.3,
+    "source_last_s": 21.266666666666666,
+    "playback_speed": 1.0,
+    "capture_clock_delta_max_s": 0.0,
+    "max_render_position_error_m": 0.0,
+    "physics_stepping": false,
+    "image_overlay": false,
+    "hidden_visual_lettering_prim": "/World/Hardware/Frame/FrontLogo",
+    "camera_framing": {
+      "native_focal_length_mm": 33.0,
+      "native_aperture_mm": [
+        20.954999923706055,
+        11.787187576293945
+      ],
+      "detail": {
+        "subject": "three moving top carriers",
+        "eye_m": [
+          0.24,
+          -1.65,
+          3.16
+        ],
+        "target_m": [
+          0.0,
+          0.0,
+          2.98
+        ]
+      },
+      "whole": {
+        "eye_m": [
+          0.6907453651744309,
+          -9.83654092850216,
+          2.416512265633324
+        ],
+        "target_m": [
+          0.0,
+          0.03125000256113708,
+          1.5777500364929438
+        ]
+      },
+      "machine_bounds_m": [
+        [
+          -1.0499999523162842,
+          -0.37749999994412065,
+          -0.0025000013411045074
+        ],
+        [
+          1.0499999523162842,
+          0.4400000050663948,
+          3.158000074326992
+        ]
+      ],
+      "whole_machine_ndc_bounds": [
+        [
+          -0.3582100279791895,
+          -0.9439181852458125
+        ],
+        [
+          0.34452654240163244,
+          0.9221115014793206
+        ]
+      ],
+      "max_abs_whole_machine_ndc": 0.9439181852458125,
+      "full_machine_ndc_limit": 0.95,
+      "descent_start_playback_s": 1.0,
+      "descent_end_playback_s": 4.0,
+      "braid_detail": {
+        "eye_m": [
+          0.24,
+          -1.65,
+          2.6300000000000003
+        ],
+        "target_m": [
+          0.0,
+          0.0,
+          2.45
+        ]
+      },
+      "detail_hold_playback_s": [
+        4.0,
+        9.0
+      ],
+      "pullback_start_playback_s": 9.0,
+      "pullback_end_playback_s": 13.0,
+      "transition": "quintic smootherstep; one continuous camera shot",
+      "up_vector": [
+        0.0,
+        0.0,
+        1.0
+      ],
+      "front_fill": {
+        "intensity": 1100,
+        "rgb": [
+          0.78,
+          0.88,
+          1.0
+        ],
+        "rotation_xyz_deg": [
+          90,
+          0,
+          0
+        ]
+      }
+    },
+    "studio_environment": {
+      "selected_dome": "/World/Lights/StudioAmbient",
+      "inactive_blender_domes": [
+        "/World/Hardware/Frame/env_light",
+        "/World/Hardware/Carrier_0/env_light",
+        "/World/Hardware/Carrier_1/env_light",
+        "/World/Hardware/Carrier_2/env_light"
+      ],
+      "studio_ambient_intensity": 600
+    },
+    "complete_machine_framing_verified": true,
+    "whole_view_frames": 240,
+    "camera_view_frame_counts": {
+      "carriers": 30,
+      "descend": 90,
+      "braid_detail": 150,
+      "pullback": 120,
+      "whole": 240
+    },
+    "fixture_manifest_sha256": "0383b89508bac06861a4ccecf77d9c6f2b5fad46f4ccaf574d65289bbf0718ff",
+    "fixture_asset_sha256": {
+      "carrier_0.usdc": "19c664de2e7a07d3a82f09bac7b960c60199d63eee518661837b7e7ada5f7c5f",
+      "carrier_1.usdc": "d978d21ee685d04a64393e3251126771aaee21aa382a37e3ae8c0ad009719444",
+      "carrier_2.usdc": "44ad5980945e0a1dc85f7fa04ead90db9deb6af9fa53a46d431fb72f7b7a3ca4",
+      "frame.usdc": "5c5c3844383909ad534b9483d655d2024bea959ce25d61fd1ac78f691a18c46d"
+    },
+    "frame_presentation": {
+      "style": "wide portal frame",
+      "width_m": 2.0999999046325684,
+      "height_m": 3.16049999371171,
+      "height_to_width": 1.5050000653522384,
+      "bounds_m": [
+        [
+          -1.0499999523162842,
+          -0.3774999976158142,
+          -0.0025000013411045074
+        ],
+        [
+          1.0499999523162842,
+          0.4399999976158142,
+          3.1579999923706055
+        ]
+      ],
+      "original_bounds_m": [
+        [
+          -0.4950000047683716,
+          -0.2874999940395355,
+          -0.0025000013411045074
+        ],
+        [
+          0.4950000047683716,
+          0.3499999940395355,
+          3.1579999923706055
+        ]
+      ],
+      "original_manifest_sha256": "b5d38ee1b6313e876c6ca25b25fed7115a2dfc4caaa9ffd3170bd8f4f45efd16",
+      "original_author_source_sha256": "1159d362cc71b7bc497c165b412230b69819469916a1e424e00bfd1f158af9ef",
+      "protected_geometry_unchanged": true,
+      "protected_objects": [
+        "AnchorPlinth",
+        "AnchorTray",
+        "CarrierLane_-1",
+        "CarrierLane_1",
+        "DriveCassette",
+        "FixedGripCollar_0",
+        "FixedGripCollar_1",
+        "FixedGripCollar_2",
+        "FixedGripFerrule_0",
+        "FixedGripFerrule_1",
+        "FixedGripFerrule_2",
+        "FixedGripHousing_0",
+        "FixedGripHousing_1",
+        "FixedGripHousing_2",
+        "FixedGripStem_0",
+        "FixedGripStem_1",
+        "FixedGripStem_2"
+      ],
+      "changed_display_objects": [
+        "DarkWorkSurface",
+        "DeckBolt_-1_-0.13",
+        "DeckBolt_-1_0.22",
+        "DeckBolt_1_-0.13",
+        "DeckBolt_1_0.22",
+        "EtchedIndex_-1_0.23",
+        "EtchedIndex_-1_0.34",
+        "EtchedIndex_-1_0.45",
+        "EtchedIndex_-1_0.56",
+        "EtchedIndex_-1_0.67",
+        "EtchedIndex_-1_0.78",
+        "EtchedIndex_-1_0.89",
+        "EtchedIndex_-1_1.0",
+        "EtchedIndex_-1_1.11",
+        "EtchedIndex_-1_1.22",
+        "EtchedIndex_-1_1.33",
+        "EtchedIndex_-1_1.44",
+        "EtchedIndex_-1_1.55",
+        "EtchedIndex_-1_1.6600000000000001",
+        "EtchedIndex_-1_1.77",
+        "EtchedIndex_-1_1.88",
+        "EtchedIndex_-1_1.99",
+        "EtchedIndex_-1_2.1",
+        "EtchedIndex_-1_2.21",
+        "EtchedIndex_-1_2.3200000000000003",
+        "EtchedIndex_-1_2.4299999999999997",
+        "EtchedIndex_-1_2.54",
+        "EtchedIndex_-1_2.65",
+        "EtchedIndex_-1_2.76",
+        "EtchedIndex_-1_2.87",
+        "EtchedIndex_1_0.23",
+        "EtchedIndex_1_0.34",
+        "EtchedIndex_1_0.45",
+        "EtchedIndex_1_0.56",
+        "EtchedIndex_1_0.67",
+        "EtchedIndex_1_0.78",
+        "EtchedIndex_1_0.89",
+        "EtchedIndex_1_1.0",
+        "EtchedIndex_1_1.11",
+        "EtchedIndex_1_1.22",
+        "EtchedIndex_1_1.33",
+        "EtchedIndex_1_1.44",
+        "EtchedIndex_1_1.55",
+        "EtchedIndex_1_1.6600000000000001",
+        "EtchedIndex_1_1.77",
+        "EtchedIndex_1_1.88",
+        "EtchedIndex_1_1.99",
+        "EtchedIndex_1_2.1",
+        "EtchedIndex_1_2.21",
+        "EtchedIndex_1_2.3200000000000003",
+        "EtchedIndex_1_2.4299999999999997",
+        "EtchedIndex_1_2.54",
+        "EtchedIndex_1_2.65",
+        "EtchedIndex_1_2.76",
+        "EtchedIndex_1_2.87",
+        "Footing",
+        "FrontIdentificationPlate",
+        "FrontLogo",
+        "FrontStatusWindow",
+        "GantryTop",
+        "OverheadGantry",
+        "RecessedDeck",
+        "TopBumper",
+        "TopSignalStrip",
+        "TowerFace_-1",
+        "TowerFace_1",
+        "TowerShoe_-1",
+        "TowerShoe_1",
+        "TowerTrack_-1",
+        "TowerTrack_1",
+        "Tower_-1",
+        "Tower_1"
+      ],
+      "carrier_assets_unchanged": true
+    },
+    "native_report_sha256": "1a3cbe89431e05bbd607f37d1bb13f2ab04f92c9e3c7c51f0924bddbd56e441b",
+    "native_worker_sha256": "6628c1e384f10b26f2de59010e133566a95424dbf06eddddcc34378e06296a39",
+    "recipe_sha256": "e6d408c04153ba4aaaa494ac71cdabbc57c0da13a2c8ab8133fa57602c4cd5d4"
+  },
+  "poster": {
+    "path": "preview-process-clean.jpg",
+    "source_frame": 629,
+    "source_time_s": 21.266666666666666,
+    "sha256": "5fddd45a3760f07731125029305ffa29c9c692f7667344c83f4c27f63fafba44"
+  },
+  "video": {
+    "path": "braiding-process-clean.mp4",
+    "bytes": 3910260,
+    "full_decode": true,
+    "frames": 630,
+    "fps": 30,
+    "duration_s": 21.0,
+    "width": 1280,
+    "height": 720,
+    "relative_pts_error_s": 3.3333333604446125e-07,
+    "sha256": "854cb279d1eadfc3258bbb631a6db5d470208269bf650683ecf13d0a31a8541d"
+  },
+  "packaged_video": "demo/braiding_machine/media/braiding-process-hold.mp4",
+  "packaged_poster": "demo/braiding_machine/media/preview-process-hold.jpg",
+  "packaged_recipe": "demo/braiding_machine/media/replay_reference_camera_hold.py"
+}

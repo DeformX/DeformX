@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "description": "Pick closeup with a pullback to the whole seated humanoid, guitar and stool.",
+  "performance_eye_world_m": [3.72, -3.28, 1.95],
+  "performance_target_world_m": [0.20, 0.11, 0.65],
+  "eye_guitar_local_m": [-0.058, 0.249, 0.165],
+  "target_guitar_local_m": [0.000, 0.047, 0.004],
+  "medium_eye_guitar_local_m": [-0.123, 0.344, 0.287],
+  "medium_target_guitar_local_m": [0.012, 0.031, 0.026],
+  "focal_length_mm": 40,
+  "fill": {
+    "position_guitar_local_m": [-0.065, 0.314, 0.196],
+    "color": [1, 1, 1],
+    "intensity": 780,
+    "size_m": 0.30
+  }
+}

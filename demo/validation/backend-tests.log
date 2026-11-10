@@ -1,0 +1,14 @@
+........................................................................ [ 53%]
+..............................................................x          [100%]
+============================= slowest 8 durations ==============================
+7.12s call     tests/test_longrun.py::test_long_random_driving_stable[16-0.094]
+5.29s call     tests/test_mesh_contact.py::test_rounded_edge_slides_sharp_edge_snags
+4.21s call     tests/test_longrun.py::test_long_random_driving_stable[8-0.0]
+3.55s call     tests/test_mesh_broadphase.py::test_moving_mesh_enters_and_leaves_the_rope
+3.06s call     tests/test_mesh_contact.py::test_bowl_settles_inside
+2.86s call     tests/test_dynamics.py::test_energy_dissipation_characterization
+2.82s call     tests/test_mesh_contact.py::test_baked_mesh_matches_closed_form
+2.60s call     tests/test_mesh_broadphase.py::test_candidate_overflow_scans_every_mesh
+=========================== short test summary info ============================
+XFAIL source/tests/test_statics.py::test_tube_stiffness_regime_KNOWN_LIMIT - MEASURED solver limit: tube-scale EI=10 N*m^2 (h=1/3000, l=0.02, rho=0.05) goes unstable under root reorientation — strains blow past 100% (4.7x stretch measured, internal velocities ~300 m/s, masked by drag). Stable at EI=0.4; boundary in between. Affects the handoff's future 'tube as stiff segments' option (needs longer segments / higher density / smaller h, or solver work); the locked rigid-transform tube plan is unaffected. strict=True: if this XPASSes the limit has moved (e.g. upstream fix) — re-evaluate tube modeling.
+134 passed, 1 xfailed in 102.56s (0:01:42)
