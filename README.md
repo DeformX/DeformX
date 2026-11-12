@@ -16,15 +16,15 @@ DeformX is a co-simulation framework for deformable linear objects (DLOs) such a
 
 ## 🔥 Updates
 
-* **\[Nov 2026\]** Added the **GPU/CUDA Stable Cosserat Rods solver** ([Cosserat-Rod-Solver-CUDA](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA)): thousands of ropes in one solver, contact with planes, meshes and other ropes, and two-way coupling with PhysX in Isaac Lab, with the rope-swing RL task and new demos in this repository.
+* **\[Nov 2026\]** Added the **GPU/CUDA Stable Cosserat Rods solver** ([Cosserat-Rod-Solver-CUDA](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA)): thousands of ropes in one solver, contact with planes, meshes and other ropes, and two-way coupling with PhysX in Isaac Lab, with the rope-swing RL task and new demos in this repository. The GPU solver was introduced with **Point It, Strike It** ([website](https://deformx.github.io/DeformY/) · [paper](https://arxiv.org/abs/2610.09573)), our work on direction-conditioned dynamic rope manipulation.
 * **\[Jun 2026\]** We open-sourced **DeformX**, the co-simulation framework integrating a dedicated Cosserat rod engine with NVIDIA Isaac Sim, together with the dataset-generation and RL tooling in this repository.
 * **\[Jun 2026\]** We released **[WireSeg-36k](https://huggingface.co/datasets/DeformX/WireSeg-36K)** — a synthetic wire instance segmentation dataset (36k RGB images, depth maps, and per-wire instance masks) — together with its generation pipeline and the [render assets](https://huggingface.co/datasets/DeformX/DeformX-Assets) needed to reproduce it.
 
 ## Demos
 
 <p align="center">
-  <a href="demo/media/gpu-showcase-2col-3row-410592ff.mp4">
-    <img src="demo/media/gpu-showcase-2col-3row-3b64275a.gif" alt="Six DeformX GPU demonstrations" width="720">
+  <a href="demo/media/gpu-showcase-2col-3row-5d62c76d.mp4">
+    <img src="demo/media/gpu-showcase-2col-3row-43e3b331.gif" alt="Six DeformX GPU demonstrations" width="720">
   </a>
 </p>
 <p align="center">
@@ -114,7 +114,7 @@ demo/
   braiding_machine/        Three-strand braiding with native rod–rod contact
   winch_tension/           Frictional cable transport and a passive braked axle
   contact_arena/           Batched moving-guide contact and scoped timing
-  rack_insertion/         Contact-driven rack insertion with asset preparation and audit
+  rack_insertion/         Contact-driven patching in a populated rack, with asset preparation and audit
   cable_cascade/          48 interacting cables falling over an obstacle
   cable_extraction/       Robot extraction from an intertwined cable bundle
   humanoid_guitar/         Five-string contact strumming with model downloads
@@ -123,6 +123,8 @@ demo/
   rope_swing_rl/            rope-swing RL (CPU engine, Isaac Sim + Hydra PPO) and wire-end calibration
   rope_swing_rl_gpu/        rope-swing RL (GPU solver, Isaac Lab + rsl_rl PPO), 512 environments in one solver
 ```
+
+Guides for installation and troubleshooting and for the co-simulation loop are in [docs/](docs/README.md).
 
 Each folder has a README with every command:
 [dataset_generator](dataset_generator/README.md) ·
@@ -160,7 +162,7 @@ For the standalone CUDA examples, follow [their installation guide](demo/EXAMPLE
 
 ### 2. Clone with submodules
 
-Both rod engines are submodules (`PyElastica-Mesh`, `Cosserat-Rod-Solver-CUDA`); a plain `git clone` leaves them empty. The CUDA submodule requires repository access during the release preview.
+Both rod engines are public submodules (`PyElastica-Mesh`, `Cosserat-Rod-Solver-CUDA`); a plain `git clone` leaves them empty.
 
 ```bash
 git clone --recursive https://github.com/DeformX/DeformX.git
@@ -298,10 +300,17 @@ If you find DeformX useful, please consider citing our work:
 
 ```bibtex
 @inproceedings{deformx,
-  title     = {DeformX: A Versatile Co-Simulation Framework for Deformable Linear Objects},
+  title     = {{DeformX}: A Versatile Co-Simulation Framework for Deformable Linear Objects},
   author    = {Yang, Yi and Fei, Xiang and Wang, Lehong and Li, Chenhao and Dai, Zilin and Kou, Henry and Li, Lu and Choset, Howie},
   booktitle = {IEEE/RSJ International Conference on Intelligent Robots and Systems (IROS)},
   year      = {2026}
+}
+
+@article{pointitstrikeit,
+  title   = {{Point It, Strike It}: Direction-Conditioned Dynamic Manipulation of Deformable Linear Objects},
+  author  = {Yang, Yi and Fei, Xiang and Wang, Lehong and Dai, Zilin and Li, Ruogu and Cai, Jiting and Chang, Liyao and Yang, Xinyi and Kou, Henry and Fu, Ruijie and Li, Lu and Choset, Howie},
+  journal = {arXiv preprint arXiv:2610.09573},
+  year    = {2026}
 }
 ```
 

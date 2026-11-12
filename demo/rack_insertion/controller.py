@@ -3,14 +3,15 @@ import numpy as np
 
 
 class ContactController:
-    def __init__(self, grip, start, case, seated=None, seated_depth=.01,release_mode='drop',seating_preload=None):
+    def __init__(self, grip, start, case, seated=None, seated_depth=.01,release_mode='drop',seating_preload=None,release_opening=.04,waypoint=None):
         self.grip=np.asarray(grip,float);self.start=np.asarray(start,float);self.case=case
         self.high=self.grip+[0,0,.14];self.above=self.grip+[0,0,.12]
         self.seated=np.asarray(seated,float) if seated is not None else self.high.copy()
         self.seated_depth=seated_depth
-        self.waypoint=np.array([.57,.094,1.27]);self.approach=self.seated-[0,.035,0]
+        self.waypoint=np.array([.57,.094,1.27]) if waypoint is None else np.asarray(waypoint,float);self.approach=self.seated-[0,.035,0]
         self.stage='above';self.since=0.;self.origin=self.start.copy();self.dwell=None
         self.release_mode=release_mode;self.acquired=False
+        self.release_opening=release_opening   # per finger; a populated panel leaves no room to open fully
         self.seating_preload=seating_preload
         self.preload_peak_m=0.;self.seating_contact_since=None;self.seating_last_time=None;self.seating_observation={};self.seating_events=[]
         if seating_preload is not None:
@@ -118,7 +119,7 @@ class ContactController:
                 self.transition('place' if (self.release_mode=='place' or self.case=='insert') and self.stage!='place' else 'release',t,state);return self.command(t,state)
             return self.high,.002,self.phase
         if self.stage in ('release','done'):
-            opening=.002+(.04-.002)*np.clip(elapsed/.5,0,1) if self.stage=='release' else .04
+            opening=.002+(self.release_opening-.002)*np.clip(elapsed/.5,0,1) if self.stage=='release' else self.release_opening
             retreat=np.array([0,0,.12])*np.clip((elapsed-1)/1.5,0,1) if self.release_mode=='place' or (self.case=='insert' and self.failure is None) else 0.
             goal=self.release_point+retreat
             return goal,float(opening),'release'

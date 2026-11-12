@@ -27,6 +27,8 @@ def main():
             sync_loads=True,fast_shutdown=True,enable_crashreporter=False))
         import numpy as np
         from PIL import Image
+        import os
+        camera_path=np.load(os.environ['RACK_CAMERA_PATH']) if os.environ.get('RACK_CAMERA_PATH') else None
         from pxr import Usd,UsdGeom,UsdPhysics,UsdShade,UsdLux,Gf,Sdf,Vt
         from isaacsim.core.api import World
         from isaacsim.core.utils.stage import get_current_stage
@@ -80,7 +82,8 @@ def main():
             return xf.AddTranslateOp(opSuffix='recorded'),xf.AddOrientOp(UsdGeom.XformOp.PrecisionDouble,opSuffix='recorded')
         body_ops=[replay_ops(prefix+'/Robot/'+n) for n in tr['body_names'].tolist()]
         plug_ops=replay_ops(prefix+'/Plug');latch_ops=replay_ops(prefix+'/Latch')
-        curve=UsdGeom.BasisCurves.Define(stage,'/World/RecordedCable');curve.CreateTypeAttr('linear');curve.CreateWrapAttr('nonperiodic')
+        through=lambda points:np.concatenate([points[:1],points,points[-1:]]).astype(np.float32)   # repeat the ends so the spline reaches them
+        curve=UsdGeom.BasisCurves.Define(stage,'/World/RecordedCable');curve.CreateTypeAttr('cubic');curve.CreateBasisAttr('catmullRom');curve.CreateWrapAttr('nonperiodic')
         curve.CreateWidthsAttr([.004]);curve.SetWidthsInterpolation('constant')
         material=UsdShade.Material.Define(stage,'/World/CableMaterial');shader=UsdShade.Shader.Define(stage,'/World/CableMaterial/Shader')
         shader.CreateIdAttr('UsdPreviewSurface');shader.CreateInput('diffuseColor',Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(.025,.6,.9))
@@ -92,6 +95,72 @@ def main():
         report['cable_and_plug_render_material']=dict(
             base_color_rgb=[.025,.6,.9],roughness=.3,
             scope='Cable, plug, latch and termination visual; render-only, unchanged physics')
+        def inert(root):
+            # Referenced assets carry physics schemas; this stage only replays recorded poses.
+            for prim in Usd.PrimRange(root):
+                if prim.HasAPI(UsdPhysics.RigidBodyAPI):UsdPhysics.RigidBodyAPI(prim).GetRigidBodyEnabledAttr().Set(False)
+                if prim.HasAPI(UsdPhysics.CollisionAPI):UsdPhysics.CollisionAPI(prim).GetCollisionEnabledAttr().Set(False)
+        def surface(path,colour,roughness=.35,metallic=0.,emissive=None):
+            mat=UsdShade.Material.Define(stage,path);sh=UsdShade.Shader.Define(stage,path+'/Shader');sh.CreateIdAttr('UsdPreviewSurface')
+            sh.CreateInput('diffuseColor',Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*colour));sh.CreateInput('roughness',Sdf.ValueTypeNames.Float).Set(roughness)
+            sh.CreateInput('metallic',Sdf.ValueTypeNames.Float).Set(metallic)
+            if emissive is not None:sh.CreateInput('emissiveColor',Sdf.ValueTypeNames.Color3f).Set(Gf.Vec3f(*emissive))
+            mat.CreateSurfaceOutput().ConnectToSource(sh.ConnectableAPI(),'surface');return mat
+        def place(path,usd,position):
+            prim=stage.DefinePrim(path,'Xform');prim.GetReferences().AddReference(str(usd))
+            xf=UsdGeom.Xformable(prim);xf.ClearXformOpOrder();xf.SetResetXformStack(True);xf.AddTranslateOp(opSuffix='installed').Set(Gf.Vec3d(*map(float,position)))
+            inert(prim);return prim
+        cord_curves=[]
+        patch=run.get('patch_cords')
+        if patch and 'cords' in tr.files:
+            drop=float(patch['lower_unit_drop_m']);connector=run['connector'];rack_panel=run['rack_panel']
+            latch_pivot=np.asarray(connector['latch_pivot_in_plug'])
+            # The unit below the panel reuses the panel faceplate and sockets, with a body and link lights.
+            lower=place('/World/LowerUnit',rack_panel['assets']['fixtures']['path'],(0,0,-drop))
+            for name in ('PickupPedestal','CableGuide0','CableGuide1'):
+                child=lower.GetChild(name)
+                if child.IsValid():child.SetActive(False)
+            lower_socket=place('/World/LowerUnitSocket',connector['socket'],np.asarray(rack_panel['socket_position_m'])-[0,0,drop])
+            UsdShade.MaterialBindingAPI.Apply(lower_socket).Bind(surface('/World/CaptureMaterials/LowerSocket',(.022,.028,.037),roughness=.36),bindingStrength=UsdShade.Tokens.strongerThanDescendants)
+            centre=np.asarray(rack_panel['panel_center_m'])-[0,0,drop]
+            for name in ('PatchPanelPhysical',):
+                plate=lower.GetChild(name)
+                if plate.IsValid():UsdShade.MaterialBindingAPI.Apply(plate).Bind(surface('/World/CaptureMaterials/LowerUnitFace',(.085,.095,.115),roughness=.38,metallic=.7),bindingStrength=UsdShade.Tokens.strongerThanDescendants)
+            body=UsdGeom.Cube.Define(stage,'/World/LowerUnitBody');body.CreateSizeAttr(1.)
+            bx=UsdGeom.Xformable(body);bx.AddTranslateOp().Set(Gf.Vec3d(float(centre[0]),float(centre[1])+.129,float(centre[2])));bx.AddScaleOp().Set(Gf.Vec3f(.4832,.25,.0435))
+            UsdShade.MaterialBindingAPI.Apply(body.GetPrim()).Bind(surface('/World/CaptureMaterials/LowerUnitBody',(.05,.055,.065),roughness=.45,metallic=.6))
+            link=surface('/World/CaptureMaterials/LinkLight',(.02,.25,.05),emissive=(.1,2.2,.3))
+            idle=surface('/World/CaptureMaterials/IdleLight',(.05,.05,.05))
+            socket_x=float(rack_panel['socket_position_m'][0]);installed={row['port'] for row in patch['cords']}
+            for port in range(1,25):
+                light=UsdGeom.Cube.Define(stage,f'/World/LowerUnitLights/Port{port:02d}');light.CreateSizeAttr(1.)
+                lx=UsdGeom.Xformable(light);lx.AddTranslateOp().Set(Gf.Vec3d(socket_x+(port-7)*.018,float(centre[1])-.0004,float(centre[2])-.0125));lx.AddScaleOp().Set(Gf.Vec3f(.0050,.0008,.0024))
+                UsdShade.MaterialBindingAPI.Apply(light.GetPrim()).Bind(link if port in installed else idle)
+            for index,row in enumerate(patch['cords']):
+                colour=surface(f'/World/CaptureMaterials/Cord{index:02d}',row['colour_rgb'],roughness=.4)
+                # A booted plug in the colour of its cord, a little lighter.
+                plug_plastic=surface(f'/World/CaptureMaterials/CordPlug{index:02d}',tuple(.9*c+.1*.85 for c in row['colour_rgb']),roughness=.3)
+                cord=UsdGeom.BasisCurves.Define(stage,f'/World/PatchCords/Cord{index:02d}');cord.CreateTypeAttr('cubic');cord.CreateBasisAttr('catmullRom');cord.CreateWrapAttr('nonperiodic')
+                cord.CreateWidthsAttr([.004]);cord.SetWidthsInterpolation('constant');cord.CreateCurveVertexCountsAttr([tr['cords'].shape[2]+2])
+                UsdShade.MaterialBindingAPI.Apply(cord.GetPrim()).Bind(colour);cord_curves.append(cord)
+                for label,key in (('Upper','upper_plug_position_m'),('Lower','lower_plug_position_m')):
+                    position=np.asarray(row[key])
+                    for part,offset in (('plug',0.),('latch',latch_pivot)):
+                        prim=place(f'/World/InstalledPlugs/{label}{index:02d}_{part}',connector[part],position+offset)
+                        UsdShade.MaterialBindingAPI.Apply(prim).Bind(plug_plastic,bindingStrength=UsdShade.Tokens.strongerThanDescendants)
+            report['installed_patch_cords']=dict(count=len(cord_curves),plugs='static visuals at the recorded port positions',lower_unit='visual copy of the panel faceplate with a body and link lights')
+        far_end=run.get('new_cord_far_end')
+        if far_end:
+            # The far plug of the cord being installed, seated in the lower unit; same finish as the cord.
+            for part,offset in (('plug',0.),('latch',np.asarray(run['connector']['latch_pivot_in_plug']))):
+                prim=place(f'/World/InstalledPlugs/NewCordFar_{part}',run['connector'][part],np.asarray(far_end['plug_position_m'])+offset)
+                UsdShade.MaterialBindingAPI.Apply(prim).Bind(material,bindingStrength=UsdShade.Tokens.strongerThanDescendants)
+        boxes=stage.GetPrimAtPath('/World/envs/env_0/Installed')
+        if boxes.IsValid():boxes.SetActive(False)   # collision boxes; the plug models are drawn instead
+        nest=surface('/World/CaptureMaterials/PickupNest',(.075,.08,.09),roughness=.5,metallic=.3)
+        for path in ('/World/envs/env_0/Staging',):
+            part=stage.GetPrimAtPath(path)
+            if part.IsValid():UsdShade.MaterialBindingAPI.Apply(part).Bind(nest,bindingStrength=UsdShade.Tokens.strongerThanDescendants)
         termination_ops=None
         if (run.get('cable') or {}).get('termination_model')=='compliant':
             visual=Path(run['cable']['termination_visual_usd'])
@@ -149,7 +218,9 @@ def main():
             for bi,ops in enumerate(body_ops):set_pose(ops,tr['body_pos'][j,bi],tr['body_quat'][j,bi])
             set_pose(plug_ops,tr['plug_pos'][j],tr['plug_quat'][j]);set_pose(latch_ops,tr['latch_pos'][j],tr['latch_quat'][j])
             if tr['cable'].shape[1]>0:
-                curve.CreateCurveVertexCountsAttr([tr['cable'].shape[1]]);curve.CreatePointsAttr(Vt.Vec3fArray.FromNumpy(tr['cable'][j].astype(np.float32)))
+                curve.CreateCurveVertexCountsAttr([tr['cable'].shape[1]+2]);curve.CreatePointsAttr(Vt.Vec3fArray.FromNumpy(through(tr['cable'][j])))
+            for index,cord in enumerate(cord_curves):
+                cord.CreatePointsAttr(Vt.Vec3fArray.FromNumpy(through(tr['cords'][j,index])))
             gap=0.
             if termination_ops is not None:
                 q=tr['plug_quat'][j].astype(np.float64);q=q/np.linalg.norm(q);v=np.asarray(run['connector']['cable_exit_offset'])
@@ -179,6 +250,8 @@ def main():
                     if tr['t'][j]-tr['t'][release[0]]>=1.5:
                         shot='panel-withdrawal'
                         look(center+[.30,-.74,.19],center)
+            if camera_path is not None:
+                shot='continuous';look(camera_path['eye'][j],camera_path['target'][j])
             pose_cache=UsdGeom.XformCache()
             checks=[(prefix+'/Robot/'+name,tr['body_pos'][j,bi],tr['body_quat'][j,bi]) for bi,name in enumerate(tr['body_names'].tolist())]+[(prefix+'/Plug',tr['plug_pos'][j],tr['plug_quat'][j]),(prefix+'/Latch',tr['latch_pos'][j],tr['latch_quat'][j])]
             for path,position,quaternion in checks:

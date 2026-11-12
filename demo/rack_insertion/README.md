@@ -1,8 +1,26 @@
 # Robot rack insertion
 
-[![Franka inserting a cable into a rack-mounted patch panel](media/preview.png)](media/rack-insertion.mp4)
+[![Franka plugging a patch cord into a populated patch panel](media/patching-preview.jpg)](media/rack-patching.mp4)
 
-[Play the 14.8-second video](media/rack-insertion.mp4)
+[Play the 19.9-second patching video](media/rack-patching.mp4) · [earlier single-cable video, 14.8 s](media/rack-insertion.mp4)
+
+## Patching a populated rack
+
+The current code runs the scene in the video above. A second 24-port unit sits two rack units below the patch panel, and fourteen short patch cords in three colours already connect the two. One more cord has its far plug seated in port 07 of the lower unit; the robot picks its free plug from a tray in front of the rack, carries it to port 07 of the panel, inserts it, opens its fingers just far enough to let go, and withdraws.
+
+- **One solver for every cord.** The fifteen rods are advanced in one `ropesim` batch with rod-rod contact, so the new cord and the installed cords can touch. Each has 97 vertices. Installed cords are fixed at both ports and leave their plugs along the plug axis.
+- **A boot on the handled plug.** The cord is tied to the plug at its exit and again 10.6 mm further along the plug axis, so it leaves the plug along the axis and passes its bending moment to the plug.
+- **Staging.** The plug lies flat on a solid tray, in a shallow pocket that holds its front end against the push of the bent cord. The grasp is taken 6 mm above the plug's mid-height, so the fingertips stay above the tray.
+- **Clearances.** Ports 05, 06, 08 and 09 are left empty for the fingers. The plugs installed at the panel are fixed collision boxes for the robot, and the fingers open 12 mm each on release.
+- **Dissipation.** The rods use `drag` 3 s⁻¹ and a termination damper of 0.125 N·s/m.
+- **Hand control.** While carrying the plug, a null-space term steers the elbow to the posture of the earlier validated insertion, which keeps the wrist clear of the rack's left rail. During alignment and insertion the hand is trimmed by the measured sideways offset of the plug, the same privileged simulator pose the phase gates use.
+- **Camera.** `python demo/rack_insertion/camera_path.py trajectory.npz camera.npz` writes one continuous camera path; set `RACK_CAMERA_PATH=camera.npz` when rendering to use it instead of the per-phase shots.
+
+**Status of the recorded trial.** The controller completed every stage without a recorded failure, and the plug ended seated: depth 9.76 mm of 10.04 mm, 0.19 mm off the socket axis, tilted 1.3°. The acquisition check passed. The strict retention audit did not pass: it requires at least 0.01 N of socket contact in every sample of the last 0.5 s after the hand withdraws, and one sample 0.37 s before the end read 0.009 N. Two later attempts to remove that chatter did not seat the plug within the insertion time limit, so this insertion remains sensitive to cord and damping settings. The lower unit's plugs and the tray pocket do not collide with the rods. [Trial record](evidence/patching-trial.json)
+
+## Earlier single-cable trial
+
+The sections below, and the evidence files they link, describe the earlier trial with one free cable and an empty panel. Their commands still apply; their numbers and recordings do not describe the patching scene.
 
 A Franka Panda carries a contact-held connector to port 07 of a rack-mounted 24-port panel, inserts it, opens its fingers and withdraws. The plug is a freely dynamic PhysX body coupled to an unpinned deformable cable through a compliant termination. The controller uses known initial placement and simulated poses and pair-contact sensors. The temporary world support used for initial cable settling is disabled before acquisition.
 

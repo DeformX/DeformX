@@ -39,11 +39,11 @@ def main():
 
     # Physical parameters of the recorded nominal trial.
     vars(args).update(case="insert", seconds=28., exchange_hz=1200, rigid_pilot=False,
-                      release_mode="place", settle_seconds=1.5, cable_initialization="draped",
+                      release_mode="place", settle_seconds=2.5, cable_initialization="draped",
                       rod_iterations=96, termination="compliant", termination_stiffness=200.,
-                      termination_damping=.03, max_termination_gap=.005, pickup_height=.08,
+                      termination_damping=.125, cable_drag=3., rod_vertices=97, max_termination_gap=.005, pickup_height=.08,
                       max_joint_target_error=.10, open_gripper=False, offset_x=-.05,
-                      offset_y=0., initial_plug_position=None)
+                      offset_y=0., initial_plug_position=[.45, .30, 1.087])
     args.out.mkdir(parents=True, exist_ok=False)
     frozen_dir=args.out/'source';frozen_dir.mkdir()
     for source in Path(__file__).parent.glob('*.py'):
@@ -137,10 +137,44 @@ def run_task(args, report):
     report['initial_plug_position_m']=plug_position.tolist()
     report['placement_offset_m']=[args.offset_x,args.offset_y]
     report['controller_feedback_assumption']='privileged simulator TCP/plug poses and pair contact sensors; known initial placement, no perception/noise model'
-    grasp_offset = np.array(manifest['grasp_offset'])
+    grasp_offset = np.array(manifest['grasp_offset']) + [0., 0., .006]
+    report['grasp_point_above_plug_mid_height_m'] = .006
     grip_point = plug_position + grasp_offset
     latch_position = plug_position + np.array(manifest['latch_pivot_in_plug'])
     socket_position = tuple(panel['socket_position_m']) if panel else (0.40, 0.32, 1.25)
+    # Installed patch cords between the panel and the unit two rack units below it.
+    from . import patch_field
+    cord_points, cord_fixed, cord_info = patch_field.cords(socket_position, manifest, args.rod_vertices)
+    args.patch_cords = dict(points=cord_points, fixed=cord_fixed)
+    args.lower_unit_offset = [0., 0., -patch_field.UNIT_DROP_M]
+    report['patch_cords'] = dict(count=len(cord_info), cords=cord_info, lower_unit_drop_m=patch_field.UNIT_DROP_M,
+        model='one rod per cord in the same batch as the handled cable; both ends fixed at their ports; rod-rod contact on',
+        plug_bodies='visual only; ports next to the active port are left empty for finger clearance')
+    # A deck behind the pickup pedestal carries the whole cable, so nothing hangs before the grasp.
+    # One solid tray carries the plug and the whole cable. The grasp is taken 6 mm above the plug's
+    # mid-height, so the fingertips stay above the tray and the plug needs no narrow rail under it.
+    args.staging_deck = dict(path='/World/envs/env_0/Staging/Deck', lower_m=[.22, .14, 1.0], upper_m=[.45, .385, 1.080], top_m=1.080, spacing_m=.002)
+    # The cord the robot installs is already plugged into port 7 of the lower unit.
+    far_plug = patch_field.seated_plug_position(socket_position, manifest, patch_field.ACTIVE_PORT, lower=True)
+    args.far_end = dict(port=patch_field.ACTIVE_PORT, plug_position_m=far_plug.tolist(),
+                        cable_exit_m=(far_plug + np.asarray(manifest['cable_exit_offset'])).tolist())
+    report['new_cord_far_end'] = dict(args.far_end, model='last two rod vertices fixed at the cable exit of a plug seated in the lower unit; plug body visual only')
+    args.staging_rest = None
+    # A pocket around the front end of the plug holds it against the push of the bent cord; the plug lifts out upward.
+    px, py, top = plug_position[0], plug_position[1], 1.0865
+    args.plug_pocket = [
+        dict(path='/World/envs/env_0/Staging/PocketLeft', lower_m=[px-.0115, py-.013, 1.080], upper_m=[px-.0075, py+.0055, top]),
+        dict(path='/World/envs/env_0/Staging/PocketRight', lower_m=[px+.0075, py-.013, 1.080], upper_m=[px+.0115, py+.0055, top]),
+        dict(path='/World/envs/env_0/Staging/PocketFront', lower_m=[px-.0075, py+.0015, 1.080], upper_m=[px+.0075, py+.0055, top])]
+    report['plug_pocket'] = dict(walls=args.plug_pocket, side_clearance_m=.0004, front_clearance_m=.0005, colliders='robot and plug; not the rods')
+    report['staging_deck'] = args.staging_deck
+    report['removed_fixtures'] = ['CableGuide0', 'CableGuide1', 'PickupPedestal']
+    # Bodies of the installed plugs at the panel, as fixed boxes the robot collides with.
+    half, rear, front, low, high = .0071, -.0436, .001, -.00585, .0046
+    args.installed_plug_boxes = [dict(path=f"/World/envs/env_0/Installed/Plug{row['port']:02d}",
+        lower_m=(np.asarray(row['upper_plug_position_m']) + [-half, rear, low]).tolist(),
+        upper_m=(np.asarray(row['upper_plug_position_m']) + [half, front, high]).tolist()) for row in cord_info]
+    report['patch_cords']['plug_bodies'] = 'fixed box colliders for the robot at the panel ports; visual only at the lower unit'
 
     robot_cfg = FRANKA_PANDA_CFG.copy()
     robot_cfg.prim_path = '{ENV_REGEX_NS}/Robot'
@@ -210,6 +244,17 @@ def run_task(args, report):
     socket_body.CreateRigidBodyEnabledAttr(True)
     socket_body.CreateKinematicEnabledAttr(True)
     material.func('/World/ContactMaterial', material)
+    for part in [args.staging_deck] + args.plug_pocket + args.installed_plug_boxes:
+        lo, hi = part['lower_m'], part['upper_m']
+        block = UsdGeom.Mesh.Define(stage, part['path'])
+        block.CreatePointsAttr([Gf.Vec3f(x, y, z) for z in (lo[2], hi[2]) for y in (lo[1], hi[1]) for x in (lo[0], hi[0])])
+        block.CreateFaceVertexCountsAttr([3]*12)
+        block.CreateFaceVertexIndicesAttr([0,2,3, 0,3,1, 4,5,7, 4,7,6, 0,1,5, 0,5,4, 2,6,7, 2,7,3, 0,4,6, 0,6,2, 1,3,7, 1,7,5])
+        block.CreateSubdivisionSchemeAttr('none')
+        block.CreateDisplayColorAttr([Gf.Vec3f(.16, .17, .19)])
+        UsdPhysics.CollisionAPI.Apply(block.GetPrim())
+        UsdPhysics.MeshCollisionAPI.Apply(block.GetPrim()).CreateApproximationAttr('convexHull')
+        su.bind_physics_material(part['path'], '/World/ContactMaterial')
     for label in ('Plug', 'Latch', 'Socket'):
         su.bind_physics_material(prefix+'/'+label, '/World/ContactMaterial')
     # Every actual rack/fixture mesh participates in rigid-body collision.
@@ -226,6 +271,8 @@ def run_task(args, report):
             continue
         if label == 'Fixtures' and panel:
             from .panel import fixture_mesh_selection
+            for name in report['removed_fixtures']:
+                stage.GetPrimAtPath(prefix+'/Fixtures/'+name).SetActive(False)
             selected = fixture_mesh_selection(stage, prefix, panel)
             for prim, physical in selected:
                 if physical:
@@ -366,14 +413,18 @@ def run_task(args, report):
     report['scene_sha256']=hashlib.sha256((args.out/'scene.usda').read_bytes()).hexdigest()
     report['physics_scene_authored'] = [dict(path=str(p.GetPath()),gpu_dynamics=PhysxSchema.PhysxSceneAPI(p).GetEnableGPUDynamicsAttr().Get(),broadphase=PhysxSchema.PhysxSceneAPI(p).GetBroadphaseTypeAttr().Get()) for p in Usd.PrimRange.Stage(stage) if p.IsA(UsdPhysics.Scene)]
     rec = {k:[] for k in ('t','phase','robot_q','body_pos','body_quat','plug_pos','plug_quat','plug_vel',
-                          'latch_pos','latch_quat','tcp','target','left_force','right_force','cable','reaction','socket_force','depth','lateral_error','axis_error','left_force_vector','right_force_vector','min_contact_separation','energy','applied_force','applied_torque','plug_com','latch_com','latch_vel','support_force','cable_vel','cable_quat','fixture_pair_force','fixture_pair_min_separation','seating_preload_m','seating_contact_dwell_s')}
+                          'latch_pos','latch_quat','tcp','target','left_force','right_force','cable','reaction','socket_force','depth','lateral_error','axis_error','left_force_vector','right_force_vector','min_contact_separation','energy','applied_force','applied_torque','plug_com','latch_com','latch_vel','support_force','cable_vel','cable_quat','fixture_pair_force','fixture_pair_min_separation','seating_preload_m','seating_contact_dwell_s','cords')}
     sim_times = []
     decimation = max(1, round(args.exchange_hz/240))
     capture = args.exchange_hz//30
     from .controller import ContactController
+    rack_posture=torch.tensor([2.358,-.426,-1.6,-2.228,-.525,2.172,.289],device=sim.device)
+    report['rack_posture_rad']=dict(joints=rack_posture.tolist(),use='null-space target during route and align only')
     seated = np.asarray(socket_position)+np.asarray(manifest['seated_plug_minus_socket'])+grasp_offset
     task_controller = ContactController(grip_point,start_tcp,args.case,seated,manifest['seated_depth_m'],release_mode=args.release_mode,
-        seating_preload=dict(limit_m=.0005,speed_m_s=.00025,depth_margin_m=.00075,contact_dwell_s=.1) if panel else None)
+        seating_preload=dict(limit_m=.0005,speed_m_s=.00025,depth_margin_m=.00075,contact_dwell_s=.1) if panel else None,
+        release_opening=.012, waypoint=[socket_position[0], .36, 1.27])
+    report['release_opening_per_finger_m']=.012
     def measured():
         ee_pos,ee_quat=tcp()
         state=cpu(plug.data.root_state_w)[0]
@@ -389,6 +440,9 @@ def run_task(args, report):
                     depth=depth,lateral=float(np.linalg.norm((state[:3]-seated_pos)[[0,2]])),
                     axis=float(np.arccos(np.clip(cpu(axis)[0,1],-1,1))),socket=socket_force)
     grasp_adapted=False
+    plug_trim=np.zeros(2)
+    report['plug_centring']=dict(use='align and insert', gain_per_control_tick=.02, limit_m=.003, active_within_m=.002,
+        signal='measured plug position across the socket axis (privileged simulator pose, as the phase gates)')
     final_target = start_tcp
     report['trial_start_physics_time_s']=float(sim.current_time)
     print('TRIAL_BEGIN',report.get('initialization',{}),flush=True)
@@ -398,6 +452,13 @@ def run_task(args, report):
             t = i*dt
             if i % decimation == 0:
                 final_target, opening, phase = task_controller.command(t,measured()) if args.case!='passive' else (start_tcp,.04,'passive')
+                if task_controller.stage in ('align','insert'):
+                    # Trim the hand by the measured sideways offset of the plug from the socket axis,
+                    # so that a load from the cord cannot leave the plug off-centre at the mouth.
+                    offset=(cpu(plug.data.root_link_pos_w)[0]-(np.asarray(socket_position)+manifest['seated_plug_minus_socket']))[[0,2]]
+                    if np.linalg.norm(offset)<.002:
+                        plug_trim=np.clip(plug_trim-.02*offset,-.003,.003)
+                    final_target=np.asarray(final_target)+[plug_trim[0],0.,plug_trim[1]]
                 if phase=='route' and not grasp_adapted:
                     held_pos,held_q=tcp()
                     local_position=quat_apply_inverse(held_q,plug.data.root_link_pos_w-held_pos)
@@ -417,6 +478,11 @@ def run_task(args, report):
                 jac[:,:3,:] -= skew_symmetric_matrix(offset_w) @ jac[:,3:,:]
                 q = robot.data.joint_pos[:,arm_ids]
                 goal_q = controller.compute(ee_pos,ee_q,jac,q) if args.case!='passive' else robot.data.default_joint_pos[:,arm_ids]
+                if phase in ('route','align'):
+                    # The hand pose leaves the elbow free. Steer it, without moving the hand, to the posture
+                    # of the validated insertion, which keeps the wrist clear of the rack's left rail.
+                    null=torch.eye(7,device=sim.device)-torch.linalg.pinv(jac[0])@jac[0]
+                    goal_q=goal_q+.05*(null@(rack_posture-q[0]))[None]
                 goal_q = q + (goal_q-q).clamp(-args.max_joint_target_error,args.max_joint_target_error)
                 limits = robot.data.soft_joint_pos_limits[:,arm_ids]
                 goal_q = torch.maximum(torch.minimum(goal_q,limits[...,1]),limits[...,0])
@@ -474,6 +540,7 @@ def run_task(args, report):
                     seating_preload_m=task_controller.preload_peak_m,seating_contact_dwell_s=task_controller.seating_observation.get('contact_dwell_s',0.),
                     fixture_pair_force=np.asarray(fixture_forces),fixture_pair_min_separation=np.asarray(fixture_separations),
                     cable=np.empty((0,3)) if coupler is None else coupler.positions(),
+                    cords=np.empty((0,49,3)) if coupler is None else coupler.all_positions()[1:],
                     cable_vel=np.empty((0,3)) if coupler is None else coupler.velocities(),
                     cable_quat=np.empty((0,4)) if coupler is None else coupler.quaternions(),
                     reaction=np.zeros(3) if coupler is None else coupler.reaction.copy(),

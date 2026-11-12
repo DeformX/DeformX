@@ -12,7 +12,7 @@ def vertex_masses(points, density):
     return .5 * density * (np.r_[lengths, 0] + np.r_[0, lengths])
 
 
-def initial_cable_points(root,mode,table_height=1.):
+def initial_cable_points(root,mode,table_height=1.,deck_top=None):
     root=np.asarray(root,dtype=float)
     if root.shape!=(3,) or not np.isfinite(root).all() or mode not in ('level','draped'):
         raise ValueError('finite cable exit and level/draped initialization required')
@@ -22,6 +22,9 @@ def initial_cable_points(root,mode,table_height=1.):
         points[:,:2]=root[:2]+np.c_[-.60*u*u,-.22*u*(1-u)]
         distance=np.linalg.norm(points[:,:2]-root[:2],axis=1)
         points[:,2]=table_height+.002+(root[2]-table_height-.002)*np.exp(-distance/.065)
+        if deck_top is not None:
+            # The whole cable starts on the staging deck, level with the plug.
+            points[:,2]=deck_top+.002+(root[2]-deck_top-.002)*np.exp(-distance/.03)
     return points
 
 
@@ -68,37 +71,65 @@ class CableCoupling:
         self.offset = torch.tensor([manifest['cable_exit_offset']], device=scene.device)
         root = self.attachment().detach().cpu().numpy()[0]
         # A slack, unpinned tail initially lies behind the plug on the imported tabletop.
-        u = np.linspace(0, 1, 49)
+        u = np.linspace(0, 1, int(getattr(args,'rod_vertices',49)))
         table_v,_=body_geometry(stage,'/World/envs/env_0/Table')
         table_matrix=np.asarray(UsdGeom.XformCache().GetLocalToWorldTransform(stage.GetPrimAtPath('/World/envs/env_0/Table')))
         table_world=(np.c_[table_v,np.ones(len(table_v))]@table_matrix)[:,:3]
         table_bounds=np.array([table_world.min(0),table_world.max(0)])
-        points = initial_cable_points(root,args.cable_initialization,float(table_bounds[1,2]))
-        if args.cable_initialization=='draped' and (np.any(points[:,:2]<table_bounds[0,:2]+.02) or np.any(points[:,:2]>table_bounds[1,:2]-.02)):
+        deck=getattr(args,'staging_deck',None)
+        points = initial_cable_points(root,args.cable_initialization,float(table_bounds[1,2]),deck_top=deck['top_m'] if deck else None)
+        far=getattr(args,'far_end',None)
+        if far:
+            from . import patch_field
+            points,_=patch_field.new_cord_route(root,far['cable_exit_m'],len(u),deck['top_m'])
+            cords_now=getattr(args,'patch_cords',None)
+            if cords_now is not None and np.linalg.norm(points[:,None,None,:]-cords_now['points'][None],axis=-1).min()<.008:
+                raise ValueError('Initial route of the new cord touches an installed cord')
+        elif deck and (np.any(points[:,:2]<np.asarray(deck['lower_m'])[:2]+.01) or np.any(points[:,0]>deck['upper_m'][0]-.004)
+                     or np.any(points[:,1]>deck['upper_m'][1]+.012)):
+            raise ValueError('Initial cable does not fit on the staging deck')
+        if not getattr(args,'far_end',None) and args.cable_initialization=='draped' and (np.any(points[:,:2]<table_bounds[0,:2]+.02) or np.any(points[:,:2]>table_bounds[1,:2]-.02)):
             raise ValueError('Draped initial cable does not fit inside actual imported table footprint')
         self.rest_lengths = np.linalg.norm(np.diff(points, axis=0), axis=-1)
+        self.boot=bool(far) and self.compliant
+        self.boot_index=max(1,int(round(.0106/float(self.rest_lengths[0]))))
+        self.boot_offset=self.offset+torch.tensor([[0.,-float(self.rest_lengths[:self.boot_index].sum()),0.]],device=scene.device)
+        self.boot_force=np.zeros(3)
+        self.boot_k=60.   # a flexible boot, softer than the cable exit spring
         density, radius = .025, .002
         self.masses = vertex_masses(points, density)
         self.first_free=0 if self.compliant else 1
         self.free_mass = float(self.masses[self.first_free:].sum())
         pins = np.zeros((1,len(u)), bool); pins[:,0] = not self.compliant
-        self.rope = rs.RopeBatch.from_positions(points[None].astype(np.float32), density, 800.0, .001,
-                       1/4800, args.rod_iterations, pinned=pins, fix_root_orientation=False, straight_rest=True)
+        if far:pins[:,-2:]=True   # the far plug sits in its port; the cord leaves it along the plug axis
+        cords=getattr(args,'patch_cords',None)
+        all_points,self.pins=points[None],pins
+        if cords is not None:
+            all_points=np.concatenate([points[None],cords['points']]);self.pins=np.concatenate([pins,cords['fixed']])
+        self.rods=len(all_points)
+        self.rope = rs.RopeBatch.from_positions(all_points.astype(np.float32), density, 800.0, .001,
+                       1/4800, args.rod_iterations, pinned=self.pins, fix_root_orientation=False, straight_rest=True)
         expected_mass=self.masses.copy()
         if not self.compliant:expected_mass[0]=0.
+        expected_mass[pins[0]]=0.
         inv=np.asarray(self.rope.inv_masses(),dtype=np.float64)[0]
         self.masses=np.divide(1.,inv,out=np.zeros_like(inv),where=inv>0)
         self.native_mass_relative_error=float(np.max(np.abs(self.masses-expected_mass)/np.maximum(expected_mass,1e-15)))
         if self.native_mass_relative_error>1e-3:raise RuntimeError('Native cable masses disagree with half-segment construction')
         self.free_mass=float(self.masses[self.first_free:].sum())
-        self.rope.damping = 0.; self.rope.drag = 0.; self.rope.drag_quad = 0.; self.rope.drag_quad_t = 0.
+        self.drag=float(getattr(args,'cable_drag',0.))
+        self.rope.damping = 0.; self.rope.drag = self.drag; self.rope.drag_quad = 0.; self.rope.drag_quad_t = 0.
         self.rope.set_gravity(np.array([0,0,-9.81], np.float32))
         self.rope.set_contact(radius, .45, .35)
+        if self.rods>1:
+            # Rods in the batch touch each other: radius, barrier, stiffness, friction as in the cascade example.
+            self.rope.set_rope_contact(True, .9*radius, .2*radius, .025, .4, 1e7, 1.2, self.rods)
         self.rope.enable_contact_forces(True)
         self.entries, profiles = [], []
-        cache = args.out/'collider-cache'
+        import os
+        cache = Path(os.environ.get('RACK_COLLIDER_CACHE') or args.out/'collider-cache')
         cache.mkdir(parents=True, exist_ok=True)
-        def add(path, asset=None, body=None, spacing=.006, thickness=0.):
+        def add(path, asset=None, body=None, spacing=.006, thickness=0., copy_offset=None):
             V,F = body_geometry(stage,path)
             actual_thickness=thickness if thickness else (0. if rs.sdf.is_closed(F) else 2*spacing)
             spec = ColliderSpec(asset or 'static', spacing=spacing, margin=.02, thickness=thickness)
@@ -143,6 +174,13 @@ class CableCoupling:
             profiles.append(dict(index=index,path=path,spacing=step,shape=list(values.shape),thickness_m=actual_thickness,
                                  geometry_sha256=key,triangles=len(F),dynamic=bool(asset),closed=bool(rs.sdf.is_closed(F)),aperture_grid_probe=aperture_probe))
             print('Cable collider:',path,values.shape,flush=True)
+            if copy_offset is not None:
+                # The unit below the panel has the same faceplate: reuse the grid at a second, fixed pose.
+                second=np.asarray(pos,np.float32)+np.asarray(copy_offset,np.float32)
+                index=self.rope.add_mesh(values,np.asarray(origin,np.float32),step,pos=second,quat=np.asarray(quat,np.float32))
+                self.entries.append(dict(asset=None,body=None,path=path+' (lower unit)',pos=second,quat=quat))
+                profiles.append(dict(index=index,path=path+' (lower unit)',spacing=step,shape=list(values.shape),thickness_m=actual_thickness,
+                                     geometry_sha256=key,triangles=len(F),dynamic=False,closed=bool(rs.sdf.is_closed(F)),aperture_grid_probe=None))
         for bi,name in enumerate(self.robot.body_names):
             path=self.robot.root_physx_view.link_paths[0][bi]
             try:
@@ -154,12 +192,17 @@ class CableCoupling:
             add(prefix+'/'+label,spacing=step,thickness=.008 if label=='Rack' else 0.)
         from pxr import Usd,UsdGeom
         if getattr(args,'panel_profile',None):
+            lower=getattr(args,'lower_unit_offset',None)
             for group in args.panel_profile['collision_groups']:
-                add(prefix+'/Fixtures/'+group['path'],spacing=group['spacing_m'],thickness=group['thickness_m'])
+                if not stage.GetPrimAtPath(prefix+'/Fixtures/'+group['path']).IsActive():continue
+                add(prefix+'/Fixtures/'+group['path'],spacing=group['spacing_m'],thickness=group['thickness_m'],
+                    copy_offset=lower if lower is not None and group['path'] in ('PatchPanelPhysical','NeighbourSocketsPhysical') else None)
         else:
             for prim in Usd.PrimRange(stage.GetPrimAtPath(prefix+'/Fixtures')):
                 if prim.IsA(UsdGeom.Mesh):add(str(prim.GetPath()),spacing=.003)
         add(prefix+'/Socket',spacing=.001)
+        for part in (deck,getattr(args,'staging_rest',None)):
+            if part:add(part['path'],spacing=part['spacing_m'])
         if len(self.entries)>32:raise RuntimeError('Exceeded native32mesh limit')
         self.last_root = self.attachment().clone()
         self.reaction=np.zeros(3)
@@ -171,8 +214,9 @@ class CableCoupling:
             termination_model=args.termination,termination_damper_model='central radial; zero damping at coincident endpoints',termination_visual_usd=args.termination_visual_usd,termination_k_N_m=self.termination_k if self.compliant else None,
             termination_c_Ns_m=self.termination_c if self.compliant else None,max_termination_gap_m=self.gap_limit if self.compliant else None,
             pinned_vertices=int(pins.sum()),
-            EA_N=800.,EI_Nm2=.001,radius_m=radius,substeps=self.substeps,internal_h_s=dt/self.substeps,iterations=args.rod_iterations,damping=0.,drag=0.,
-            permanent_point_attachments=1,far_end_free=True,root_tangent_free=True,colliders=profiles,
+            EA_N=800.,EI_Nm2=.001,radius_m=radius,substeps=self.substeps,internal_h_s=dt/self.substeps,iterations=args.rod_iterations,damping=0.,drag=self.drag,
+            rods_in_batch=self.rods,rod_rod_contact=self.rods>1,
+            permanent_point_attachments=2 if far else 1,far_end_free=not far,root_tangent_free=not far,boot='the rod vertex 10.6 mm from the cable exit is tied to the point on the plug axis at that distance by a 60 N/m spring with the same damper; the cord leaves along the plug axis and its bending moment reaches the plug' if far else None,colliders=profiles,
             energy_columns=['cable_translational_kinetic_J','rigid_kinetic_J','gravity_J','cable_axial_proxy_J','partial_energy_sum_J','termination_spring_J','termination_dissipated_J','termination_damper_power_W'],
             energy_omissions='rod rotational/bending/shear/contact energies and latch spring; partial sum is not total energy conservation',
             reaction_method=('paired finite spring/damper impulse at dynamic cable endpoint and plug exit; no kinematic cable vertices' if self.compliant else 'free-vertex linear momentum minus measured surface and gravity impulse; explicit one exchange delay'))
@@ -185,6 +229,9 @@ class CableCoupling:
 
     def velocities(self):
         return self.torch.as_tensor(self.rope.velocities()).detach().cpu().numpy()[0].copy()
+
+    def all_positions(self):
+        return self.torch.as_tensor(self.rope.positions()).detach().cpu().numpy().copy()
 
     def quaternions(self):
         return self.torch.as_tensor(self.rope.quaternions()).detach().cpu().numpy()[0].copy()
@@ -214,7 +261,8 @@ class CableCoupling:
     def before_physics(self):
         torch=self.torch
         self.rigid_momentum0=sum(m*obj.data.root_com_lin_vel_w[0].detach().cpu().numpy() for m,obj in zip(self.rigid_masses,self.rigid_bodies))
-        self.v_before=torch.as_tensor(self.rope.velocities()).detach().cpu().numpy()[0].copy()
+        v_all=torch.as_tensor(self.rope.velocities()).detach().cpu().numpy().copy()
+        self.v_before=v_all[0].copy()
         if self.compliant:
             p=self.positions()
             exit_position=self.attachment()
@@ -223,11 +271,22 @@ class CableCoupling:
             self.reaction=-force
             self.damper_power=power;self.dissipated+=power*self.dt
             self.peak_damper_power=max(self.peak_damper_power,power)
-            velocity=self.v_before.copy();velocity[0]+=force*self.dt/self.masses[0]
-            self.rope.set_velocities(velocity[None].astype(np.float32))
+            v_all[0,0]+=force*self.dt/self.masses[0]
+            if self.boot:
+                boot_position=self.plug.data.root_link_pos_w+self.quat_apply(self.plug.data.root_link_quat_w,self.boot_offset)
+                boot_velocity=self.plug.data.root_com_lin_vel_w+torch.cross(self.plug.data.root_com_ang_vel_w,boot_position-self.plug.data.root_com_pos_w,dim=-1)
+                force1,_,power1=termination_force(p[self.boot_index],self.v_before[self.boot_index],boot_position.detach().cpu().numpy()[0],boot_velocity.detach().cpu().numpy()[0],self.boot_k,self.termination_c)
+                self.boot_force=-force1;self.dissipated+=power1*self.dt
+                v_all[0,self.boot_index]+=force1*self.dt/self.masses[self.boot_index]
+            v_all[self.pins]=0.   # a fixed vertex's row is its prescribed velocity
+            self.rope.set_velocities(v_all.astype(np.float32))
         f=torch.tensor(self.reaction,dtype=torch.float32,device=self.scene.device)[None]
         lever=self.attachment()-self.plug.data.root_com_pos_w
         torque=torch.cross(lever,f,dim=-1)
+        if self.boot:
+            f1=torch.tensor(self.boot_force,dtype=torch.float32,device=self.scene.device)[None]
+            boot_position=self.plug.data.root_link_pos_w+self.quat_apply(self.plug.data.root_link_quat_w,self.boot_offset)
+            torque=torque+torch.cross(boot_position-self.plug.data.root_com_pos_w,f1,dim=-1);f=f+f1
         self.applied_force=f[0].detach().cpu().numpy().copy();self.applied_torque=torque[0].detach().cpu().numpy().copy()
         self.plug.permanent_wrench_composer.set_forces_and_torques(f[:,None],torque[:,None],is_global=True)
         self.robot.permanent_wrench_composer.set_forces_and_torques(self.robot_force,self.robot_torque,is_global=True)
@@ -246,7 +305,7 @@ class CableCoupling:
             else:
                 pos.append(torch.tensor(e['pos'],dtype=torch.float32,device=self.scene.device))
                 quat.append(torch.tensor(e['quat'],dtype=torch.float32,device=self.scene.device))
-        self.rope.set_mesh_poses_all(torch.stack(pos)[None],torch.stack(quat)[None])
+        self.rope.set_mesh_poses_all(torch.stack(pos)[None].expand(self.rods,-1,-1).contiguous(),torch.stack(quat)[None].expand(self.rods,-1,-1).contiguous())
         if self.compliant:
             self.rope.step_free(self.dt,self.substeps)
         else:
@@ -262,7 +321,7 @@ class CableCoupling:
         momentum1=(v1[self.first_free:]*self.masses[self.first_free:,None]).sum(0)
         if not self.compliant:
             self.reaction=reaction_from_momentum(momentum0,momentum1,self.free_mass,np.array([0,0,-9.81]),contact,self.dt)
-        W=self.rope.mesh_wrenches()[0]
+        W=np.asarray(self.rope.mesh_wrenches()).sum(0)   # every rod's push on each body
         magnitude=np.linalg.norm(W[:,:3],axis=-1)
         self.mesh_peak=np.maximum(self.mesh_peak,magnitude)
         phase=self.current_phase

@@ -32,7 +32,7 @@ python -m demo.examples hanging --out runs/hanging
 
 The build targets the visible GPU by default. For an explicit architecture, add `-DCMAKE_CUDA_ARCHITECTURES=120` for RTX 5090, or the architecture appropriate to your GPU, to `CMAKE_ARGS`. A PyTorch wheel does not install the `nvcc` build tool. See the [backend installation notes](https://github.com/DeformX/Cosserat-Rod-Solver-CUDA/blob/96b8514c7c55c724f1abba1fbf6ed6642b7db72b/README.md#install) and [official PyTorch version instructions](https://pytorch.org/get-started/previous-versions/#v270).
 
-During the release preview the CUDA submodule requires repository access. Both the parent and backend commits must be published before an anonymous recursive clone can work. Do not substitute an older backend: these examples use the deterministic stepping API in the pinned revision.
+Both submodules are public. Do not substitute an older backend: these examples use the deterministic stepping API in the pinned revision.
 
 ## Choose a scene
 

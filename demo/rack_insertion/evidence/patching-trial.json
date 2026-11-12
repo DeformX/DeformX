@@ -1,0 +1,229 @@
+{
+  "purpose": "Record of the patching trial shown in media/rack-patching.mp4",
+  "host": "ps",
+  "date": "2026-11-12",
+  "trajectory_sha256": "f147ed79359c475baf002cd132e1d3f453ad4ed47205c441c2f011c39a99bf7d",
+  "scene_sha256": "5ab57ad0b8ac43fb7b6d3f2824705ddf4dcb81720e76983f39b1140387a2f56c",
+  "source_sha256": {
+    "__init__.py": "e6afee62bff73f45ff92327506a3eeb956883dc73ceaba6e309d67ba6acbecd2",
+    "audit.py": "4d35bcc7ea07952b393c404dc3b55e252d9b7a7a5dad79f7cbcad42c1726d307",
+    "blender_patch_panel.py": "215bdc384802edcbcacc6de147055d442702a07dd642827d03851e681a5358bd",
+    "profile.py": "04e67fc4a183fd04c55680d9787dee9a214e6d3cd06005c3598f648cbca7b35a",
+    "contracts.py": "0c27093ced45b2ca9bd197b39fbf1beb14ecfcf41fa8c03f52490c1868ca1d1b",
+    "coupling.py": "dd90f203cfdafae3e22da408faa829f984566ecc5054f4c6e1cd18fb09bb16b3",
+    "controller.py": "2854aef1fe0d57ed69fddab9b4783fb07cf71ab2e5e732d62b7f1f5194b11944",
+    "run.py": "b2792f92a5132c46ca3f523920c5d12a29336274121d6e3c81d516340bdeabb6",
+    "panel.py": "cb75768c7878fbc4c96a214301547bce82f4063544eb99e840587b9fdd385ed1",
+    "render.py": "88a690c368ce967d9d0136e81a41c78778c8044cb7e68c16df948539756e55ed",
+    "prepare.py": "f2aab7eb92cc0f765e2b8ae13b37337904e7e7f7d7df5fd13b58e609e134b6d4",
+    "patch_field.py": "9507265278e12016686a7ad73a78ef9c7d2af47a9ad19f94b61bdb85c6b54410",
+    "blender_termination.py": "462a7bca1f03ef03407084f303e27d5658b387fb8e58fcede63c75dc6a78d895",
+    "render_native.py": "746b6026d079aa692eb85b395d15732c266ac6b79963b897418c0034291612c3",
+    "assets.py": "a47db4dbc2581386a6413813b6ce442aa52d3d8ed1fd3166af408e453a264e84"
+  },
+  "video": {
+    "path": "../media/rack-patching.mp4",
+    "sha256": "a0dfcdb760c73b83d4e59382a9ce6b52670ec40e0547a5adb3dea39e79301119",
+    "frames": 597,
+    "fps": 30,
+    "duration_s": 19.9,
+    "playback": "1x; one continuous camera path from camera_path.py; no cuts",
+    "frame_scan": "no frame-to-frame jumps found in a 160x90 luminance scan"
+  },
+  "scene": {
+    "installed_patch_cords": 14,
+    "installed_ports": [
+      1,
+      2,
+      3,
+      4,
+      10,
+      11,
+      12,
+      13,
+      15,
+      16,
+      17,
+      18,
+      20,
+      21
+    ],
+    "lower_unit_drop_m": 0.0889,
+    "installed_cord_model": "one rod per cord in the same batch as the handled cable; both ends fixed at their ports; rod-rod contact on",
+    "installed_plug_bodies": "fixed box colliders for the robot at the panel ports; visual only at the lower unit",
+    "new_cord_far_end": {
+      "port": 7,
+      "plug_position_m": [
+        0.401,
+        0.5482350199081004,
+        1.1577962499916554
+      ],
+      "cable_exit_m": [
+        0.401,
+        0.5046350306428969,
+        1.1584749997916555
+      ],
+      "model": "last two rod vertices fixed at the cable exit of a plug seated in the lower unit; plug body visual only"
+    },
+    "staging_tray": {
+      "path": "/World/envs/env_0/Staging/Deck",
+      "lower_m": [
+        0.22,
+        0.14,
+        1.0
+      ],
+      "upper_m": [
+        0.45,
+        0.385,
+        1.08
+      ],
+      "top_m": 1.08,
+      "spacing_m": 0.002
+    },
+    "plug_pocket": {
+      "walls": [
+        {
+          "path": "/World/envs/env_0/Staging/PocketLeft",
+          "lower_m": [
+            0.3885,
+            0.287,
+            1.08
+          ],
+          "upper_m": [
+            0.3925,
+            0.3055,
+            1.0865
+          ]
+        },
+        {
+          "path": "/World/envs/env_0/Staging/PocketRight",
+          "lower_m": [
+            0.40750000000000003,
+            0.287,
+            1.08
+          ],
+          "upper_m": [
+            0.41150000000000003,
+            0.3055,
+            1.0865
+          ]
+        },
+        {
+          "path": "/World/envs/env_0/Staging/PocketFront",
+          "lower_m": [
+            0.3925,
+            0.3015,
+            1.08
+          ],
+          "upper_m": [
+            0.40750000000000003,
+            0.3055,
+            1.0865
+          ]
+        }
+      ],
+      "side_clearance_m": 0.0004,
+      "front_clearance_m": 0.0005,
+      "colliders": "robot and plug; not the rods"
+    },
+    "removed_fixtures": [
+      "CableGuide0",
+      "CableGuide1",
+      "PickupPedestal"
+    ]
+  },
+  "cable": {
+    "rods_in_batch": 15,
+    "vertices_per_rod": 97,
+    "rod_rod_contact": true,
+    "rest_shape": "straight",
+    "drag_per_s": 3.0,
+    "termination_k_N_m": 200.0,
+    "termination_c_Ns_m": 0.125,
+    "boot": "the rod vertex 10.6 mm from the cable exit is tied to the point on the plug axis at that distance by a 60 N/m spring with the same damper; the cord leaves along the plug axis and its bending moment reaches the plug",
+    "rest_length_m": 0.5072268561749126,
+    "max_strain": 0.0012477946612394764,
+    "peak_termination_gap_m": 0.0020874140318483114,
+    "max_reaction_N": 0.5485756942265363
+  },
+  "controller": {
+    "failure": null,
+    "transitions": [
+      {
+        "to": "descend",
+        "t_s": 1.3
+      },
+      {
+        "to": "close",
+        "t_s": 2.8
+      },
+      {
+        "to": "lift",
+        "t_s": 3.613
+      },
+      {
+        "to": "hold",
+        "t_s": 5.113
+      },
+      {
+        "to": "route1",
+        "t_s": 5.917
+      },
+      {
+        "to": "align",
+        "t_s": 8.417
+      },
+      {
+        "to": "insert",
+        "t_s": 10.917
+      },
+      {
+        "to": "release",
+        "t_s": 16.896
+      }
+    ],
+    "grasp_point_above_plug_mid_height_m": 0.006,
+    "release_opening_per_finger_m": 0.012,
+    "rack_posture": {
+      "joints": [
+        2.3580000400543213,
+        -0.4259999990463257,
+        -1.600000023841858,
+        -2.2279999256134033,
+        -0.5249999761581421,
+        2.171999931335449,
+        0.289000004529953
+      ],
+      "use": "null-space target during route and align only"
+    },
+    "plug_centring": {
+      "use": "align and insert",
+      "gain_per_control_tick": 0.02,
+      "limit_m": 0.003,
+      "active_within_m": 0.002,
+      "signal": "measured plug position across the socket axis (privileged simulator pose, as the phase gates)"
+    }
+  },
+  "results": {
+    "complete": true,
+    "finite": true,
+    "acquisition_passed": true,
+    "insertion_audit_passed": false,
+    "insertion": {
+      "retained_after_release_s": 0.3333333333333357,
+      "retained_after_withdrawal_s": 0.3333333333333357,
+      "final_depth_m": 0.009764380979537912,
+      "seated_depth_m": 0.010035013779997826,
+      "final_lateral_error_m": 0.0001916781942791489,
+      "final_axis_error_rad": 0.023254197582467034,
+      "final_socket_force_N": 0.08626163750886917,
+      "final_finger_force_N": 0.0,
+      "final_withdrawal_m": 0.11919999122619629
+    },
+    "simulated_s": 19.9,
+    "simulation_loop_wall_s": 523.9442134778947,
+    "setup_wall_s": 68.91035521402955
+  },
+  "status": "The controller completed every stage without a recorded failure and the plug ended seated: depth 9.76 mm of 10.04 mm, 0.19 mm off axis, 1.3 degrees. The strict retention audit did NOT pass: it needs socket contact of at least 0.01 N in every sample of the final 0.5 s after withdrawal, and one sample 0.37 s before the end read 0.009 N. Two later attempts to remove that chatter (higher termination damping; 49 vertices per rod) did not seat the plug within the insertion time limit.",
+  "not_established": "force accuracy, hardware transfer, electrical connection; installed plugs at the lower unit and the plug pocket do not collide with the rods"
+}

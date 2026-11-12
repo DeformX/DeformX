@@ -39,6 +39,8 @@ class Clip:
     opening_recorded_playback_multiplier: float = .25
     duration_s: float = 8
     hold_last: bool = False
+    composition_speed: int = 1
+    cycle_s: float = DURATION_S
 
 
 CLIPS = (
@@ -53,9 +55,10 @@ CLIPS = (
          "849f864a2029608e542e170fab6b011a27c6ff4d3c37097e02e33d45d84ad8e9", 0,
          "demo/cable_extraction/validation.json", source_fps=60,
          recorded_playback_multiplier=2, duration_s=18.7, hold_last=True),
-    Clip("Robot rack insertion", "demo/rack_insertion/media/rack-insertion.mp4",
-         "731127811c33ddae443a54d0d1b26587c7ddd58bf627a01b36a35be1b369663f", 6,
-         "demo/rack_insertion/evidence/clean-replay.json"),
+    Clip("Robot rack insertion", "demo/rack_insertion/media/rack-patching.mp4",
+         "a0dfcdb760c73b83d4e59382a9ce6b52670ec40e0547a5adb3dea39e79301119", 0,
+         "demo/rack_insertion/evidence/patching-trial.json",
+         duration_s=597 / 30, hold_last=True, composition_speed=2, cycle_s=10.5),
     Clip("Traction reels", "demo/winch_tension/media/winch-tension-long.mp4",
          "fb264788078b369f9adab8a2af37535e08db792c1a0caa0f1b090ee0f32270f0", 6,
          "demo/media/clean-replay-provenance.json"),
@@ -63,6 +66,16 @@ CLIPS = (
          "5660e2a332fded66037628b30d91ced0aa28a2d6fa28111879b9a35f59588f19", 0,
          "demo/contact_arena/presentation.json"),
 )
+
+
+def sampling(clip):
+    """Source-frame stride, sampled frame count and cycle length of a held clip, in composition frames."""
+    if clip.source_fps % SOURCE_FPS:
+        raise ValueError("Endpoint-preserving sampling requires an integer frame-rate ratio")
+    stride = clip.source_fps // SOURCE_FPS * clip.composition_speed
+    count = round(clip.duration_s * clip.source_fps)
+    played = len(range(0, count - stride, stride)) + 1
+    return stride, played, round(clip.cycle_s * SOURCE_FPS)
 
 
 def panel_coordinates():
@@ -129,7 +142,7 @@ def verify_source(root, clip):
     first_frame = Fraction(str(clip.start_s)) * clip.source_fps
     if first_frame.denominator != 1:
         raise ValueError("Clip start must align to a source frame")
-    if len(pts) < first_frame + clip.duration_s * clip.source_fps or any(
+    if len(pts) < first_frame + round(clip.duration_s * clip.source_fps) or any(
         timestamp != Fraction(i, clip.source_fps) for i, timestamp in enumerate(pts)
     ):
         raise ValueError(f"Expected continuous zero-based {clip.source_fps} fps timestamps in {clip.path}")
@@ -149,9 +162,10 @@ def verify_source(root, clip):
         "source_out_s_exclusive": clip.start_s + clip.duration_s,
         "source_in_frame": int(first_frame),
         "source_out_frame_exclusive": int(first_frame) + round(clip.duration_s * clip.source_fps),
-        "composition_playback_multiplier": 1,
-        "repeat_period_s": clip.duration_s if clip.duration_s < DURATION_S and not clip.hold_last else None,
-        "end_hold_s": DURATION_S - clip.duration_s if clip.hold_last else 0,
+        "composition_playback_multiplier": clip.composition_speed,
+        "repeat_period_s": (clip.cycle_s if clip.hold_last else clip.duration_s)
+                           if (clip.cycle_s if clip.hold_last else clip.duration_s) < DURATION_S else None,
+        "end_hold_s": clip.cycle_s - clip.duration_s / clip.composition_speed if clip.hold_last else 0,
         "composition_duration_s": DURATION_S,
         "recording_evidence": clip.evidence,
         "recording_evidence_sha256": sha256(root / clip.evidence),
@@ -167,10 +181,8 @@ def composition_graph():
             f"trim=start_frame={first}:end_frame={last}",
             "setpts=PTS-STARTPTS",
         ]
-        if clip.hold_last and clip.source_fps != SOURCE_FPS:
-            if clip.source_fps % SOURCE_FPS:
-                raise ValueError("Endpoint-preserving sampling requires an integer frame-rate ratio")
-            stride = clip.source_fps // SOURCE_FPS
+        stride, played, cycle = sampling(clip) if clip.hold_last else (1, 0, 0)
+        if stride != 1:
             count = last - first
             filters.extend([
                 f"select='lt(n,{count-stride})*not(mod(n,{stride}))+eq(n,{count-1})'",
@@ -185,10 +197,12 @@ def composition_graph():
             "format=yuv444p",
         ])
         if clip.hold_last:
-            filters.extend([
-                f"tpad=stop_mode=clone:stop={round((DURATION_S - clip.duration_s) * SOURCE_FPS)}",
-                f"trim=end_frame={DURATION_S * SOURCE_FPS}",
-            ])
+            filters.append(f"tpad=stop_mode=clone:stop={cycle - played}")
+            if cycle < DURATION_S * SOURCE_FPS:
+                filters.append(f"loop=loop=-1:size={cycle}:start=0")
+            filters.append(f"trim=end_frame={DURATION_S * SOURCE_FPS}")
+            if cycle < DURATION_S * SOURCE_FPS:
+                filters.append(f"setpts=N/({SOURCE_FPS}*TB)")
         elif clip.duration_s < DURATION_S:
             filters.extend([
                 f"loop=loop=-1:size={round(clip.duration_s * SOURCE_FPS)}:start=0",
@@ -235,7 +249,8 @@ def encode(root, work):
            "-map", "[out]", "-map_metadata", "-1", "-an", "-c:v", "ffv1",
            "-threads", "2", master, cwd=work)
     braider_check = verify_braider_panel(root, master)
-    extraction_check = verify_extraction_panel(root, master)
+    extraction_check = verify_held_panel(root, master, "Robot cable extraction")
+    rack_check = verify_held_panel(root, master, "Robot rack insertion")
     ffmpeg("-threads", "2", "-i", master, "-map", "0:v:0", "-map_metadata", "-1",
            "-an", "-c:v", "libx264", "-preset", "medium", "-crf", "17", "-threads", "2",
            "-pix_fmt", "yuv420p", "-movflags", "+faststart", mp4)
@@ -251,38 +266,43 @@ def encode(root, work):
            f"[0:v:0]{gif_picture}[pic];[pic][1:v:0]paletteuse=dither=bayer:bayer_scale=5:diff_mode=rectangle[out]",
            "-map", "[out]", "-map_metadata", "-1", "-an", "-loop", "0",
            "-final_delay", str(round(100 / GIF_FPS)), gif)
-    return mp4, gif, braider_check, extraction_check
+    return mp4, gif, braider_check, extraction_check, rack_check
 
 
-def verify_extraction_panel(root, master):
-    """Verify the entire accelerated extraction, followed only by its last frame."""
+def verify_held_panel(root, master, title):
+    """Verify a panel that plays its entire recording, then only holds its last frame, per cycle."""
     def hashes(path, filters):
         output = command("ffmpeg", "-nostdin", "-v", "error", "-threads", "2",
                          "-i", path, "-vf", filters, "-an", "-f", "framemd5", "-")
         return [row.rsplit(",", 1)[1].strip() for row in output.splitlines()
                 if row and not row.startswith("#")]
-    index = next(i for i, clip in enumerate(CLIPS) if clip.title == "Robot cable extraction")
+    index = next(i for i, clip in enumerate(CLIPS) if clip.title == title)
     clip = CLIPS[index]
     # Hash every original frame independently, then select the explicit frame map.
     original = hashes(root / clip.path,
                       f"scale={VIDEO_WIDTH}:{VIDEO_HEIGHT}:flags=lanczos,setsar=1,format=yuv444p")
-    stride = clip.source_fps // SOURCE_FPS
+    stride, source_frames, cycle = sampling(clip)
     indices = [*range(0, len(original) - stride, stride), len(original) - 1]
     expected = [original[i] for i in indices]
-    source_frames = round(clip.duration_s * SOURCE_FPS)
-    if clip.start_s != 0 or len(expected) != source_frames or not clip.hold_last:
-        raise ValueError("Extraction must start at the beginning and include its entire recording")
-    held_frames = DURATION_S * SOURCE_FPS - len(expected)
+    if (clip.start_s != 0 or len(expected) != source_frames or not clip.hold_last
+            or len(original) != round(clip.duration_s * clip.source_fps)):
+        raise ValueError(f"{title} must start at the beginning and include its entire recording")
+    held_frames = cycle - len(expected)
     expected += [expected[-1]] * held_frames
+    total = DURATION_S * SOURCE_FPS
+    if total % cycle:
+        raise ValueError(f"{title} cycles must fill the composition exactly")
+    expected *= total // cycle
     x, y = panel_coordinates()[index]
     actual = hashes(master, f"crop={VIDEO_WIDTH}:{VIDEO_HEIGHT}:{x}:{y}")
     if actual != expected:
-        raise ValueError("Extraction panel differs from full source plus final-frame hold")
+        raise ValueError(f"{title} panel differs from full source plus final-frame hold")
     if actual[0] != original[0] or actual[-1] != original[-1]:
-        raise ValueError("Extraction must preserve the original first and terminal frames")
+        raise ValueError(f"{title} must preserve the original first and terminal frames")
     return {"source": clip.path, "source_sha256": clip.sha256,
             "source_start_s": 0, "source_end_s": clip.duration_s,
             "matched_sampled_source_frames": source_frames, "held_frames": held_frames,
+            "cycles": total // cycle, "composition_playback_multiplier": clip.composition_speed,
             "source_frame_indices": indices,
             "original_first_and_last_frames_preserved": True,
             "terminal_source_frame_md5": original[-1],
@@ -339,33 +359,33 @@ def main():
     if len(CLIPS) != ROWS * COLUMNS:
         raise ValueError("The showcase requires exactly six clips")
     for record, clip in zip(inputs, CLIPS):
-        length = round(clip.duration_s * SOURCE_FPS)
+        length = round(clip.duration_s * SOURCE_FPS / clip.composition_speed)
+        cycle = round(clip.cycle_s * SOURCE_FPS) if clip.hold_last else length
         change_s = (Fraction(clip.source_normal_speed_frame or 0, clip.source_fps)
                     - Fraction(str(clip.start_s)))
-        change = min(length, max(0, int(change_s * SOURCE_FPS)))
+        change = min(length, max(0, int(change_s * SOURCE_FPS / clip.composition_speed)))
         segments = []
         if change:
             segments.append({"composition_start_frame": 0,
                              "composition_end_frame_exclusive": change,
-                             "simulation_time_multiplier": clip.opening_recorded_playback_multiplier})
+                             "simulation_time_multiplier": clip.opening_recorded_playback_multiplier * clip.composition_speed})
         if change < length:
             segments.append({"composition_start_frame": change,
                              "composition_end_frame_exclusive": length,
-                             "simulation_time_multiplier": clip.recorded_playback_multiplier})
+                             "simulation_time_multiplier": clip.recorded_playback_multiplier * clip.composition_speed})
+        if length < cycle:
+            segments.append({"composition_start_frame": length,
+                             "composition_end_frame_exclusive": cycle,
+                             "simulation_time_multiplier": 0,
+                             "kind": "hold_final_frame"})
         repeated_segments = []
-        offsets = [0] if clip.hold_last else range(0, DURATION_S * SOURCE_FPS, length)
-        for offset in offsets:
+        for offset in range(0, DURATION_S * SOURCE_FPS, cycle):
             for segment in segments:
                 first = offset + segment["composition_start_frame"]
                 last = min(DURATION_S * SOURCE_FPS, offset + segment["composition_end_frame_exclusive"])
                 if first < last:
                     repeated_segments.append(dict(segment, composition_start_frame=first,
                                                   composition_end_frame_exclusive=last))
-        if clip.hold_last and length < DURATION_S * SOURCE_FPS:
-            repeated_segments.append({"composition_start_frame": length,
-                                      "composition_end_frame_exclusive": DURATION_S * SOURCE_FPS,
-                                      "simulation_time_multiplier": 0,
-                                      "kind": "hold_final_frame"})
         record["underlying_recorded_playback"] = repeated_segments
     report = {
         "trajectory_sources": "Per-scene recording evidence; simulation revisions may differ",
@@ -385,15 +405,16 @@ def main():
             "base_fps": SOURCE_FPS,
             "gif_sampling": f"{GIF_FPS} fps sampling at the original playback rate, uniformly downscaled",
             "gif_palette_colors": PALETTE_COLORS,
-            "repeat_policy": "Full 21-second braider at 1x; full 18.7-second extraction at 2x with a 2.3-second final hold; other four 8-second excerpts repeat at their recorded rates.",
+            "repeat_policy": "Full 21-second braider at 1x; full 18.7-second extraction at 2x with a 2.3-second final hold; full 19.9-second rack patching at 2x with a 0.53-second final hold, shown twice; other three 8-second excerpts repeat at their recorded rates.",
             "audio": "silent sources, silent composition",
         },
     }
 
     with tempfile.TemporaryDirectory(prefix="gpu-showcase-", dir=out) as temp:
-        mp4, gif, braider_check, extraction_check = encode(root, Path(temp))
+        mp4, gif, braider_check, extraction_check, rack_check = encode(root, Path(temp))
         report["full_braider_frame_check"] = braider_check
         report["full_extraction_frame_check"] = extraction_check
+        report["full_rack_insertion_frame_check"] = rack_check
         report["exports"] = {
             mp4.name: verify_export(mp4, "h264", SOURCE_FPS, (WIDTH, HEIGHT)),
             gif.name: verify_export(gif, "gif", GIF_FPS, (GIF_WIDTH, GIF_HEIGHT)),
